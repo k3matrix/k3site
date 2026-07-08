@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Operasyonunuzda ışık nereye düşüyor? 16 soruluk analiz, bilginin nereye düştüğünü — ve nereye düşmediğini — haritalar.">
+<title>Operasyonel Görüş Alanı Analizi · K3 Matrix</title>
+<style>
+  :root{
+    --bg:#0F1115; --bg2:#14181F; --panel:#171B22; --panel2:#1C212A;
+    --krom:#B8BCC4; --krom-acik:#D8DBE0; --beyaz:#F2F3F5;
+    --altin:#B9975B; --altin-acik:#D9BC85;
+    --cizgi:#262B34; --dim:#7E838D;
+    --gorunur:#4E8A6A; --yari:#B9975B; --kor:#8A5A50;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--krom);line-height:1.65;font-size:16px;}
+  ::selection{background:var(--altin);color:var(--bg);}
+  .wf-band{background:#B9975B;color:#0F1115;text-align:center;font-size:.78em;font-weight:700;letter-spacing:.06em;padding:6px 10px;}
+  nav{background:rgba(15,17,21,.92);border-bottom:1px solid var(--cizgi);}
+  .nav-ic{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
+  .logo{font-weight:800;letter-spacing:.18em;color:var(--beyaz);font-size:1em;text-decoration:none;}
+  .logo span{color:var(--altin);}
+  .nav-geri{color:var(--dim);text-decoration:none;font-size:.85em;font-weight:600;}
+  .nav-geri:hover{color:var(--krom);}
+
+  .sahne{max-width:760px;margin:0 auto;padding:60px 24px 90px;}
+  .eyebrow{color:var(--altin);font-size:.74em;font-weight:800;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px;}
+  h1{color:var(--beyaz);font-size:clamp(1.7em,4.2vw,2.5em);font-weight:800;letter-spacing:-.02em;line-height:1.16;margin-bottom:16px;}
+  .giris-sub{color:var(--krom);font-size:1.04em;max-width:600px;}
+  .giris-sub b{color:var(--beyaz);}
+  .meta{display:flex;gap:14px;flex-wrap:wrap;margin:28px 0 6px;}
+  .meta span{border:1px solid var(--cizgi);background:var(--panel);border-radius:22px;padding:8px 18px;font-size:.84em;font-weight:700;color:var(--krom-acik);}
+  .btn{display:inline-block;border:none;cursor:pointer;text-decoration:none;font-family:inherit;font-weight:700;font-size:.96em;border-radius:30px;padding:15px 34px;letter-spacing:.02em;transition:transform .15s;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-altin{background:var(--altin);color:var(--bg);}
+  .btn-cizgi{background:none;border:1.5px solid var(--krom);color:var(--krom-acik);}
+  .koruma{color:var(--dim);font-size:.88em;font-style:italic;margin-top:34px;border-top:1px solid var(--cizgi);padding-top:20px;}
+
+  /* soru sahnesi */
+  .ilerleme{display:flex;align-items:center;gap:14px;margin-bottom:34px;}
+  .bar{flex:1;height:5px;background:var(--panel2);border-radius:3px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--altin);border-radius:3px;transition:width .3s;}
+  .adim-no{color:var(--dim);font-size:.82em;font-weight:700;letter-spacing:.08em;white-space:nowrap;}
+  .kat-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.26em;text-transform:uppercase;margin-bottom:14px;}
+  .soru{color:var(--beyaz);font-size:clamp(1.25em,2.8vw,1.6em);font-weight:800;letter-spacing:-.015em;line-height:1.35;margin-bottom:30px;}
+  .secenek{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--cizgi);border-radius:14px;padding:18px 22px;margin-bottom:14px;color:var(--krom-acik);font-family:inherit;font-size:.97em;line-height:1.5;cursor:pointer;transition:border-color .15s, background .15s, transform .1s;}
+  .secenek:hover{border-color:var(--altin);background:var(--panel2);transform:translateX(3px);}
+  .geri-btn{background:none;border:none;color:var(--dim);font-family:inherit;font-size:.85em;font-weight:600;cursor:pointer;margin-top:16px;padding:6px 0;}
+  .geri-btn:hover{color:var(--krom);}
+
+  /* sonuç sahnesi */
+  .profil{background:linear-gradient(170deg,#1A1F29,#161B23);border:1px solid #3A3325;border-radius:18px;padding:34px 32px;margin:34px 0 26px;}
+  .profil .p-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.28em;text-transform:uppercase;margin-bottom:10px;}
+  .profil .p-ad{color:var(--beyaz);font-size:1.6em;font-weight:800;letter-spacing:-.015em;margin-bottom:12px;}
+  .profil p{font-size:.96em;}
+  .harita{margin:30px 0 10px;}
+  .h-baslik{color:var(--beyaz);font-weight:800;font-size:1.05em;margin-bottom:16px;}
+  .kat-satir{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--cizgi);border-radius:12px;padding:14px 20px;margin-bottom:10px;}
+  .kat-satir .k-ad{font-weight:700;font-size:.94em;color:var(--krom-acik);}
+  .kat-satir .k-yorum{color:var(--dim);font-size:.8em;margin-top:3px;line-height:1.45;}
+  .durum{font-size:.8em;font-weight:800;letter-spacing:.06em;border-radius:20px;padding:6px 15px;white-space:nowrap;}
+  .durum.gorunur{background:rgba(78,138,106,.15);color:#7FBF9C;border:1px solid rgba(78,138,106,.4);}
+  .durum.yari{background:rgba(185,151,91,.12);color:var(--altin-acik);border:1px solid rgba(185,151,91,.4);}
+  .durum.kor{background:rgba(138,90,80,.15);color:#C98F82;border:1px solid rgba(138,90,80,.45);}
+  .okuma{margin:26px 0;}
+  .okuma .blok{border-left:3px solid var(--altin);padding:4px 0 4px 18px;margin-bottom:18px;}
+  .okuma .blok .b-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.24em;text-transform:uppercase;margin-bottom:5px;}
+  .okuma .blok p{color:var(--krom);font-size:.95em;}
+  .okuma .blok p b{color:var(--beyaz);}
+  .kopru{color:var(--dim);font-size:.9em;font-style:italic;margin:24px 0;}
+  .sonuc-cta{background:var(--panel);border:1px solid var(--cizgi);border-radius:16px;padding:28px;text-align:center;margin-top:30px;}
+  .sonuc-cta .c-baslik{color:var(--beyaz);font-weight:800;font-size:1.1em;margin-bottom:8px;}
+  .sonuc-cta p{color:var(--krom);font-size:.92em;max-width:480px;margin:0 auto 20px;}
+  .gizli{display:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-ic">
+    <a class="logo" href="index.html">K3 <span>MATRIX</span></a>
+    <a class="nav-geri" href="index.html">← Ana Sayfa</a>
+  </div>
+</nav>
+
+<!-- ═══ GİRİŞ ═══ -->
+<div class="sahne gizli" id="sahne-giris">
+  <div class="eyebrow">Operasyonel Görüş Alanı Analizi</div>
+  <h1>Operasyonunuzda ışık<br>nereye düşüyor?</h1>
+  <p class="giris-sub">Bir karar, dayandığı bilginin görüş alanı kadar isabetlidir. Bu analiz, operasyonunuzda ışığın nereye düştüğünü — ve nereye düşmediğini — <b>haritalar.</b></p>
+  <div class="meta">
+    <span>16 soru</span><span>≈ 3 dakika</span><span>6 kategori</span><span>Kayıt istemez · veri saklanmaz</span>
+  </div>
+  <p class="giris-sub" style="font-size:.9em;color:var(--dim);margin:14px 0 30px;">Her seçenek meşru bir çalışma biçimidir — doğru ya da yanlış cevap yok; sadece bilginin bugün izlediği yol var.</p>
+  <button class="btn btn-altin" onclick="basla()">Haritalamaya Başla</button>
+  <p class="koruma">Kör nokta bir yetkinlik eksiği değildir; bilginin izlediği yolun geometrisidir. En deneyimli yönetici bile ancak ışığın düştüğü yeri görür.</p>
+</div>
+
+<!-- ═══ SORU ═══ -->
+<div class="sahne gizli" id="sahne-soru">
+  <div class="ilerleme">
+    <div class="bar"><i id="bar-ic" style="width: 93.75%;"></i></div>
+    <div class="adim-no" id="adim-no">SORU 16 / 16</div>
+  </div>
+  <div class="kat-eti" id="kat-eti">🔄 Bilgi Akışı &amp; Verimlilik</div>
+  <div class="soru" id="soru-metin">Ekibinizin rapor hazırlama, mutabakat ve “bilgi arama” için harcadığı süre?</div>
+  <div id="secenekler"><button class="secenek">Bazı roller mesaisinin önemli bir bölümünü buna harcar.</button><button class="secenek">Kişi başı haftada birkaç saat.</button><button class="secenek">Kayda değmez; bilgi hazır, ekip işine bakar.</button></div>
+  <button class="geri-btn" id="geri" onclick="geri()">← Önceki soruya dön</button>
+</div>
+
+<!-- ═══ SONUÇ ═══ -->
+<div class="sahne" id="sahne-sonuc">
+  <div class="eyebrow">Görüş Alanı Haritanız</div>
+  <h1 id="sonuc-baslik">Haritanız hazır.</h1>
+
+  <div class="profil">
+    <div class="p-eti">Genel Profil</div>
+    <div class="p-ad" id="profil-ad">Sistemleşen Yönetim</div>
+    <p id="profil-metin">Kurumsallaşma başlamış: bazı süreçleriniz kayıt altında, bazıları hâlâ kişilerde. Güçlü adalar var — eksik olan, adaları birleştiren köprüler. Gelişim fırsatı: kayıtlı adaları tek omurgada buluşturmak.</p>
+  </div>
+
+  <div class="harita">
+    <div class="h-baslik">Altı alanda görüş durumu</div>
+    <div id="harita-satirlar"><div class="kat-satir"><div><div class="k-ad">💰 Finansal Görünürlük</div><div class="k-yorum">Harcamanın izi bugün dosyalarda ve kişilerde dağınık.</div></div><span class="durum kor">● KÖR NOKTA</span></div><div class="kat-satir"><div><div class="k-ad">⏱️ Operasyon Hızı</div><div class="k-yorum">Cevaplar geliyor — ama saatler değil, günler ölçeğinde.</div></div><span class="durum yari">◐ YARI GÖRÜNÜR</span></div><div class="kat-satir"><div><div class="k-ad">🛡️ Kontrol &amp; Güvence</div><div class="k-yorum">Kontroller var; bir kısmı hâlâ kişilere emanet.</div></div><span class="durum yari">◐ YARI GÖRÜNÜR</span></div><div class="kat-satir"><div><div class="k-ad">⚠️ Erken Uyarı</div><div class="k-yorum">Farklar görünüyor — çoğu zaman ara kontrollerde.</div></div><span class="durum yari">◐ YARI GÖRÜNÜR</span></div><div class="kat-satir"><div><div class="k-ad">🧠 Kurumsal Hafıza</div><div class="k-yorum">Devir düzeni var; bilginin bir kısmı yine de kişide.</div></div><span class="durum yari">◐ YARI GÖRÜNÜR</span></div><div class="kat-satir"><div><div class="k-ad">🔄 Bilgi Akışı &amp; Verimlilik</div><div class="k-yorum">Akış bugün telefona ve toplantıya emanet.</div></div><span class="durum kor">● KÖR NOKTA</span></div></div>
+  </div>
+
+  <div class="okuma">
+    <div class="blok">
+      <div class="b-eti" id="guclu-eti">Göreli en aydınlık alanınız</div>
+      <p id="guclu-metin"><b>⏱️ Operasyon Hızı.</b> Burada kısmi görünürlük zaten var — tam değil ama var. Buradaki kayıt alışkanlığı, ışığın diğer alanlara taşınmasında <b>çekirdek</b> olarak kullanılabilir: omurga en kolay, hâlihazırda yarı aydınlık olan yerden kurulur.</p>
+    </div>
+    <div class="blok">
+      <div class="b-eti" id="firsat-eti">Işığın ilk taşınacağı alan</div>
+      <p id="firsat-metin"><b>🔄 Bilgi Akışı &amp; Verimlilik.</b> Bilgi bugün mesai harcanarak taşınıyor. Işık buraya taşındığında akış kendiliğinden olur — ekip aynı resmi, aynı anda görür.</p>
+    </div>
+  </div>
+
+  <p class="kopru">Bu yolculuğun yönetim bilimindeki adı: <b style="color:var(--krom);">reaktiften proaktife geçiş.</b></p>
+  <p class="kopru" style="margin-top:-14px;">Kör nokta bir yetkinlik eksiği değildir; bilginin izlediği yolun geometrisidir.</p>
+
+  <div class="sonuc-cta">
+    <div class="c-baslik">Haritayı birlikte okuyalım mı?</div>
+    <p>Detaylı değerlendirme ve size özel yol haritası için tanışalım — Kurucu Saha Programı kontenjanı sınırlıdır.</p>
+    <a class="btn btn-altin" href="ortaklik.html">Tanışma Talebi Bırak</a>
+    <div style="margin-top:14px;"><button class="btn btn-cizgi" onclick="yeniden()" style="font-size:.85em;padding:11px 26px;">Analizi Yeniden Yap</button></div>
+  </div>
+</div>
+
+<script>
+// ─── Mühürlü soru seti · mesaj mimarisi v7 · puanlar ekranda asla görünmez ───
+const KATLAR = {
+  FG:{ad:"💰 Finansal Görünürlük"},
+  OH:{ad:"⏱️ Operasyon Hızı"},
+  KG:{ad:"🛡️ Kontrol & Güvence"},
+  EU:{ad:"⚠️ Erken Uyarı"},
+  KH:{ad:"🧠 Kurumsal Hafıza"},
+  BA:{ad:"🔄 Bilgi Akışı & Verimlilik"}
+};
+
+const SORULAR = [
+ {k:"FG", s:"“Bu projede bugüne kadar toplam ne harcadık?” sorusunun cevabı size nasıl ulaşır?",
+  o:[["Muhasebe ya da ön muhasebe birkaç günde derler.",5],["Bir ekranda hazır durur; anlıktır.",10],["Birkaç dosya birleştirilir, kişilere sorulur.",0]]},
+ {k:"FG", s:"Maliyetin blok / etap bazında dağılımını görmek istediğinizde?",
+  o:[["Toplamı biliyoruz; dağılım tahminî.",0],["Dağılım kayıt anında ayrışıyor; ekranda.",10],["Ay sonunda elle dağıtılıyor.",5]]},
+ {k:"FG", s:"Bir projenin fizibilite öngörüsü ile bugünkü gerçekleşeni yan yana görebiliyor musunuz?",
+  o:[["Proje sonunda bir kez bakılıyor.",5],["Fizibilite dosyası, karar sonrası bir daha açılmıyor.",0],["Evet — aynı ekranda sürekli karşılaştırıyoruz.",10]]},
+ {k:"OH", s:"Ay sonu yönetim raporu kaç günde hazır olur?",
+  o:[["Rapor diye bir hazırlık yok; veriler zaten güncel.",10],["2-3 gün.",5],["Bir haftadan fazla — her ay değişir.",0]]},
+ {k:"OH", s:"Bir malzemenin talepten faturaya izini sürmek kaç kişiyle görüşmeyi gerektirir?",
+  o:[["Talep eden, satın alan, depocu, muhasebe… günler alır.",0],["1-2 kişi, yarım gün.",5],["Kimseyle — kayıt zinciri tek yerde.",10]]},
+ {k:"OH", s:"Hakediş hazırlanırken saha ilerlemesi nasıl doğrulanır — istediğiniz anda görebiliyor musunuz?",
+  o:[["Hakediş döneminde sahaya sorulur, birlikte doğrulanır.",5],["İlerleme sahada kayıt altındadır; hakediş o kayıttan doğar, her an ekranda.",10],["Taşeronun beyanı esas alınır; itiraz olursa bakılır.",0]]},
+ {k:"KG", s:"Onay verecek kişi izindeyken kritik bir onay gerektiğinde?",
+  o:[["İş bekler ya da onaysız ilerler.",0],["Telefonla sözlü onay alınır, sonra imzalanır.",5],["Görev vekile devirlidir; iz kayıtlıdır.",10]]},
+ {k:"KG", s:"Taşerona teslim edilen malzemenin (emanet) hesabı nasıl tutulur?",
+  o:[["Her çıkış anında taşeronun hesabına işlenir.",10],["Defterde ya da Excel'de tutulur; ara ara mutabık kalınır.",5],["Hakediş gününde hafızayla konuşulur.",0]]},
+ {k:"KG", s:"Siz iki hafta ulaşılamaz olsanız, firmanın operasyon bilgisi ne kadar görünür kalır?",
+  o:[["Kilit birkaç kişi çoğunu bilir.",5],["Her şey ekranda; ekip aynı resmi görür.",10],["Açıkçası çoğu bilgi bende toplanıyor.",0]]},
+ {k:"EU", s:"Keşif ile gerçekleşen metraj / miktar farkını ne zaman fark edersiniz?",
+  o:[["Ara hakedişlerde ya da kontrollerde.",5],["Proje kapanışında.",0],["Fark oluştuğu gün — kayıt anında.",10]]},
+ {k:"EU", s:"Depo sayımı ile kayıtlar karşılaştırıldığında?",
+  o:[["Küçük sapmalar; sayım rutini oturmuş.",10],["Sayım yapılır ama farkın kaynağı bulunamaz.",5],["Gerçek stok ancak sayım günü bilinir.",0]]},
+ {k:"EU", s:"İşçilik / puantaj maliyeti hangi doğrulukta izlenir?",
+  o:[["Aylık toplam bordro düzeyinde.",5],["Günlük puantaj, iş bazında maliyete işler.",10],["Sezon sonunda — “kaça mal olduysa”.",0]]},
+ {k:"KH", s:"Kilit bir çalışanınız ayrılsa, yürüttüğü işlerin bilgisi firmada ne kadar kalır?",
+  o:[["O bilginin önemli kısmı kişiyle birlikte gider.",0],["İş kayıtlarda yaşıyor; devir dosyayla değil sistemle olur.",10],["Devir toplantısı ve notlarla çoğu aktarılır.",5]]},
+ {k:"KH", s:"Geçmiş bir kararın (“neden bu taşeronu seçmiştik?”) gerekçesine bugün dönüp bakabilir misiniz?",
+  o:[["Yazışmalardan, e-postalardan kısmen bulunur.",5],["Karar; gerekçesi ve o günkü verisiyle kayıtlı.",10],["Hatırlayan varsa öğrenilir.",0]]},
+ {k:"BA", s:"Sahada öğleden önce olan önemli bir gelişme merkeze ne zaman ulaşır?",
+  o:[["Akşam telefon / mesaj trafiğiyle.",5],["Kayda girdiği an — herkes aynı ekranı görür.",10],["Haftalık toplantıda ya da sorun büyüyünce.",0]]},
+ {k:"BA", s:"Ekibinizin rapor hazırlama, mutabakat ve “bilgi arama” için harcadığı süre?",
+  o:[["Bazı roller mesaisinin önemli bir bölümünü buna harcar.",0],["Kişi başı haftada birkaç saat.",5],["Kayda değmez; bilgi hazır, ekip işine bakar.",10]]}
+];
+
+const PROFIL = [
+ {min:0, max:40, ad:"Deneyim ile Yönetim",
+  m:"Operasyonunuz güçlü bir kişisel disiplinle yönetiliyor — işler deneyimle, ilişkiyle, yakın takiple yürüyor. Ve yürüyor. Bu, en değerli ama en pahalı model: bilginin önemli bölümü kayıtta değil, kişilerde yaşıyor. Gelişim fırsatı: o disiplini omurgaya yazmak."},
+ {min:41, max:75, ad:"Sistemleşen Yönetim",
+  m:"Kurumsallaşma başlamış: bazı süreçleriniz kayıt altında, bazıları hâlâ kişilerde. Güçlü adalar var — eksik olan, adaları birleştiren köprüler. Gelişim fırsatı: kayıtlı adaları tek omurgada buluşturmak."},
+ {min:76, max:100, ad:"Kurumsal Yönetim",
+  m:"Bilginiz büyük ölçüde kişilerden bağımsız yaşıyor; yönetim ölçümle çalışıyor. Bu analizdeki soruların çoğunu ekranlarınız cevaplıyor. Sıradaki adım: ölçümü doktrine taşımak — sapmayı sadece görmek değil, öngörüyle sistematik karşılaştırmak."}
+];
+
+const GUCLU = {
+ FG:"Para izini kaybetmiyorsunuz: harcamanın hem toplamı hem dağılımı size hızla ulaşıyor. Bu, birçok firmanın en geç kavuştuğu görünürlüktür.",
+ OH:"Operasyonunuz hızlı cevap veriyor: bilgi aramak, iz sürmek ve mutabakat sizde günler değil saatler alıyor.",
+ KG:"Kontrol katmanlarınız kişiye değil düzene bağlı çalışıyor — onay, emanet ve yetki alanında omurganız güçlü.",
+ EU:"Farkları erken yakalıyorsunuz: keşif, stok ve işçilikte sinyal size geç değil, zamanında ulaşıyor.",
+ KH:"Firmanızın hafızası kişilerden bağımsız birikiyor — bilgi, çalışanla gelip gitmiyor.",
+ BA:"Bilgi firmanızda hızlı ve az kayıpla akıyor; ekibiniz zamanını bilgi aramaya değil, işe harcıyor."
+};
+const FIRSAT = {
+ FG:"Harcamanın izini sürmek bugün ek efor istiyor. Işık buraya taşındığında, “toplam ne ödedik?” sorusu bir araştırma değil, bir bakış olur.",
+ OH:"Bilgi bugün insanlara sorularak toplanıyor; bu, en pahalı toplama biçimi. Işık buraya taşındığında raporlar hazırlanmaz — hazırdır.",
+ KG:"Kontroller bugün büyük ölçüde kişilere emanet. Işık buraya taşındığında onay göreve bağlanır ve hiçbir mutabakat hafızaya kalmaz.",
+ EU:"Farklar bugün geç görünüyor — çoğu zaman düzeltme şansı geçtikten sonra. Işık buraya taşındığında sinyal, sorun küçükken gelir.",
+ KH:"Bilginin bir kısmı bugün kişilerin zihninde yaşıyor. Işık buraya taşındığında firma, çalışan değişse de hatırlamaya devam eder.",
+ BA:"Bilgi bugün mesai harcanarak taşınıyor. Işık buraya taşındığında akış kendiliğinden olur — ekip aynı resmi, aynı anda görür."
+};
+
+const YORUM = {
+ FG:{g:"Para izi anlık — toplam da dağılım da elinizin altında.", y:"Toplam görünüyor; dağılım hâlâ efor istiyor.", k:"Harcamanın izi bugün dosyalarda ve kişilerde dağınık."},
+ OH:{g:"Bilgi aramıyorsunuz; bilgi hazır.", y:"Cevaplar geliyor — ama saatler değil, günler ölçeğinde.", k:"Bilgi bugün insanlara sorularak toplanıyor."},
+ KG:{g:"Onay ve emanet düzene bağlı; kişiye değil.", y:"Kontroller var; bir kısmı hâlâ kişilere emanet.", k:"Kontrolün önemli kısmı bugün hafızada ve karşılıklı güvende yaşıyor."},
+ EU:{g:"Sinyal, sorun küçükken geliyor.", y:"Farklar görünüyor — çoğu zaman ara kontrollerde.", k:"Farklar bugün en geç anda, kapanışta görünüyor."},
+ KH:{g:"Firma hafızası kişiden bağımsız birikiyor.", y:"Devir düzeni var; bilginin bir kısmı yine de kişide.", k:"Bilginin önemli bölümü bugün kişilerin zihninde."},
+ BA:{g:"Akış kendiliğinden; herkes aynı resmi görüyor.", y:"Bilgi akıyor — ama mesai harcanarak.", k:"Akış bugün telefona ve toplantıya emanet."}
+};
+
+let idx = 0;
+let cevaplar = new Array(SORULAR.length).fill(null);
+
+function goster(id){
+  ["sahne-giris","sahne-soru","sahne-sonuc"].forEach(s=>document.getElementById(s).classList.add("gizli"));
+  document.getElementById(id).classList.remove("gizli");
+  window.scrollTo({top:0});
+}
+function basla(){ idx=0; cevaplar.fill(null); soruCiz(); goster("sahne-soru"); }
+function soruCiz(){
+  const q = SORULAR[idx];
+  document.getElementById("adim-no").textContent = "SORU " + (idx+1) + " / " + SORULAR.length;
+  document.getElementById("bar-ic").style.width = (idx / SORULAR.length * 100) + "%";
+  document.getElementById("kat-eti").textContent = KATLAR[q.k].ad;
+  document.getElementById("soru-metin").textContent = q.s;
+  const kutu = document.getElementById("secenekler");
+  kutu.innerHTML = "";
+  q.o.forEach((op,i)=>{
+    const b = document.createElement("button");
+    b.className = "secenek";
+    b.textContent = op[0];
+    b.onclick = ()=>{ cevaplar[idx]=op[1]; ileri(); };
+    kutu.appendChild(b);
+  });
+  document.getElementById("geri").classList.toggle("gizli", idx===0);
+}
+function ileri(){ if(idx < SORULAR.length-1){ idx++; soruCiz(); } else { sonuc(); } }
+function geri(){ if(idx>0){ idx--; soruCiz(); } }
+function yeniden(){ basla(); }
+
+function sonuc(){
+  const katPuan = {}, katMax = {};
+  Object.keys(KATLAR).forEach(k=>{katPuan[k]=0; katMax[k]=0;});
+  SORULAR.forEach((q,i)=>{ katPuan[q.k]+=cevaplar[i]; katMax[q.k]+=10; });
+  let toplam=0, max=0;
+  Object.keys(KATLAR).forEach(k=>{toplam+=katPuan[k]; max+=katMax[k];});
+  const yuzde = Math.round(toplam/max*100);
+
+  const prof = PROFIL.find(p=>yuzde>=p.min && yuzde<=p.max) || PROFIL[1];
+  document.getElementById("profil-ad").textContent = prof.ad;
+  document.getElementById("profil-metin").textContent = prof.m;
+
+  const satirlar = document.getElementById("harita-satirlar");
+  satirlar.innerHTML = "";
+  const oranlar = {};
+  Object.keys(KATLAR).forEach(k=>{
+    const oran = katPuan[k]/katMax[k]*100; oranlar[k]=oran;
+    let sinif, eti, ykey;
+    if(oran>=70){sinif="gorunur";eti="✓ GÖRÜNÜR";ykey="g";}
+    else if(oran>=40){sinif="yari";eti="◐ YARI GÖRÜNÜR";ykey="y";}
+    else {sinif="kor";eti="● KÖR NOKTA";ykey="k";}
+    const div=document.createElement("div");
+    div.className="kat-satir";
+    div.innerHTML='<div><div class="k-ad">'+KATLAR[k].ad+'</div><div class="k-yorum">'+YORUM[k][ykey]+'</div></div><span class="durum '+sinif+'">'+eti+'</span>';
+    satirlar.appendChild(div);
+  });
+
+  const kats = Object.keys(KATLAR);
+  const enG = kats.reduce((a,b)=> oranlar[b]>oranlar[a]?b:a );
+  const enZ = kats.reduce((a,b)=> oranlar[b]<oranlar[a]?b:a );
+  const hepsiGorunur = oranlar[enZ] >= 70;   // haritada kör/yarı yok
+  const hepsiKor     = oranlar[enG] < 40;    // haritada görünür/yarı yok
+
+  const gEti = document.getElementById("guclu-eti");
+  const gMet = document.getElementById("guclu-metin");
+  const fEti = document.getElementById("firsat-eti");
+  const fMet = document.getElementById("firsat-metin");
+
+  // ── Güçlü blok: sahte övgü yasak ──
+  if(hepsiKor){
+    gEti.textContent = "Haritanın dürüst okuması";
+    gMet.innerHTML = "Bugün altı alan da ışığın dışında görünüyor. Bu bir yetersizlik tablosu değil — <b>Deneyim ile Yönetim'in en saf hali:</b> operasyon yürüyor, çünkü siz ve ekibiniz taşıyorsunuz. Ve iyi haber tam burada: bu profil, omurga kurulduğunda kazanımın <b>en hızlı görüneceği</b> profildir — taşınan her ışık, doğrudan mesaiden ve riskten düşer.";
+  } else if(oranlar[enG] >= 70){
+    gEti.textContent = "En görünür alanınız";
+    gMet.innerHTML = "<b>"+KATLAR[enG].ad+".</b> "+GUCLU[enG];
+  } else {
+    gEti.textContent = "Göreli en aydınlık alanınız";
+    gMet.innerHTML = "<b>"+KATLAR[enG].ad+".</b> Burada kısmi görünürlük zaten var — tam değil ama var. Buradaki kayıt alışkanlığı, ışığın diğer alanlara taşınmasında <b>çekirdek</b> olarak kullanılabilir: omurga en kolay, hâlihazırda yarı aydınlık olan yerden kurulur.";
+  }
+
+  // ── Fırsat bloku: senaryoya göre ──
+  if(hepsiGorunur){
+    fEti.textContent = "Sıradaki ufuk";
+    fMet.innerHTML = "Bu haritada kör nokta görünmüyor — soruların çoğunu ekranlarınız cevaplıyor. Sıradaki soru artık <b>“nerede göremiyoruz?”</b> değil, <b>“ne kadar hassas görüyoruz?”</b> Öngörü ile gerçekleşeni sistematik karşılaştırmak, sapmayı raporda değil doğduğu gün ölçmek: ölçümü doktrine taşımak. Tam olarak bizim konuştuğumuz yer — bu haritayla tanışma masasına eşit meslektaşlar olarak oturursunuz.";
+  } else if(hepsiKor){
+    fEti.textContent = "İlk köprü";
+    fMet.innerHTML = "Tek omurga bir günde kurulmaz — ışık önce <b>tek bir alana</b> taşınır ve oradan yayılır. Bu haritada ilk köprü için en hızlı karşılık <b>"+KATLAR[enZ].ad+"</b> alanından gelir: "+FIRSAT[enZ];
+  } else {
+    fEti.textContent = "Işığın ilk taşınacağı alan";
+    fMet.innerHTML = "<b>"+KATLAR[enZ].ad+".</b> "+FIRSAT[enZ];
+  }
+
+  goster("sahne-sonuc");
+}
+</script>
+
+
+</body></html>
