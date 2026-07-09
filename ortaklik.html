@@ -62,7 +62,21 @@
   .form-alan{background:var(--panel);border:1px solid var(--cizgi);border-radius:18px;padding:36px;margin-top:44px;text-align:center;}
   .form-alan .f-baslik{color:var(--beyaz);font-weight:800;font-size:1.15em;margin-bottom:8px;}
   .form-alan p{color:var(--krom);font-size:.93em;max-width:520px;margin:0 auto 22px;}
-  .tally-yer{border:1.5px dashed var(--cizgi);border-radius:12px;padding:52px 20px;color:var(--dim);font-size:.88em;letter-spacing:.06em;}
+  .k3form{margin-top:6px;text-align:left;}
+  .f-satir{margin-bottom:16px;}
+  .f-satir label{display:block;font-size:.78em;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--krom);margin-bottom:7px;}
+  .f-satir input,.f-satir textarea{width:100%;background:var(--bg2);border:1px solid var(--cizgi);border-radius:10px;padding:12px 14px;color:var(--beyaz);font-family:inherit;font-size:.95em;line-height:1.5;transition:border-color .15s,box-shadow .15s;}
+  .f-satir input::placeholder,.f-satir textarea::placeholder{color:var(--dim);}
+  .f-satir input:focus,.f-satir textarea:focus{outline:none;border-color:var(--altin);box-shadow:0 0 0 3px rgba(185,151,91,.22);}
+  .f-satir textarea{resize:vertical;min-height:96px;}
+  .f-ikili{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:600px){.f-ikili{grid-template-columns:1fr;}}
+  .k3form .btn-altin{width:100%;margin-top:8px;}
+  .k3form .btn-altin:disabled{opacity:.6;cursor:default;}
+  .f-tesekkur{border:1px solid #3A3325;background:var(--panel2);border-radius:12px;padding:34px 24px;text-align:center;}
+  .f-tesekkur .ft-ikon{color:var(--altin);font-size:1.7em;line-height:1;margin-bottom:12px;}
+  .f-tesekkur p{color:var(--krom);max-width:460px;margin:0 auto;}
+  .f-hata{color:var(--altin-acik);font-size:.9em;margin-top:14px;text-align:left;}
   .iletisim{margin-top:26px;color:var(--dim);font-size:.9em;}
   .iletisim b{color:var(--krom);}
 
@@ -172,8 +186,38 @@
     <div class="form-alan">
       <div class="f-baslik">Kurucu Saha Programı Başvuru Formu</div>
       <p>Form yalnızca değerlendirme için kullanılır; bilgileriniz üçüncü tarafla paylaşılmaz.</p>
-      <div class="tally-yer">[ TALLY FORM EMBED — tally.so/embed/pbR4p1 ]</div>
-      <div class="iletisim">Kurumsal iletişim: <b>iletisim@k3matrix.com.tr</b> <span style="opacity:.6;">(yer tutucu — canlıya alınmadan teyit edilecek)</span></div>
+      <form class="k3form" id="basvuru-form" action="https://formspree.io/f/maqgglwe" method="POST">
+        <div class="f-ikili">
+          <div class="f-satir">
+            <label for="f-ad">Ad Soyad</label>
+            <input type="text" id="f-ad" name="ad" required>
+          </div>
+          <div class="f-satir">
+            <label for="f-firma">Firma</label>
+            <input type="text" id="f-firma" name="firma" required>
+          </div>
+        </div>
+        <div class="f-ikili">
+          <div class="f-satir">
+            <label for="f-email">E-posta</label>
+            <input type="email" id="f-email" name="email" required>
+          </div>
+          <div class="f-satir">
+            <label for="f-telefon">Telefon</label>
+            <input type="tel" id="f-telefon" name="telefon" required>
+          </div>
+        </div>
+        <div class="f-satir">
+          <label for="f-surecler">Sizi en çok yoran üç süreç</label>
+          <textarea id="f-surecler" name="surecler" rows="4" required placeholder="Örn: hakediş mutabakatı, keşif farkları, ay sonu raporu…"></textarea>
+        </div>
+        <input type="hidden" name="analiz_profil" id="f-profil">
+        <input type="hidden" name="analiz_karne" id="f-karne">
+        <input type="hidden" name="_subject" value="K3 · Saha Programı Başvurusu">
+        <input type="text" name="_gotcha" style="display:none">
+        <button type="submit" class="btn btn-altin">Başvuruyu gönder</button>
+      </form>
+      <div class="iletisim">Kurumsal iletişim: <b>admin@k3matrix.com.tr</b></div>
     </div>
   </div>
 </section>
@@ -182,6 +226,50 @@
   © 2026 K3 Matrix · k3matrix.com.tr — K3 Matrix hesaplar, bağlam sunar, ölçer. Karışmaz.
 </footer>
 
+<script>
+(function(){
+  var form = document.getElementById('basvuru-form');
+  if(!form) return;
 
+  // URL parametrelerini gizli alanlara oku
+  var params = new URLSearchParams(window.location.search);
+  var profil = params.get('profil');
+  var harita = params.get('harita');
+  if(profil) document.getElementById('f-profil').value = profil;
+  if(harita) document.getElementById('f-karne').value = harita;
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = form.querySelector('button[type=submit]');
+    var eskiHata = form.querySelector('.f-hata');
+    if(eskiHata) eskiHata.remove();
+    btn.disabled = true;
+    btn.textContent = 'Gönderiliyor…';
+
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function(r){
+      if(r.ok){
+        form.outerHTML = '<div class="f-tesekkur"><div class="ft-ikon">✓</div><p>Başvurunuz alındı. Haritanızla birlikte inceleyip kısa sürede dönüş yapacağız.</p></div>';
+      } else {
+        gosterHata(btn);
+      }
+    }).catch(function(){
+      gosterHata(btn);
+    });
+  });
+
+  function gosterHata(btn){
+    btn.disabled = false;
+    btn.textContent = 'Başvuruyu gönder';
+    var h = document.createElement('div');
+    h.className = 'f-hata';
+    h.innerHTML = 'Başvurunuz iletilirken bir aksilik oldu. Lütfen birkaç dakika sonra tekrar deneyin ya da doğrudan <b>admin@k3matrix.com.tr</b> adresine yazın.';
+    btn.parentNode.appendChild(h);
+  }
+})();
+</script>
 
 </body></html>
