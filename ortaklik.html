@@ -252,7 +252,14 @@
       headers: { 'Accept': 'application/json' }
     }).then(function(r){
       if(r.ok){
-        form.outerHTML = '<div class="f-tesekkur"><div class="ft-ikon">✓</div><p>Başvurunuz alındı. Haritanızla birlikte inceleyip kısa sürede dönüş yapacağız.</p></div>';
+        var karneli = (document.getElementById('f-karne').value || '').trim() !== '';
+        var icerik;
+        if(karneli){
+          icerik = '<p>Başvurunuz alındı. Haritanızla birlikte inceleyip kısa sürede dönüş yapacağız.</p>';
+        } else {
+          icerik = '<p>Başvurunuz alındı — teşekkürler. Görüşmemizi daha verimli kılmak için sizden küçük bir ricamız var: 3 dakikalık Görüş Alanı Analizi\'ni tamamlayın. Görüşmeye iki taraf da aynı haritayla otururuz.</p><a class="btn btn-altin" href="olcum.html" style="margin-top:18px;">Analizi Yap (3 dk)</a>';
+        }
+        form.outerHTML = '<div class="f-tesekkur"><div class="ft-ikon">✓</div>' + icerik + '</div>';
       } else {
         gosterHata(btn);
       }
