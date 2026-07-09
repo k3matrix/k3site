@@ -37,6 +37,9 @@
   .btn:hover{transform:translateY(-2px);}
   .btn-altin{background:var(--altin);color:var(--bg);}
   .btn-cizgi{background:none;border:1.5px solid var(--krom);color:var(--krom-acik);}
+  .btn-altin-cizgi{background:none;border:1.5px solid var(--altin);color:var(--altin-acik);}
+  .btn-altin-cizgi:disabled{cursor:default;opacity:.85;transform:none;}
+  .paylas-sar{text-align:center;margin:32px 0 4px;}
   .koruma{color:var(--dim);font-size:.88em;font-style:italic;margin-top:34px;border-top:1px solid var(--cizgi);padding-top:20px;}
 
   /* soru sahnesi */
@@ -141,10 +144,14 @@
   <p class="kopru">Bu yolculuğun yönetim bilimindeki adı: <b style="color:var(--krom);">reaktiften proaktife geçiş.</b></p>
   <p class="kopru" style="margin-top:-14px;">Kör nokta bir yetkinlik eksiği değildir; bilginin izlediği yolun geometrisidir.</p>
 
+  <div class="paylas-sar">
+    <button class="btn btn-altin-cizgi" id="paylas-btn" onclick="paylas()">Sonucu Paylaş</button>
+  </div>
+
   <div class="sonuc-cta">
     <div class="c-baslik">Haritayı birlikte okuyalım mı?</div>
     <p>Detaylı değerlendirme ve size özel yol haritası için tanışalım — Kurucu Saha Programı kontenjanı sınırlıdır.</p>
-    <a class="btn btn-altin" href="ortaklik.html">Tanışma Talebi Bırak</a>
+    <a class="btn btn-altin" id="karne-link" href="ortaklik.html">Tanışma Talebi Bırak</a>
     <div style="margin-top:14px;"><button class="btn btn-cizgi" onclick="yeniden()" style="font-size:.85em;padding:11px 26px;">Analizi Yeniden Yap</button></div>
   </div>
 </div>
@@ -230,8 +237,14 @@ const YORUM = {
  BA:{g:"Akış kendiliğinden; herkes aynı resmi görüyor.", y:"Bilgi akıyor — ama mesai harcanarak.", k:"Akış bugün telefona ve toplantıya emanet."}
 };
 
+// ─── Kodlama: kademe D/S/K · durum g/y/k · sabit kategori sırası FG,OH,KG,EU,KH,BA ───
+const KADEME_KOD = ['D','S','K'];            // PROFIL indeksi → harf
+const KADEME_INDEX = {D:0, S:1, K:2};
+const DURUM_SINIF = { g:["gorunur","✓ GÖRÜNÜR"], y:["yari","◐ YARI GÖRÜNÜR"], k:["kor","● KÖR NOKTA"] };
+
 let idx = 0;
 let cevaplar = new Array(SORULAR.length).fill(null);
+let SON = null;   // geçerli sonucun taşınabilir hali (paylaş + karne köprüsü için)
 
 function goster(id){
   ["sahne-giris","sahne-soru","sahne-sonuc"].forEach(s=>document.getElementById(s).classList.add("gizli"));
@@ -258,40 +271,64 @@ function soruCiz(){
 }
 function ileri(){ if(idx < SORULAR.length-1){ idx++; soruCiz(); } else { sonuc(); } }
 function geri(){ if(idx>0){ idx--; soruCiz(); } }
-function yeniden(){ basla(); }
+function yeniden(){
+  // Link-hafızayı temizle: paylaşılan hash sıfırlanır, temiz analiz başlar.
+  history.replaceState(null, "", location.pathname + location.search);
+  basla();
+}
 
+// ── Cevaplardan sonucu hesapla → link-hafızaya yaz → çiz ──
 function sonuc(){
+  const kats = Object.keys(KATLAR);   // FG,OH,KG,EU,KH,BA
   const katPuan = {}, katMax = {};
-  Object.keys(KATLAR).forEach(k=>{katPuan[k]=0; katMax[k]=0;});
+  kats.forEach(k=>{katPuan[k]=0; katMax[k]=0;});
   SORULAR.forEach((q,i)=>{ katPuan[q.k]+=cevaplar[i]; katMax[q.k]+=10; });
   let toplam=0, max=0;
-  Object.keys(KATLAR).forEach(k=>{toplam+=katPuan[k]; max+=katMax[k];});
+  kats.forEach(k=>{toplam+=katPuan[k]; max+=katMax[k];});
   const yuzde = Math.round(toplam/max*100);
 
   const prof = PROFIL.find(p=>yuzde>=p.min && yuzde<=p.max) || PROFIL[1];
+  const kademe = KADEME_KOD[PROFIL.indexOf(prof)] || 'S';
+
+  const oranlar = {}, durumMap = {};
+  kats.forEach(k=>{
+    const oran = katPuan[k]/katMax[k]*100; oranlar[k]=oran;
+    durumMap[k] = oran>=70 ? 'g' : (oran>=40 ? 'y' : 'k');
+  });
+  const enG = kats.reduce((a,b)=> oranlar[b]>oranlar[a]?b:a );
+  const enZ = kats.reduce((a,b)=> oranlar[b]<oranlar[a]?b:a );
+  const durumlar = kats.map(k=>durumMap[k]);   // 6 harf, sabit sıra
+
+  // Link-hafıza: #h=<kademe>-<6 durum>-<enG>-<enZ>   örn: #h=S-gykkgy-KG-KH
+  const hash = "#h="+kademe+"-"+durumlar.join("")+"-"+enG+"-"+enZ;
+  history.replaceState(null, "", location.pathname + location.search + hash);
+
+  cizSonuc(kademe, durumlar, enG, enZ);
+}
+
+// ── Sonucu kademe + 6 durum harfi + enG/enZ'den AYNEN çiz (hem canlı hem hash geri-yüklemesi) ──
+function cizSonuc(kademe, durumlar, enG, enZ){
+  const kats = Object.keys(KATLAR);
+  const durumMap = {};
+  kats.forEach((k,i)=> durumMap[k]=durumlar[i]);
+
+  const prof = PROFIL[KADEME_INDEX[kademe]] || PROFIL[1];
   document.getElementById("profil-ad").textContent = prof.ad;
   document.getElementById("profil-metin").textContent = prof.m;
 
   const satirlar = document.getElementById("harita-satirlar");
   satirlar.innerHTML = "";
-  const oranlar = {};
-  Object.keys(KATLAR).forEach(k=>{
-    const oran = katPuan[k]/katMax[k]*100; oranlar[k]=oran;
-    let sinif, eti, ykey;
-    if(oran>=70){sinif="gorunur";eti="✓ GÖRÜNÜR";ykey="g";}
-    else if(oran>=40){sinif="yari";eti="◐ YARI GÖRÜNÜR";ykey="y";}
-    else {sinif="kor";eti="● KÖR NOKTA";ykey="k";}
-    const div=document.createElement("div");
-    div.className="kat-satir";
-    div.innerHTML='<div><div class="k-ad">'+KATLAR[k].ad+'</div><div class="k-yorum">'+YORUM[k][ykey]+'</div></div><span class="durum '+sinif+'">'+eti+'</span>';
+  kats.forEach(k=>{
+    const d = durumMap[k];
+    const sinif = DURUM_SINIF[d][0], eti = DURUM_SINIF[d][1];
+    const div = document.createElement("div");
+    div.className = "kat-satir";
+    div.innerHTML = '<div><div class="k-ad">'+KATLAR[k].ad+'</div><div class="k-yorum">'+YORUM[k][d]+'</div></div><span class="durum '+sinif+'">'+eti+'</span>';
     satirlar.appendChild(div);
   });
 
-  const kats = Object.keys(KATLAR);
-  const enG = kats.reduce((a,b)=> oranlar[b]>oranlar[a]?b:a );
-  const enZ = kats.reduce((a,b)=> oranlar[b]<oranlar[a]?b:a );
-  const hepsiGorunur = oranlar[enZ] >= 70;   // haritada kör/yarı yok
-  const hepsiKor     = oranlar[enG] < 40;    // haritada görünür/yarı yok
+  const hepsiGorunur = durumlar.every(d=>d==='g');   // haritada kör/yarı yok
+  const hepsiKor     = durumlar.every(d=>d==='k');   // haritada görünür/yarı yok
 
   const gEti = document.getElementById("guclu-eti");
   const gMet = document.getElementById("guclu-metin");
@@ -302,7 +339,7 @@ function sonuc(){
   if(hepsiKor){
     gEti.textContent = "Haritanın dürüst okuması";
     gMet.innerHTML = "Bugün altı alan da ışığın dışında görünüyor. Bu bir yetersizlik tablosu değil — <b>Deneyim ile Yönetim'in en saf hali:</b> operasyon yürüyor, çünkü siz ve ekibiniz taşıyorsunuz. Ve iyi haber tam burada: bu profil, omurga kurulduğunda kazanımın <b>en hızlı görüneceği</b> profildir — taşınan her ışık, doğrudan mesaiden ve riskten düşer.";
-  } else if(oranlar[enG] >= 70){
+  } else if(durumMap[enG] === 'g'){
     gEti.textContent = "En görünür alanınız";
     gMet.innerHTML = "<b>"+KATLAR[enG].ad+".</b> "+GUCLU[enG];
   } else {
@@ -322,8 +359,78 @@ function sonuc(){
     fMet.innerHTML = "<b>"+KATLAR[enZ].ad+".</b> "+FIRSAT[enZ];
   }
 
+  // Taşınabilir durum + karne köprüsü linki
+  SON = { kademe:kademe, durumlar:durumlar, enG:enG, enZ:enZ, hepsiKor:hepsiKor, hepsiGorunur:hepsiGorunur, prof:prof };
+  const dizi = kats.map((k,i)=> k+":"+durumlar[i]).join("|");   // FG:g|OH:y|... okunur dizi
+  document.getElementById("karne-link").href =
+    "ortaklik.html?profil="+encodeURIComponent(prof.ad)+"&harita="+encodeURIComponent(dizi);
+
   goster("sahne-sonuc");
 }
+
+// ── Link-hafıza: hash'i çöz, geçerliyse taşınabilir sonucu döndür ──
+function hashCoz(){
+  const m = /^#h=([DSK])-([gyk]{6})-([A-Z]{2})-([A-Z]{2})$/.exec(location.hash);
+  if(!m) return null;
+  const kademe = m[1], durumlar = m[2].split(""), enG = m[3], enZ = m[4];
+  if(!KATLAR[enG] || !KATLAR[enZ]) return null;   // tanımsız kategori kodu → geçersiz
+  return { kademe:kademe, durumlar:durumlar, enG:enG, enZ:enZ };
+}
+
+// ── Metni yalın ada indir (emoji + boşluk soyulur) — paylaşım metni için ──
+function yalinAd(kod){ return KATLAR[kod].ad.replace(/^\S+\s+/, ""); }
+
+function paylasMetni(){
+  const url = location.origin + location.pathname + location.hash;
+  const enZAd = yalinAd(SON.enZ);
+  if(SON.hepsiKor){
+    // hepsi-kör: en görünür alan cümlesi yok, yumuşak biçim
+    return "Operasyonel Görüş Alanı Analizimi yaptım: "+SON.prof.ad+". Işığın ilk taşınacağı alan "+enZAd+". Sen de 3 dakikada haritala: "+url;
+  }
+  const enGAd = yalinAd(SON.enG);
+  return "Operasyonel Görüş Alanı Analizimi yaptım: "+SON.prof.ad+". En görünür alanım "+enGAd+", ışığın ilk taşınacağı alan "+enZAd+". Sen de 3 dakikada haritala: "+url;
+}
+
+function panoyaKopyala(metin){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    return navigator.clipboard.writeText(metin);
+  }
+  return new Promise(function(res, rej){
+    try{
+      const ta = document.createElement("textarea");
+      ta.value = metin; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      document.execCommand("copy"); document.body.removeChild(ta); res();
+    }catch(e){ rej(e); }
+  });
+}
+
+function paylas(){
+  const btn = document.getElementById("paylas-btn");
+  const metin = paylasMetni();
+  if(navigator.share){
+    navigator.share({ text: metin }).catch(function(){});
+  } else {
+    panoyaKopyala(metin).then(function(){
+      const eski = btn.textContent;
+      btn.textContent = "Kopyalandı ✓";
+      btn.disabled = true;
+      setTimeout(function(){ btn.textContent = eski; btn.disabled = false; }, 2200);
+    }).catch(function(){
+      btn.textContent = "Kopyalanamadı — metni elle seçin";
+    });
+  }
+}
+
+// ── Açılış: geçerli hash varsa sonucu geri-yükle, yoksa giriş ──
+(function init(){
+  const veri = hashCoz();
+  if(veri){
+    cizSonuc(veri.kademe, veri.durumlar, veri.enG, veri.enZ);
+  } else {
+    goster("sahne-giris");   // geçersiz/eksik hash sessizce yok sayılır
+  }
+})();
 </script>
 
 
