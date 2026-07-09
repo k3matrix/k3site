@@ -382,13 +382,22 @@ function yalinAd(kod){ return KATLAR[kod].ad.replace(/^\S+\s+/, ""); }
 
 function paylasMetni(){
   const url = location.origin + location.pathname + location.hash;
-  const enZAd = yalinAd(SON.enZ);
+  const bas = "Operasyonel Görüş Alanı Analizimi yaptım: "+SON.prof.ad;
+  const kuyruk = " Sen de 3 dakikada haritala: "+url;
+  if(SON.hepsiGorunur){
+    // hepsi-görünür: alan adları hiç geçmez
+    return bas+" — haritamda kör nokta çıkmadı."+kuyruk;
+  }
   if(SON.hepsiKor){
     // hepsi-kör: en görünür alan cümlesi yok, yumuşak biçim
-    return "Operasyonel Görüş Alanı Analizimi yaptım: "+SON.prof.ad+". Işığın ilk taşınacağı alan "+enZAd+". Sen de 3 dakikada haritala: "+url;
+    return bas+". Işığın ilk taşınacağı alan "+yalinAd(SON.enZ)+"."+kuyruk;
   }
   const enGAd = yalinAd(SON.enG);
-  return "Operasyonel Görüş Alanı Analizimi yaptım: "+SON.prof.ad+". En görünür alanım "+enGAd+", ışığın ilk taşınacağı alan "+enZAd+". Sen de 3 dakikada haritala: "+url;
+  if(SON.enG === SON.enZ){
+    // teorik eşitlik: enZ cümlesi düşer, yalnız enG kalır
+    return bas+". En görünür alanım "+enGAd+"."+kuyruk;
+  }
+  return bas+". En görünür alanım "+enGAd+", ışığın ilk taşınacağı alan "+yalinAd(SON.enZ)+"."+kuyruk;
 }
 
 function panoyaKopyala(metin){
