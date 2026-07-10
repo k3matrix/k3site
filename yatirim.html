@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yatırım Kararı Analizi · K3 Matrix</title>
+<meta name="description" content="En büyük kararınız, en az veriyle mi veriliyor? Arsa kararının dört evresi — 8 soru, 2 dakika, kayıt istemez.">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{
+    --bg:#0F1115; --bg2:#14181F; --panel:#171B22; --panel2:#1C212A;
+    --krom:#B8BCC4; --krom-acik:#D8DBE0; --beyaz:#F2F3F5;
+    --altin:#B9975B; --altin-acik:#D9BC85;
+    --cizgi:#262B34; --dim:#7E838D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--krom);line-height:1.65;font-size:16px;}
+  ::selection{background:var(--altin);color:var(--bg);}
+  nav{background:rgba(15,17,21,.92);border-bottom:1px solid var(--cizgi);}
+  .nav-ic{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
+  .logo{font-weight:800;letter-spacing:.18em;color:var(--beyaz);font-size:1em;text-decoration:none;display:flex;align-items:center;gap:11px;}
+  .logo img{border-radius:8px;display:block;}
+  .logo span{color:var(--altin);}
+  .nav-geri{color:var(--dim);text-decoration:none;font-size:.85em;font-weight:600;}
+  .nav-geri:hover{color:var(--krom);}
+
+  .sahne{max-width:740px;margin:0 auto;padding:56px 24px 90px;}
+  .eyebrow{color:var(--altin);font-size:.74em;font-weight:800;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px;}
+  h1{color:var(--beyaz);font-size:clamp(1.6em,4vw,2.4em);font-weight:800;letter-spacing:-.02em;line-height:1.16;margin-bottom:16px;}
+  .giris-sub{color:var(--krom);font-size:1.03em;max-width:600px;}
+  .giris-sub b{color:var(--beyaz);}
+  .meta{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 6px;}
+  .meta span{border:1px solid var(--cizgi);background:var(--panel);border-radius:22px;padding:7px 16px;font-size:.83em;font-weight:700;color:var(--krom-acik);}
+  .btn{display:inline-block;border:none;cursor:pointer;text-decoration:none;font-family:inherit;font-weight:700;font-size:.95em;border-radius:30px;padding:14px 32px;letter-spacing:.02em;transition:transform .15s;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-altin{background:var(--altin);color:var(--bg);}
+  .btn-cizgi{background:none;border:1.5px solid var(--krom);color:var(--krom-acik);}
+  .btn-altin-cizgi{background:none;border:1.5px solid var(--altin);color:var(--altin);}
+  .koruma{color:var(--dim);font-size:.88em;font-style:italic;margin-top:32px;border-top:1px solid var(--cizgi);padding-top:18px;}
+
+  .ilerleme{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .bar{flex:1;height:5px;background:var(--panel2);border-radius:3px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--altin);border-radius:3px;transition:width .3s;}
+  .adim-no{color:var(--dim);font-size:.82em;font-weight:700;letter-spacing:.08em;white-space:nowrap;}
+  .kat-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.26em;text-transform:uppercase;margin-bottom:14px;}
+  .soru{color:var(--beyaz);font-size:clamp(1.2em,2.7vw,1.5em);font-weight:800;letter-spacing:-.015em;line-height:1.35;margin-bottom:28px;}
+  .secenek{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--cizgi);border-radius:14px;padding:17px 21px;margin-bottom:13px;color:var(--krom-acik);font-family:inherit;font-size:.96em;line-height:1.5;cursor:pointer;transition:border-color .15s, background .15s, transform .1s;}
+  .secenek:hover{border-color:var(--altin);background:var(--panel2);transform:translateX(3px);}
+  .geri-btn{background:none;border:none;color:var(--dim);font-family:inherit;font-size:.85em;font-weight:600;cursor:pointer;margin-top:14px;padding:6px 0;}
+  .geri-btn:hover{color:var(--krom);}
+
+  .profil{background:linear-gradient(170deg,#1A1F29,#161B23);border:1px solid #3A3325;border-radius:18px;padding:32px 30px;margin:32px 0 24px;}
+  .profil .p-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.28em;text-transform:uppercase;margin-bottom:10px;}
+  .profil .p-ad{font-size:1.55em;font-weight:800;letter-spacing:-.015em;margin-bottom:12px;}
+  .profil .p-ad.isikta{color:#7FBF9C;} .profil .p-ad.destekli{color:var(--altin-acik);} .profil .p-ad.sezgi{color:#C98F82;}
+  .profil p{font-size:.96em;color:var(--krom);}
+  .profil p b{color:var(--beyaz);}
+
+  .harita{margin:26px 0 6px;}
+  .h-baslik{color:var(--beyaz);font-weight:800;font-size:1.05em;margin-bottom:14px;}
+  .evre-satir{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--cizgi);border-radius:12px;padding:14px 18px;margin-bottom:10px;}
+  .evre-satir .d-ad{font-weight:700;font-size:.94em;color:var(--krom-acik);}
+  .evre-satir .d-yorum{color:var(--dim);font-size:.8em;margin-top:3px;line-height:1.45;}
+  .durum{font-size:.78em;font-weight:800;letter-spacing:.05em;border-radius:20px;padding:6px 14px;white-space:nowrap;}
+  .durum.isikta{background:rgba(78,138,106,.15);color:#7FBF9C;border:1px solid rgba(78,138,106,.4);}
+  .durum.alaca{background:rgba(185,151,91,.12);color:var(--altin-acik);border:1px solid rgba(185,151,91,.4);}
+  .durum.karanlik{background:rgba(138,90,80,.15);color:#C98F82;border:1px solid rgba(138,90,80,.45);}
+
+  .okuma{border-left:3px solid var(--altin);padding:4px 0 4px 18px;margin:24px 0;}
+  .okuma .b-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.24em;text-transform:uppercase;margin-bottom:5px;}
+  .okuma p{color:var(--krom);font-size:.95em;}
+  .okuma p b{color:var(--beyaz);}
+  .paylas-alan{text-align:center;margin:26px 0;}
+  .kopru-kart{background:var(--panel);border:1px solid var(--cizgi);border-radius:16px;padding:26px;text-align:center;margin-top:26px;}
+  .kopru-kart .c-baslik{color:var(--beyaz);font-weight:800;font-size:1.08em;margin-bottom:8px;}
+  .kopru-kart p{color:var(--krom);font-size:.92em;max-width:500px;margin:0 auto 18px;}
+  .kopru-kart .btnlar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .aile-satir{color:var(--dim);font-size:.85em;margin-top:16px;}
+  .aile-satir a{color:var(--altin);text-decoration:none;font-weight:700;}
+  .gizli{display:none;}
+  footer{border-top:1px solid var(--cizgi);padding:32px 24px;text-align:center;color:var(--dim);font-size:.8em;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-ic">
+    <a class="logo" href="index.html"><img src="logo-rozet.png" alt="" width="34" height="34">K3 <span>MATRIX</span></a>
+    <a class="nav-geri" href="olcum.html">Görüş Alanı Analizi →</a>
+  </div>
+</nav>
+
+<!-- ═══ GİRİŞ ═══ -->
+<div class="sahne gizli" id="sahne-giris">
+  <div class="eyebrow">Yatırım Kararı Analizi</div>
+  <h1>En büyük kararınız,<br>en az veriyle mi veriliyor?</h1>
+  <p class="giris-sub">Bir müteahhidin verdiği en pahalı karar, <b>arsaya giriş kararıdır</b> — ve çoğu zaman en kısa sürede, en az kayıtla verilen karar da odur. Bu analiz, karar yolculuğunuzun dört evresinde ışığın nereye düştüğünü haritalar.</p>
+  <div class="meta">
+    <span>8 soru</span><span>4 evre</span><span>≈ 2 dakika</span><span>Kayıt istemez · veri saklanmaz</span>
+  </div>
+  <p class="giris-sub" style="font-size:.9em;color:var(--dim);margin:14px 0 28px;">K3 Matrix hangi arsaya girileceğini söylemez — <i>kararınızı ölçülebilir kılar.</i> Karar her zaman sizindir.</p>
+  <button class="btn btn-altin" onclick="basla()">Analize Başla</button>
+  <p class="koruma">Sezgi, yılların damıtılmış verisidir — soru onu atmak değil, kayda geçirip çoğaltmaktır. Işıkta verilen karar, sezginin en güçlü halidir.</p>
+</div>
+
+<!-- ═══ SORU ═══ -->
+<div class="sahne gizli" id="sahne-soru">
+  <div class="ilerleme">
+    <div class="bar"><i id="bar-ic" style="width: 87.5%;"></i></div>
+    <div class="adim-no" id="adim-no">SORU 8 / 8</div>
+  </div>
+  <div class="kat-eti" id="kat-eti">04 · Yatırım Kararı</div>
+  <div class="soru" id="soru-metin">Proje bittiğinde ilk günkü fizibiliteye dönülür mü?</div>
+  <div id="secenekler"><button class="secenek">Kabaca 'kârlı bitti / zor bitti' denir.</button><button class="secenek">O dosya bir daha açılmaz.</button><button class="secenek">Öngörü ile gerçekleşen yan yana konur; fark, bir sonraki kararın dersi olur.</button></div>
+  <button class="geri-btn" id="geri" onclick="geri()">← Önceki soruya dön</button>
+</div>
+
+<!-- ═══ SONUÇ ═══ -->
+<div class="sahne" id="sahne-sonuc">
+  <div class="eyebrow">Karar Yolculuğunuzun Işık Haritası</div>
+  <h1>Haritanız hazır.</h1>
+
+  <div class="profil">
+    <div class="p-eti">Genel Durum</div>
+    <div class="p-ad isikta" id="profil-ad">Işıkta Karar</div>
+    <p id="profil-metin">Karar yolculuğunuz büyük ölçüde aydınlık: fırsat cetvelle tartılıyor, varsayımlar yazılı, öngörü gerçekleşenle yüzleşiyor. Sıradaki seviye, bu ışığı hızlandırmak — her senaryoyu, her kıyası, her dersi tek omurgada biriktirmek.</p>
+  </div>
+
+  <div class="harita">
+    <div class="h-baslik">Dört evrede ışık durumu</div>
+    <div id="harita-satirlar"><div class="evre-satir"><div><div class="d-ad">01 · Fırsat</div><div class="d-yorum">Fırsatlar cetvelle karşılanıyor; kaçanın bile izi var.</div></div><span class="durum isikta">✓ IŞIKTA</span></div><div class="evre-satir"><div><div class="d-ad">02 · Değerlendirme</div><div class="d-yorum">Kıyas aynı kriter setiyle, taze pazar verisiyle yapılıyor.</div></div><span class="durum isikta">✓ IŞIKTA</span></div><div class="evre-satir"><div><div class="d-ad">03 · Fizibilite</div><div class="d-yorum">Senaryolar ve yazılı varsayımlarla karar bir aralık görerek veriliyor.</div></div><span class="durum isikta">✓ IŞIKTA</span></div><div class="evre-satir"><div><div class="d-ad">04 · Yatırım Kararı</div><div class="d-yorum">Karar gerekçesiyle kayıtlı; öngörü, gerçekleşenle yüzleşiyor.</div></div><span class="durum isikta">✓ IŞIKTA</span></div></div>
+  </div>
+
+  <div class="okuma">
+    <div class="b-eti" id="okuma-eti">Sıradaki ufuk</div>
+    <p id="okuma-metin">Bu haritada karanlık evre görünmüyor. Sıradaki soru artık <b>'nasıl karar veriyoruz?'</b> değil, <b>'kararlarımız birbirinden öğreniyor mu?'</b> — her senaryoyu, her kıyası, her dersi tek omurgada biriktirmek. Tam olarak bizim konuştuğumuz yer.</p>
+  </div>
+
+  <p class="koruma" style="border-top:none;padding-top:0;margin-top:18px;">Sezgi, yılların damıtılmış verisidir — soru onu atmak değil, kayda geçirip çoğaltmaktır.</p>
+
+  <div class="paylas-alan">
+    <button class="btn btn-altin-cizgi" id="paylas-btn" onclick="paylas()">Sonucu Paylaş</button>
+  </div>
+
+  <div class="kopru-kart">
+    <div class="c-baslik">Karar, resmin yalnızca bir parçası.</div>
+    <p>Operasyonunuzun tamamında ışığın nereye düştüğünü 16 soruluk Görüş Alanı Analizi ile 3 dakikada haritalayın.</p>
+    <div class="btnlar">
+      <a class="btn btn-altin" href="olcum.html">Görüş Alanı Analizi (3 dk)</a>
+      <button class="btn btn-cizgi" onclick="yeniden()" style="font-size:.85em;padding:12px 26px;">Analizi Yeniden Yap</button>
+    </div>
+    <div class="aile-satir">Ölçüm Ailesi: <a href="sermaye.html">Uyuyan Sermaye Analizi (2 dk) →</a></div>
+  </div>
+</div>
+
+<footer>© 2026 K3 Matrix · k3matrix.com.tr — K3 Matrix hesaplar, bağlam sunar, ölçer. Karışmaz.</footer>
+
+<script>
+// Yatırım Kararı Analizi · 4 evre × 2 soru · puanlar ekranda görünmez · sezgiye saygı dili
+const EVRELER = {
+  FI:{ad:"01 · Fırsat"},
+  DG:{ad:"02 · Değerlendirme"},
+  FZ:{ad:"03 · Fizibilite"},
+  KR:{ad:"04 · Yatırım Kararı"}
+};
+
+const SORULAR = [
+ {k:"FI", s:"Yeni arsa fırsatları size nasıl ulaşır ve nasıl karşılanır?",
+  o:[["Geldikçe tek tek bakılır; iyi görüneni masaya alınır.",5],
+     ["Kayıtlı bir havuzda toplanır; hepsi aynı kriter setiyle karşılaştırılır.",10],
+     ["Güvenilir bir tanıdık getirince hızla karara gidilir.",0]]},
+ {k:"FI", s:"Değerlendirilmeyen ya da kaçan fırsatın izi kalır mı?",
+  o:[["Kaydı ve gerekçesi kalır; dönüp bakılabilir.",10],
+     ["Kaçan kaçmıştır; iz tutulmaz.",0],
+     ["Akılda kalır; önemlileri arada konuşulur.",5]]},
+ {k:"DG", s:"İki arsa yan yana geldiğinde kıyas nasıl yapılır?",
+  o:[["Ana başlıklara bakılır; gerisi tecrübeyle tartılır.",5],
+     ["Her arsa kendi hikâyesiyle değerlendirilir; ortak bir cetvel yok.",0],
+     ["İkisi de aynı kriter ve puan setinden geçer.",10]]},
+ {k:"DG", s:"Bölgenin pazar ve rakip bilgisi nereden gelir?",
+  o:[["Her fırsat için taze toplanır: satış hızları, fiyatlar, rakip projeler.",10],
+     ["Ara ara güncellenen genel bir fikir vardır.",5],
+     ["Bölgeyi biliriz — ayrıca veri toplanmaz.",0]]},
+ {k:"FZ", s:"Fizibilite kaç senaryoyla çalışılır?",
+  o:[["Tek senaryo + içten bir emniyet payı.",5],
+     ["Kabaca maliyet-satış hesabı yapılır; senaryo çalışılmaz.",0],
+     ["İyimser–baz–kötümser; karar bir aralık görerek verilir.",10]]},
+ {k:"FZ", s:"Fizibilitenin varsayımları (satış fiyatı, m² maliyet, süre) nerede yaşar?",
+  o:[["Yazılı ve ayrıştırılmış; her varsayımın kaynağı belli.",10],
+     ["Hesabın içinde gömülü; soran olursa açıklanır.",5],
+     ["Hesabı yapanın aklında.",0]]},
+ {k:"KR", s:"Arsaya giriş kararının gerekçesi nasıl saklanır?",
+  o:[["Toplantıda konuşulur; aklımızda kalır.",5],
+     ["Karar; gerekçesi ve o günkü verisiyle kayıtlıdır.",10],
+     ["Karar verilir; gerekçe zamanla unutulur.",0]]},
+ {k:"KR", s:"Proje bittiğinde ilk günkü fizibiliteye dönülür mü?",
+  o:[["Kabaca 'kârlı bitti / zor bitti' denir.",5],
+     ["O dosya bir daha açılmaz.",0],
+     ["Öngörü ile gerçekleşen yan yana konur; fark, bir sonraki kararın dersi olur.",10]]}
+];
+
+const PROFIL = [
+ {min:0,max:40,ad:"Sezgiyle Karar",cls:"sezgi",
+  m:"Kararlarınız yılların birikimiyle, sezgiyle veriliyor — ve bugüne kadar sizi buraya o sezgi getirdi. Ama sezgi tek nüshadır: kayda geçmediği sürece ne test edilebilir ne çoğaltılabilir. İyi haber: en güçlü ham madde sizde zaten var; eksik olan yalnızca ışık."},
+ {min:41,max:75,ad:"Destekli Karar",cls:"destekli",
+  m:"Sezginiz artık yalnız değil — bazı evrelerde veri ve kayıt ona eşlik ediyor. Ama zincirin bazı halkaları hâlâ alacakaranlıkta: varsayımlar gömülü, gerekçeler hafızada. Zincir tamamlandığında her karar, bir sonrakinin öğretmeni olur."},
+ {min:76,max:100,ad:"Işıkta Karar",cls:"isikta",
+  m:"Karar yolculuğunuz büyük ölçüde aydınlık: fırsat cetvelle tartılıyor, varsayımlar yazılı, öngörü gerçekleşenle yüzleşiyor. Sıradaki seviye, bu ışığı hızlandırmak — her senaryoyu, her kıyası, her dersi tek omurgada biriktirmek."}
+];
+
+const YORUM = {
+ FI:{i:"Fırsatlar cetvelle karşılanıyor; kaçanın bile izi var.",
+     a:"Fırsatlar değerlendiriliyor; ortak cetvel ve iz kısmen eksik.",
+     k:"Fırsat, geldiği kanalın güveniyle tartılıyor — cetvelsiz."},
+ DG:{i:"Kıyas aynı kriter setiyle, taze pazar verisiyle yapılıyor.",
+     a:"Kıyasın ana hatları var; veri ve cetvel tecrübeyle tamamlanıyor.",
+     k:"Her arsa kendi hikâyesiyle tartılıyor; pazar bilgisi hafızada."},
+ FZ:{i:"Senaryolar ve yazılı varsayımlarla karar bir aralık görerek veriliyor.",
+     a:"Fizibilite yapılıyor; senaryo ve varsayım şeffaflığı kısmi.",
+     k:"Hesap kabaca ve tek nüsha; varsayımlar akılda yaşıyor."},
+ KR:{i:"Karar gerekçesiyle kayıtlı; öngörü, gerçekleşenle yüzleşiyor.",
+     a:"Karar anı düzenli; kapanışta fizibiliteye dönüş zayıf.",
+     k:"Gerekçe hafızada kalıyor; 'öngörü tuttu mu?' sorusu sorulamıyor."}
+};
+
+const UYANDIR = {
+ FI:"<b>Fırsat.</b> Cetvelsiz karşılanan fırsat, gelen kanalın güveniyle tartılır — arsanın kendisiyle değil. Kayıtlı bir havuz ve ortak kriter seti, 'iyi fırsat' ile 'iyi anlatılmış fırsat'ı ilk kez ayırt edilir kılar.",
+ DG:"<b>Değerlendirme.</b> Ortak cetveli olmayan kıyas, günün ruh haline açıktır. Aynı kriter setinden geçen iki arsa ise kendi cevabını kendisi söyler — ve 'bölgeyi biliriz' cümlesi, taze veriyle buluştuğunda gerçek gücüne kavuşur.",
+ FZ:"<b>Fizibilite.</b> Tek senaryo, tek gelecek varsayar; oysa gelecek aralıktır. Varsayımları yazılı üç senaryo, kararı umuttan çıkarır — kötümser senaryoda bile ayakta kalan proje, gerçek fırsattır.",
+ KR:"<b>Yatırım Kararı.</b> Gerekçesi kayıtsız karar, ders veremeyen karardır. 'Öngörümüz tuttu mu?' sorusu her kapanışta sorulduğunda, her proje bir sonrakinin okulu olur — sezgi böyle çoğalır."
+};
+
+let idx=0, cevaplar=new Array(SORULAR.length).fill(null);
+
+function goster(id){
+  ["sahne-giris","sahne-soru","sahne-sonuc"].forEach(s=>document.getElementById(s).classList.add("gizli"));
+  document.getElementById(id).classList.remove("gizli");
+  window.scrollTo({top:0});
+}
+function basla(){ idx=0; cevaplar.fill(null); soruCiz(); goster("sahne-soru"); }
+function soruCiz(){
+  const q=SORULAR[idx];
+  document.getElementById("adim-no").textContent="SORU "+(idx+1)+" / "+SORULAR.length;
+  document.getElementById("bar-ic").style.width=(idx/SORULAR.length*100)+"%";
+  document.getElementById("kat-eti").textContent=EVRELER[q.k].ad;
+  document.getElementById("soru-metin").textContent=q.s;
+  const kutu=document.getElementById("secenekler"); kutu.innerHTML="";
+  q.o.forEach(op=>{
+    const b=document.createElement("button");
+    b.className="secenek"; b.textContent=op[0];
+    b.onclick=()=>{ cevaplar[idx]=op[1]; ileri(); };
+    kutu.appendChild(b);
+  });
+  document.getElementById("geri").classList.toggle("gizli", idx===0);
+}
+function ileri(){ if(idx<SORULAR.length-1){ idx++; soruCiz(); } else { sonuc(); } }
+function geri(){ if(idx>0){ idx--; soruCiz(); } }
+function yeniden(){ basla(); }
+
+let sonProfil=null, sonEvre=null, hepsiIsikta=false;
+function sonuc(){
+  const ePuan={FI:0,DG:0,FZ:0,KR:0}, eMax={FI:0,DG:0,FZ:0,KR:0};
+  SORULAR.forEach((q,i)=>{ ePuan[q.k]+=cevaplar[i]; eMax[q.k]+=10; });
+  let toplam=0,max=0;
+  Object.keys(EVRELER).forEach(k=>{toplam+=ePuan[k];max+=eMax[k];});
+  const yuzde=Math.round(toplam/max*100);
+  const prof=PROFIL.find(p=>yuzde>=p.min&&yuzde<=p.max)||PROFIL[1];
+  sonProfil=prof;
+  const ad=document.getElementById("profil-ad");
+  ad.textContent=prof.ad; ad.className="p-ad "+prof.cls;
+  document.getElementById("profil-metin").textContent=prof.m;
+
+  const satirlar=document.getElementById("harita-satirlar");
+  satirlar.innerHTML="";
+  const oranlar={};
+  Object.keys(EVRELER).forEach(k=>{
+    const oran=ePuan[k]/eMax[k]*100; oranlar[k]=oran;
+    let cls,eti,ykey;
+    if(oran>=70){cls="isikta";eti="✓ IŞIKTA";ykey="i";}
+    else if(oran>=40){cls="alaca";eti="◐ ALACAKARANLIK";ykey="a";}
+    else {cls="karanlik";eti="● KARANLIKTA";ykey="k";}
+    const div=document.createElement("div");
+    div.className="evre-satir";
+    div.innerHTML='<div><div class="d-ad">'+EVRELER[k].ad+'</div><div class="d-yorum">'+YORUM[k][ykey]+'</div></div><span class="durum '+cls+'">'+eti+'</span>';
+    satirlar.appendChild(div);
+  });
+
+  const kats=Object.keys(EVRELER);
+  const enZ=kats.reduce((a,b)=> oranlar[b]<oranlar[a]?b:a );
+  sonEvre=enZ;
+  hepsiIsikta=kats.every(k=>oranlar[k]>=70);
+  const eti=document.getElementById("okuma-eti");
+  const met=document.getElementById("okuma-metin");
+  if(hepsiIsikta){
+    eti.textContent="Sıradaki ufuk";
+    met.innerHTML="Bu haritada karanlık evre görünmüyor. Sıradaki soru artık <b>'nasıl karar veriyoruz?'</b> değil, <b>'kararlarımız birbirinden öğreniyor mu?'</b> — her senaryoyu, her kıyası, her dersi tek omurgada biriktirmek. Tam olarak bizim konuştuğumuz yer.";
+  } else {
+    eti.textContent="İlk aydınlatılacak evre";
+    met.innerHTML=UYANDIR[enZ];
+  }
+  goster("sahne-sonuc");
+}
+
+function paylas(){
+  const url=location.origin+location.pathname;
+  const evreAd=EVRELER[sonEvre].ad.replace(/^\d+ · /,"");
+  const metin = hepsiIsikta
+    ? 'Yatırım Kararı Analizimi yaptım: '+sonProfil.ad+' — haritamda karanlık evre çıkmadı. Sen de 2 dakikada ölç: '+url
+    : 'Yatırım Kararı Analizimi yaptım: '+sonProfil.ad+'. İlk aydınlatılacak evre: '+evreAd+'. Sen de 2 dakikada ölç: '+url;
+  if(navigator.share){ navigator.share({text:metin}).catch(()=>{}); }
+  else{
+    const kopyala=t=>{ if(navigator.clipboard){ return navigator.clipboard.writeText(t); }
+      const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); document.body.removeChild(ta); return Promise.resolve(); };
+    kopyala(metin).then(()=>{
+      const b=document.getElementById('paylas-btn'); const eski=b.textContent;
+      b.textContent='Kopyalandı ✓'; setTimeout(()=>{ b.textContent=eski; },2200);
+    });
+  }
+}
+</script>
+
+
+</body></html>
