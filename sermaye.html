@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uyuyan Sermaye Analizi · K3 Matrix</title>
+<meta name="description" content="Para, malzemenin yolculuğunda dört durakta uyur: alım, depo, saha, kapanış. 8 soru, 2 dakika, kayıt istemez.">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root{
+    --bg:#0F1115; --bg2:#14181F; --panel:#171B22; --panel2:#1C212A;
+    --krom:#B8BCC4; --krom-acik:#D8DBE0; --beyaz:#F2F3F5;
+    --altin:#B9975B; --altin-acik:#D9BC85;
+    --cizgi:#262B34; --dim:#7E838D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--krom);line-height:1.65;font-size:16px;}
+  ::selection{background:var(--altin);color:var(--bg);}
+  nav{background:rgba(15,17,21,.92);border-bottom:1px solid var(--cizgi);}
+  .nav-ic{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
+  .logo{font-weight:800;letter-spacing:.18em;color:var(--beyaz);font-size:1em;text-decoration:none;display:flex;align-items:center;gap:11px;}
+  .logo img{border-radius:8px;display:block;}
+  .logo span{color:var(--altin);}
+  .nav-geri{color:var(--dim);text-decoration:none;font-size:.85em;font-weight:600;}
+  .nav-geri:hover{color:var(--krom);}
+
+  .sahne{max-width:740px;margin:0 auto;padding:56px 24px 90px;}
+  .eyebrow{color:var(--altin);font-size:.74em;font-weight:800;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px;}
+  h1{color:var(--beyaz);font-size:clamp(1.6em,4vw,2.4em);font-weight:800;letter-spacing:-.02em;line-height:1.16;margin-bottom:16px;}
+  .giris-sub{color:var(--krom);font-size:1.03em;max-width:600px;}
+  .giris-sub b{color:var(--beyaz);}
+  .meta{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 6px;}
+  .meta span{border:1px solid var(--cizgi);background:var(--panel);border-radius:22px;padding:7px 16px;font-size:.83em;font-weight:700;color:var(--krom-acik);}
+  .btn{display:inline-block;border:none;cursor:pointer;text-decoration:none;font-family:inherit;font-weight:700;font-size:.95em;border-radius:30px;padding:14px 32px;letter-spacing:.02em;transition:transform .15s;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-altin{background:var(--altin);color:var(--bg);}
+  .btn-cizgi{background:none;border:1.5px solid var(--krom);color:var(--krom-acik);}
+  .btn-altin-cizgi{background:none;border:1.5px solid var(--altin);color:var(--altin);}
+  .koruma{color:var(--dim);font-size:.88em;font-style:italic;margin-top:32px;border-top:1px solid var(--cizgi);padding-top:18px;}
+
+  .ilerleme{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .bar{flex:1;height:5px;background:var(--panel2);border-radius:3px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--altin);border-radius:3px;transition:width .3s;}
+  .adim-no{color:var(--dim);font-size:.82em;font-weight:700;letter-spacing:.08em;white-space:nowrap;}
+  .kat-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.26em;text-transform:uppercase;margin-bottom:14px;}
+  .soru{color:var(--beyaz);font-size:clamp(1.2em,2.7vw,1.5em);font-weight:800;letter-spacing:-.015em;line-height:1.35;margin-bottom:28px;}
+  .secenek{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--cizgi);border-radius:14px;padding:17px 21px;margin-bottom:13px;color:var(--krom-acik);font-family:inherit;font-size:.96em;line-height:1.5;cursor:pointer;transition:border-color .15s, background .15s, transform .1s;}
+  .secenek:hover{border-color:var(--altin);background:var(--panel2);transform:translateX(3px);}
+  .geri-btn{background:none;border:none;color:var(--dim);font-family:inherit;font-size:.85em;font-weight:600;cursor:pointer;margin-top:14px;padding:6px 0;}
+  .geri-btn:hover{color:var(--krom);}
+
+  .profil{background:linear-gradient(170deg,#1A1F29,#161B23);border:1px solid #3A3325;border-radius:18px;padding:32px 30px;margin:32px 0 24px;}
+  .profil .p-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.28em;text-transform:uppercase;margin-bottom:10px;}
+  .profil .p-ad{font-size:1.55em;font-weight:800;letter-spacing:-.015em;margin-bottom:12px;}
+  .profil .p-ad.uyanik{color:#7FBF9C;} .profil .p-ad.uyuklayan{color:var(--altin-acik);} .profil .p-ad.uykuda{color:#C98F82;}
+  .profil p{font-size:.96em;color:var(--krom);}
+  .profil p b{color:var(--beyaz);}
+
+  .harita{margin:26px 0 6px;}
+  .h-baslik{color:var(--beyaz);font-weight:800;font-size:1.05em;margin-bottom:14px;}
+  .durak-satir{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--cizgi);border-radius:12px;padding:14px 18px;margin-bottom:10px;}
+  .durak-satir .d-ad{font-weight:700;font-size:.94em;color:var(--krom-acik);}
+  .durak-satir .d-yorum{color:var(--dim);font-size:.8em;margin-top:3px;line-height:1.45;}
+  .durum{font-size:.78em;font-weight:800;letter-spacing:.05em;border-radius:20px;padding:6px 14px;white-space:nowrap;}
+  .durum.uyanik{background:rgba(78,138,106,.15);color:#7FBF9C;border:1px solid rgba(78,138,106,.4);}
+  .durum.uyuklayan{background:rgba(185,151,91,.12);color:var(--altin-acik);border:1px solid rgba(185,151,91,.4);}
+  .durum.uykuda{background:rgba(138,90,80,.15);color:#C98F82;border:1px solid rgba(138,90,80,.45);}
+
+  .okuma{border-left:3px solid var(--altin);padding:4px 0 4px 18px;margin:24px 0;}
+  .okuma .b-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.24em;text-transform:uppercase;margin-bottom:5px;}
+  .okuma p{color:var(--krom);font-size:.95em;}
+  .okuma p b{color:var(--beyaz);}
+  .paylas-alan{text-align:center;margin:26px 0;}
+  .kopru-kart{background:var(--panel);border:1px solid var(--cizgi);border-radius:16px;padding:26px;text-align:center;margin-top:26px;}
+  .kopru-kart .c-baslik{color:var(--beyaz);font-weight:800;font-size:1.08em;margin-bottom:8px;}
+  .kopru-kart p{color:var(--krom);font-size:.92em;max-width:480px;margin:0 auto 18px;}
+  .kopru-kart .btnlar{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .gizli{display:none;}
+  footer{border-top:1px solid var(--cizgi);padding:32px 24px;text-align:center;color:var(--dim);font-size:.8em;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-ic">
+    <a class="logo" href="index.html"><img src="logo-rozet.png" alt="" width="34" height="34">K3 <span>MATRIX</span></a>
+    <a class="nav-geri" href="olcum.html">Görüş Alanı Analizi →</a>
+  </div>
+</nav>
+
+<!-- ═══ GİRİŞ ═══ -->
+<div class="sahne gizli" id="sahne-giris">
+  <div class="eyebrow">Uyuyan Sermaye Analizi</div>
+  <h1>Para, malzemenin yolculuğunda<br>dört durakta uyur.</h1>
+  <p class="giris-sub"><b>Alım anında</b> fazla bağlanır, <b>depoda</b> bekler, <b>sahada</b> birikir, <b>kapanışta</b> kaderine bırakılır. Bu analiz, sermayenizin hangi durakta çalışıp hangisinde uyuduğunu haritalar.</p>
+  <div class="meta">
+    <span>8 soru</span><span>4 durak</span><span>≈ 2 dakika</span><span>Kayıt istemez · veri saklanmaz</span>
+  </div>
+  <p class="giris-sub" style="font-size:.9em;color:var(--dim);margin:14px 0 28px;">Doğru ya da yanlış cevap yok — erken alım bazen en kârlı hamledir. Soru, kararın <i>nasıl</i> verildiğidir.</p>
+  <button class="btn btn-altin" onclick="basla()">Analize Başla</button>
+  <p class="koruma">Uyuyan sermaye bir yönetim kusuru değildir; görünmeyen stokun doğal davranışıdır. Görünmeyen para uyur — görünen para çalıştırılabilir.</p>
+</div>
+
+<!-- ═══ SORU ═══ -->
+<div class="sahne gizli" id="sahne-soru">
+  <div class="ilerleme">
+    <div class="bar"><i id="bar-ic" style="width: 87.5%;"></i></div>
+    <div class="adim-no" id="adim-no">SORU 8 / 8</div>
+  </div>
+  <div class="kat-eti" id="kat-eti">🔚 Kapanış</div>
+  <div class="soru" id="soru-metin">Proje bittiğinde artan malzemeye ne olur?</div>
+  <div id="secenekler"><button class="secenek">Bir kısmı sonraki projeye taşınır; bir kısmı yolda kaybolur.</button><button class="secenek">'Artan malzeme' kaderine bırakılır.</button><button class="secenek">Kayıtla devredilir: sonraki projeye, satışa ya da iadeye.</button></div>
+  <button class="geri-btn" id="geri" onclick="geri()">← Önceki soruya dön</button>
+</div>
+
+<!-- ═══ SONUÇ ═══ -->
+<div class="sahne" id="sahne-sonuc">
+  <div class="eyebrow">Sermayenizin Uyku Haritası</div>
+  <h1>Haritanız hazır.</h1>
+
+  <div class="profil">
+    <div class="p-eti">Genel Durum</div>
+    <div class="p-ad uykuda" id="profil-ad">Derin Uykuda</div>
+    <p id="profil-metin">Sermayenizin önemli bir bölümü şu an görünmeyen duraklarda bekliyor. Bu bir kusur değil; kayıt aracı olmayan her operasyonun doğal hali. İyi haber şu: en derin uyku, uyandırıldığında en büyük farkı yaratır — görünür kılınan her palet, çalışmaya dönebilecek paradır.</p>
+  </div>
+
+  <div class="harita">
+    <div class="h-baslik">Dört durakta uyku durumu</div>
+    <div id="harita-satirlar"><div class="durak-satir"><div><div class="d-ad">🛒 Alım Anı</div><div class="d-yorum">Para daha alım anında, fırsat ve tahmin üzerinden bağlanıyor.</div></div><span class="durum uykuda">● UYKUDA</span></div><div class="durak-satir"><div><div class="d-ad">📦 Depo</div><div class="d-yorum">Depo, değeri tam bilinmeyen bir bekleme salonu gibi çalışıyor.</div></div><span class="durum uykuda">● UYKUDA</span></div><div class="durak-satir"><div><div class="d-ad">🏗️ Saha</div><div class="d-yorum">Saha stoğu ihtiyaçla sınırlı; akış ve gecikme izlenebiliyor.</div></div><span class="durum uyanik">✓ UYANIK</span></div><div class="durak-satir"><div><div class="d-ad">🔚 Kapanış</div><div class="d-yorum">Proje kapanışı, stoğun kaderine bırakıldığı an olarak yaşanıyor.</div></div><span class="durum uykuda">● UYKUDA</span></div></div>
+  </div>
+
+  <div class="okuma">
+    <div class="b-eti" id="okuma-eti">İlk uyandırılacak durak</div>
+    <p id="okuma-metin"><b>Depo.</b> Perakendeci stok devir hızını ezbere bilir; sektörümüzde bu soru neredeyse hiç sorulmaz. Oysa cevap, sermayenizin yılda kaç ay uyuduğunu tek sayıyla söyler. Kayıtlı yığın değere döner; kayıtsız yığın sadece yaşlanır.</p>
+  </div>
+
+  <p class="koruma" style="border-top:none;padding-top:0;margin-top:18px;">Uyuyan sermaye bir yönetim kusuru değildir; görünmeyen stokun doğal davranışıdır. Işık düşen para, çalıştırılabilir para olur.</p>
+
+  <div class="paylas-alan">
+    <button class="btn btn-altin-cizgi" id="paylas-btn" onclick="paylas()">Sonucu Paylaş</button>
+  </div>
+
+  <div class="kopru-kart">
+    <div class="c-baslik">Sermaye, resmin yalnızca bir parçası.</div>
+    <p>Operasyonunuzun tamamında ışığın nereye düştüğünü 16 soruluk Görüş Alanı Analizi ile 3 dakikada haritalayın.</p>
+    <div class="btnlar">
+      <a class="btn btn-altin" href="olcum.html">Görüş Alanı Analizi (3 dk)</a>
+      <button class="btn btn-cizgi" onclick="yeniden()" style="font-size:.85em;padding:12px 26px;">Analizi Yeniden Yap</button>
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 K3 Matrix · k3matrix.com.tr — K3 Matrix hesaplar, bağlam sunar, ölçer. Karışmaz.</footer>
+
+<script>
+// Uyuyan Sermaye Analizi v2 · 4 durak × 2 soru · puanlar ekranda görünmez
+const DURAKLAR = {
+  AL:{ad:"🛒 Alım Anı"},
+  DE:{ad:"📦 Depo"},
+  SA:{ad:"🏗️ Saha"},
+  KA:{ad:"🔚 Kapanış"}
+};
+
+const SORULAR = [
+ {k:"AL", s:"Erken alım kararı ('fiyat artmadan alalım') neye göre verilir?",
+  o:[["Fiyat farkına bakılır; gerisi tecrübeyle tartılır.",5],
+     ["Dört yüzü birden hesaplanır: fiyat farkı, bağlanan sermayenin maliyeti, depolama-fire, ihtiyacın değişme riski.",10],
+     ["Fırsat görününce alınır — sahada nasılsa kullanılır.",0]]},
+ {k:"AL", s:"Sipariş miktarı neye göre belirlenir?",
+  o:[["Keşfe ve iş programına bağlı; metraj neyse o, zamanı geldikçe.",10],
+     ["Metraja yakın bir tahmin + emniyet payı.",5],
+     ["Bol olsun, eksik kalmasın — üstü nasılsa kullanılır.",0]]},
+ {k:"DE", s:"'Depomuz yılda kaç kez dönüyor?' sorusu firmanızda soruldu mu?",
+  o:[["Bu soru ilk kez soruluyor.",0],
+     ["Bu şekilde bakılmadı ama istenirse veri çıkarılabilir.",5],
+     ["Düzenli izlenen bir göstergedir.",10]]},
+ {k:"DE", s:"Köşedeki 'bir gün lazım olur' yığınının değerini bilen var mı?",
+  o:[["Ne olduğu aşağı yukarı bilinir; parasal değeri bilinmez.",5],
+     ["Yığın kayıtlıdır: değeri bilinir, başka projeye taşınır ya da satılır.",10],
+     ["Orada durur; sayımda bile tam sayılmaz.",0]]},
+ {k:"SA", s:"Sahaya inmiş malzeme ile o hafta gerçekten kullanılacak malzeme arasındaki fark ne kadar?",
+  o:[["Saha zamanla bir ön-depoya dönüşür; ne kadar birikti, tam bilinmez.",0],
+     ["Saha stoğu haftalık ihtiyaca göre iner; fark küçük ve bilinir.",10],
+     ["Ara ara birikir, toparlama yapılır.",5]]},
+ {k:"SA", s:"Bekleyen bir onayın geciktirdiği işin izini sürebiliyor musunuz?",
+  o:[["Büyük gecikmeler konuşulur; küçükleri kaybolur.",5],
+     ["Onay mı bekledi, iş mi bekledi — geriye dönük ayırt edilemez.",0],
+     ["Gecikme zinciri kayıtta görünür: hangi onay, hangi işi, kaç gün.",10]]},
+ {k:"KA", s:"Fire ve zayiat payı nasıl belirlenir?",
+  o:[["Gerçekleşen fire ölçülür; pay her projede ona göre güncellenir.",10],
+     ["Standart bir pay konur; dönüp bakılmaz.",5],
+     ["Fiyata yedirilir; ayrıca izlenmez.",0]]},
+ {k:"KA", s:"Proje bittiğinde artan malzemeye ne olur?",
+  o:[["Bir kısmı sonraki projeye taşınır; bir kısmı yolda kaybolur.",5],
+     ["'Artan malzeme' kaderine bırakılır.",0],
+     ["Kayıtla devredilir: sonraki projeye, satışa ya da iadeye.",10]]}
+];
+
+const PROFIL = [
+ {min:0,max:40,ad:"Derin Uykuda",cls:"uykuda",
+  m:"Sermayenizin önemli bir bölümü şu an görünmeyen duraklarda bekliyor. Bu bir kusur değil; kayıt aracı olmayan her operasyonun doğal hali. İyi haber şu: en derin uyku, uyandırıldığında en büyük farkı yaratır — görünür kılınan her palet, çalışmaya dönebilecek paradır."},
+ {min:41,max:75,ad:"Uyuklayan Sermaye",cls:"uyuklayan",
+  m:"Sermayenizin bir kısmı çalışıyor, bir kısmı duraklardan birinde ara ara gözden kayboluyor. Kritik yerlerde kayıt var; ama bazı köşelerde para hâlâ kestiriyor. Tam görünürlük, uyuklayanı da mesaiye çağırır."},
+ {min:76,max:100,ad:"Uyanık Sermaye",cls:"uyanik",
+  m:"Paranız hangi durakta, ne kadar ve neden — büyük ölçüde biliyorsunuz. Stok sizde bekleyen yük değil, yönetilen bir pozisyon. Sıradaki seviye: görünürlüğü öngörüyle birleştirmek — hangi alım ne zaman, hangi stok hangi projeye."}
+];
+
+// durak yorumları: durum başına tek cümle (u=uyanık, y=uyuklayan, k=uykuda)
+const YORUM = {
+ AL:{u:"Alım kararı hesapla veriliyor; para gerektiği kadar, gerektiği zaman bağlanıyor.",
+     y:"Alım tecrübeyle iyi yönetiliyor; hesabın bazı yüzleri hâlâ karanlıkta.",
+     k:"Para daha alım anında, fırsat ve tahmin üzerinden bağlanıyor."},
+ DE:{u:"Depo yönetilen bir pozisyon; değer ve devir biliniyor.",
+     y:"Depo kabaca biliniyor; devir hızı ve köşe yığınları soru işareti.",
+     k:"Depo, değeri tam bilinmeyen bir bekleme salonu gibi çalışıyor."},
+ SA:{u:"Saha stoğu ihtiyaçla sınırlı; akış ve gecikme izlenebiliyor.",
+     y:"Saha ara ara birikiyor; gecikmelerin küçükleri kayboluyor.",
+     k:"Saha bir ön-depoya dönüşmüş; birikimin ve gecikmenin izi yok."},
+ KA:{u:"Kapanışta hiçbir şey kaderine bırakılmıyor; fire ölçülüyor, artan devrediliyor.",
+     y:"Kapanışta bir düzen var; ama fire payı ve artan malzemenin bir kısmı izsiz.",
+     k:"Proje kapanışı, stoğun kaderine bırakıldığı an olarak yaşanıyor."}
+};
+
+// ilk uyandırılacak durak metinleri
+const UYANDIR = {
+ AL:"<b>Alım Anı.</b> Erken alım bazen kârdır — ama ancak dört yüzü birden hesaplanırsa bilinir: fiyat farkı, bağlanan sermaye, depolama-fire, ihtiyacın değişme riski. Hesap tamamlandığı gün, 'fırsat' kelimesi gerçek anlamını bulur.",
+ DE:"<b>Depo.</b> Perakendeci stok devir hızını ezbere bilir; sektörümüzde bu soru neredeyse hiç sorulmaz. Oysa cevap, sermayenizin yılda kaç ay uyuduğunu tek sayıyla söyler. Kayıtlı yığın değere döner; kayıtsız yığın sadece yaşlanır.",
+ SA:"<b>Saha.</b> Sahaya erken inen malzeme üç kez ödenir: faturada, beklerken ve sayım mesaisinde. Sahayı ön-depo olmaktan çıkarmak, en hızlı geri dönen görünürlük yatırımıdır.",
+ KA:"<b>Kapanış.</b> Ölçülmeyen fire payı her projede kör atılan bir zardır: ya fiyatı şişirir ya marjdan yer. Kayıtla devredilen artan malzeme ise bir sonraki projenin ilk kazancıdır — kapanış, kaderin değil kaydın anı olmalı."
+};
+
+let idx=0, cevaplar=new Array(SORULAR.length).fill(null);
+
+function goster(id){
+  ["sahne-giris","sahne-soru","sahne-sonuc"].forEach(s=>document.getElementById(s).classList.add("gizli"));
+  document.getElementById(id).classList.remove("gizli");
+  window.scrollTo({top:0});
+}
+function basla(){ idx=0; cevaplar.fill(null); soruCiz(); goster("sahne-soru"); }
+function soruCiz(){
+  const q=SORULAR[idx];
+  document.getElementById("adim-no").textContent="SORU "+(idx+1)+" / "+SORULAR.length;
+  document.getElementById("bar-ic").style.width=(idx/SORULAR.length*100)+"%";
+  document.getElementById("kat-eti").textContent=DURAKLAR[q.k].ad;
+  document.getElementById("soru-metin").textContent=q.s;
+  const kutu=document.getElementById("secenekler"); kutu.innerHTML="";
+  q.o.forEach(op=>{
+    const b=document.createElement("button");
+    b.className="secenek"; b.textContent=op[0];
+    b.onclick=()=>{ cevaplar[idx]=op[1]; ileri(); };
+    kutu.appendChild(b);
+  });
+  document.getElementById("geri").classList.toggle("gizli", idx===0);
+}
+function ileri(){ if(idx<SORULAR.length-1){ idx++; soruCiz(); } else { sonuc(); } }
+function geri(){ if(idx>0){ idx--; soruCiz(); } }
+function yeniden(){ basla(); }
+
+let sonProfil=null, sonDurak=null;
+function sonuc(){
+  const dPuan={AL:0,DE:0,SA:0,KA:0}, dMax={AL:0,DE:0,SA:0,KA:0};
+  SORULAR.forEach((q,i)=>{ dPuan[q.k]+=cevaplar[i]; dMax[q.k]+=10; });
+  let toplam=0,max=0;
+  Object.keys(DURAKLAR).forEach(k=>{toplam+=dPuan[k];max+=dMax[k];});
+  const yuzde=Math.round(toplam/max*100);
+  const prof=PROFIL.find(p=>yuzde>=p.min&&yuzde<=p.max)||PROFIL[1];
+  sonProfil=prof;
+  const ad=document.getElementById("profil-ad");
+  ad.textContent=prof.ad; ad.className="p-ad "+prof.cls;
+  document.getElementById("profil-metin").textContent=prof.m;
+
+  // durak haritası
+  const satirlar=document.getElementById("harita-satirlar");
+  satirlar.innerHTML="";
+  const oranlar={};
+  Object.keys(DURAKLAR).forEach(k=>{
+    const oran=dPuan[k]/dMax[k]*100; oranlar[k]=oran;
+    let cls,eti,ykey;
+    if(oran>=70){cls="uyanik";eti="✓ UYANIK";ykey="u";}
+    else if(oran>=40){cls="uyuklayan";eti="◐ UYUKLUYOR";ykey="y";}
+    else {cls="uykuda";eti="● UYKUDA";ykey="k";}
+    const div=document.createElement("div");
+    div.className="durak-satir";
+    div.innerHTML='<div><div class="d-ad">'+DURAKLAR[k].ad+'</div><div class="d-yorum">'+YORUM[k][ykey]+'</div></div><span class="durum '+cls+'">'+eti+'</span>';
+    satirlar.appendChild(div);
+  });
+
+  // ilk uyandırılacak durak (en düşük; eşitlikte yolculuk sırası)
+  const kats=Object.keys(DURAKLAR);
+  const enZ=kats.reduce((a,b)=> oranlar[b]<oranlar[a]?b:a );
+  sonDurak=enZ;
+  const hepsiUyanik=kats.every(k=>oranlar[k]>=70);
+  const eti=document.getElementById("okuma-eti");
+  const met=document.getElementById("okuma-metin");
+  if(hepsiUyanik){
+    eti.textContent="Sıradaki ufuk";
+    met.innerHTML="Bu haritada uyuyan durak görünmüyor. Sıradaki soru artık <b>'para nerede?'</b> değil, <b>'para bir sonraki hamlede nerede olmalı?'</b> — görünürlüğü öngörüyle birleştirmek. Tam olarak bizim konuştuğumuz yer.";
+  } else {
+    eti.textContent="İlk uyandırılacak durak";
+    met.innerHTML=UYANDIR[enZ];
+  }
+  goster("sahne-sonuc");
+}
+
+function paylas(){
+  const url=location.origin+location.pathname;
+  const durakAd=DURAKLAR[sonDurak].ad.replace(/^[^ ]+ /,"");
+  const hepsiUyanik=sonProfil.ad==="Uyanık Sermaye" && document.getElementById("okuma-eti").textContent==="Sıradaki ufuk";
+  const metin = hepsiUyanik
+    ? 'Uyuyan Sermaye Analizimi yaptım: '+sonProfil.ad+' — haritamda uyuyan durak çıkmadı. Sen de 2 dakikada ölç: '+url
+    : 'Uyuyan Sermaye Analizimi yaptım: '+sonProfil.ad+'. İlk uyandırılacak durak: '+durakAd+'. Sen de 2 dakikada ölç: '+url;
+  if(navigator.share){ navigator.share({text:metin}).catch(()=>{}); }
+  else{
+    const kopyala=t=>{ if(navigator.clipboard){ return navigator.clipboard.writeText(t); }
+      const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); document.body.removeChild(ta); return Promise.resolve(); };
+    kopyala(metin).then(()=>{
+      const b=document.getElementById('paylas-btn'); const eski=b.textContent;
+      b.textContent='Kopyalandı ✓'; setTimeout(()=>{ b.textContent=eski; },2200);
+    });
+  }
+}
+</script>
+
+
+</body></html>
