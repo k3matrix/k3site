@@ -92,7 +92,7 @@
 </nav>
 
 <!-- ═══ GİRİŞ ═══ -->
-<div class="sahne gizli" id="sahne-giris">
+<div class="sahne" id="sahne-giris">
   <div class="eyebrow">Yatırım Kararı Analizi</div>
   <h1>En büyük kararınız,<br>en az veriyle mi veriliyor?</h1>
   <p class="giris-sub">Bir müteahhidin verdiği en pahalı karar, <b>arsaya giriş kararıdır</b> — ve çoğu zaman en kısa sürede, en az kayıtla verilen karar da odur. Bu analiz, karar yolculuğunuzun dört evresinde ışığın nereye düştüğünü haritalar.</p>
@@ -107,34 +107,34 @@
 <!-- ═══ SORU ═══ -->
 <div class="sahne gizli" id="sahne-soru">
   <div class="ilerleme">
-    <div class="bar"><i id="bar-ic" style="width: 87.5%;"></i></div>
-    <div class="adim-no" id="adim-no">SORU 8 / 8</div>
+    <div class="bar"><i id="bar-ic" style="width:0%;"></i></div>
+    <div class="adim-no" id="adim-no">SORU 1 / 8</div>
   </div>
-  <div class="kat-eti" id="kat-eti">04 · Yatırım Kararı</div>
-  <div class="soru" id="soru-metin">Proje bittiğinde ilk günkü fizibiliteye dönülür mü?</div>
-  <div id="secenekler"><button class="secenek">Kabaca 'kârlı bitti / zor bitti' denir.</button><button class="secenek">O dosya bir daha açılmaz.</button><button class="secenek">Öngörü ile gerçekleşen yan yana konur; fark, bir sonraki kararın dersi olur.</button></div>
-  <button class="geri-btn" id="geri" onclick="geri()">← Önceki soruya dön</button>
+  <div class="kat-eti" id="kat-eti"></div>
+  <div class="soru" id="soru-metin"></div>
+  <div id="secenekler"></div>
+  <button class="geri-btn gizli" id="geri" onclick="geri()">← Önceki soruya dön</button>
 </div>
 
 <!-- ═══ SONUÇ ═══ -->
-<div class="sahne" id="sahne-sonuc">
+<div class="sahne gizli" id="sahne-sonuc">
   <div class="eyebrow">Karar Yolculuğunuzun Işık Haritası</div>
   <h1>Haritanız hazır.</h1>
 
   <div class="profil">
     <div class="p-eti">Genel Durum</div>
-    <div class="p-ad isikta" id="profil-ad">Işıkta Karar</div>
-    <p id="profil-metin">Karar yolculuğunuz büyük ölçüde aydınlık: fırsat cetvelle tartılıyor, varsayımlar yazılı, öngörü gerçekleşenle yüzleşiyor. Sıradaki seviye, bu ışığı hızlandırmak — her senaryoyu, her kıyası, her dersi tek omurgada biriktirmek.</p>
+    <div class="p-ad" id="profil-ad"></div>
+    <p id="profil-metin"></p>
   </div>
 
   <div class="harita">
     <div class="h-baslik">Dört evrede ışık durumu</div>
-    <div id="harita-satirlar"><div class="evre-satir"><div><div class="d-ad">01 · Fırsat</div><div class="d-yorum">Fırsatlar cetvelle karşılanıyor; kaçanın bile izi var.</div></div><span class="durum isikta">✓ IŞIKTA</span></div><div class="evre-satir"><div><div class="d-ad">02 · Değerlendirme</div><div class="d-yorum">Kıyas aynı kriter setiyle, taze pazar verisiyle yapılıyor.</div></div><span class="durum isikta">✓ IŞIKTA</span></div><div class="evre-satir"><div><div class="d-ad">03 · Fizibilite</div><div class="d-yorum">Senaryolar ve yazılı varsayımlarla karar bir aralık görerek veriliyor.</div></div><span class="durum isikta">✓ IŞIKTA</span></div><div class="evre-satir"><div><div class="d-ad">04 · Yatırım Kararı</div><div class="d-yorum">Karar gerekçesiyle kayıtlı; öngörü, gerçekleşenle yüzleşiyor.</div></div><span class="durum isikta">✓ IŞIKTA</span></div></div>
+    <div id="harita-satirlar"></div>
   </div>
 
   <div class="okuma">
-    <div class="b-eti" id="okuma-eti">Sıradaki ufuk</div>
-    <p id="okuma-metin">Bu haritada karanlık evre görünmüyor. Sıradaki soru artık <b>'nasıl karar veriyoruz?'</b> değil, <b>'kararlarımız birbirinden öğreniyor mu?'</b> — her senaryoyu, her kıyası, her dersi tek omurgada biriktirmek. Tam olarak bizim konuştuğumuz yer.</p>
+    <div class="b-eti" id="okuma-eti">İlk aydınlatılacak evre</div>
+    <p id="okuma-metin"></p>
   </div>
 
   <p class="koruma" style="border-top:none;padding-top:0;margin-top:18px;">Sezgi, yılların damıtılmış verisidir — soru onu atmak değil, kayda geçirip çoğaltmaktır.</p>

@@ -92,7 +92,7 @@
 </nav>
 
 <!-- ═══ GİRİŞ ═══ -->
-<div class="sahne gizli" id="sahne-giris">
+<div class="sahne" id="sahne-giris">
   <div class="eyebrow">Uyuyan Sermaye Analizi</div>
   <h1>Para, malzemenin yolculuğunda<br>dört durakta uyur.</h1>
   <p class="giris-sub"><b>Alım anında</b> fazla bağlanır, <b>depoda</b> bekler, <b>sahada</b> birikir, <b>kapanışta</b> kaderine bırakılır. Bu analiz, sermayenizin hangi durakta çalışıp hangisinde uyuduğunu haritalar.</p>
@@ -107,34 +107,34 @@
 <!-- ═══ SORU ═══ -->
 <div class="sahne gizli" id="sahne-soru">
   <div class="ilerleme">
-    <div class="bar"><i id="bar-ic" style="width: 87.5%;"></i></div>
-    <div class="adim-no" id="adim-no">SORU 8 / 8</div>
+    <div class="bar"><i id="bar-ic" style="width:0%;"></i></div>
+    <div class="adim-no" id="adim-no">SORU 1 / 8</div>
   </div>
-  <div class="kat-eti" id="kat-eti">🔚 Kapanış</div>
-  <div class="soru" id="soru-metin">Proje bittiğinde artan malzemeye ne olur?</div>
-  <div id="secenekler"><button class="secenek">Bir kısmı sonraki projeye taşınır; bir kısmı yolda kaybolur.</button><button class="secenek">'Artan malzeme' kaderine bırakılır.</button><button class="secenek">Kayıtla devredilir: sonraki projeye, satışa ya da iadeye.</button></div>
-  <button class="geri-btn" id="geri" onclick="geri()">← Önceki soruya dön</button>
+  <div class="kat-eti" id="kat-eti"></div>
+  <div class="soru" id="soru-metin"></div>
+  <div id="secenekler"></div>
+  <button class="geri-btn gizli" id="geri" onclick="geri()">← Önceki soruya dön</button>
 </div>
 
 <!-- ═══ SONUÇ ═══ -->
-<div class="sahne" id="sahne-sonuc">
+<div class="sahne gizli" id="sahne-sonuc">
   <div class="eyebrow">Sermayenizin Uyku Haritası</div>
   <h1>Haritanız hazır.</h1>
 
   <div class="profil">
     <div class="p-eti">Genel Durum</div>
-    <div class="p-ad uykuda" id="profil-ad">Derin Uykuda</div>
-    <p id="profil-metin">Sermayenizin önemli bir bölümü şu an görünmeyen duraklarda bekliyor. Bu bir kusur değil; kayıt aracı olmayan her operasyonun doğal hali. İyi haber şu: en derin uyku, uyandırıldığında en büyük farkı yaratır — görünür kılınan her palet, çalışmaya dönebilecek paradır.</p>
+    <div class="p-ad" id="profil-ad"></div>
+    <p id="profil-metin"></p>
   </div>
 
   <div class="harita">
     <div class="h-baslik">Dört durakta uyku durumu</div>
-    <div id="harita-satirlar"><div class="durak-satir"><div><div class="d-ad">🛒 Alım Anı</div><div class="d-yorum">Para daha alım anında, fırsat ve tahmin üzerinden bağlanıyor.</div></div><span class="durum uykuda">● UYKUDA</span></div><div class="durak-satir"><div><div class="d-ad">📦 Depo</div><div class="d-yorum">Depo, değeri tam bilinmeyen bir bekleme salonu gibi çalışıyor.</div></div><span class="durum uykuda">● UYKUDA</span></div><div class="durak-satir"><div><div class="d-ad">🏗️ Saha</div><div class="d-yorum">Saha stoğu ihtiyaçla sınırlı; akış ve gecikme izlenebiliyor.</div></div><span class="durum uyanik">✓ UYANIK</span></div><div class="durak-satir"><div><div class="d-ad">🔚 Kapanış</div><div class="d-yorum">Proje kapanışı, stoğun kaderine bırakıldığı an olarak yaşanıyor.</div></div><span class="durum uykuda">● UYKUDA</span></div></div>
+    <div id="harita-satirlar"></div>
   </div>
 
   <div class="okuma">
     <div class="b-eti" id="okuma-eti">İlk uyandırılacak durak</div>
-    <p id="okuma-metin"><b>Depo.</b> Perakendeci stok devir hızını ezbere bilir; sektörümüzde bu soru neredeyse hiç sorulmaz. Oysa cevap, sermayenizin yılda kaç ay uyuduğunu tek sayıyla söyler. Kayıtlı yığın değere döner; kayıtsız yığın sadece yaşlanır.</p>
+    <p id="okuma-metin"></p>
   </div>
 
   <p class="koruma" style="border-top:none;padding-top:0;margin-top:18px;">Uyuyan sermaye bir yönetim kusuru değildir; görünmeyen stokun doğal davranışıdır. Işık düşen para, çalıştırılabilir para olur.</p>
