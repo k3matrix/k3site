@@ -40,6 +40,16 @@
   .btn-altin-cizgi{background:none;border:1.5px solid var(--altin);color:var(--altin-acik);}
   .btn-altin-cizgi:disabled{cursor:default;opacity:.85;transform:none;}
   .paylas-sar{text-align:center;margin:32px 0 4px;}
+  .aile-ev{margin-top:40px;}
+  .aile-ev .aile-eyebrow{color:var(--altin);font-size:.68em;font-weight:800;letter-spacing:.28em;text-transform:uppercase;margin-bottom:6px;}
+  .aile-ev .aile-alt{color:var(--dim);font-size:.85em;margin-bottom:16px;}
+  .aile-kartlar{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .aile-kart{display:block;background:var(--panel);border:1px solid var(--cizgi);border-radius:12px;padding:14px 16px;text-decoration:none;transition:border-color .15s, background .15s, transform .1s;}
+  .aile-kart:hover{border-color:var(--altin);background:var(--panel2);transform:translateY(-2px);}
+  .aile-kart .ak-baslik{color:var(--krom-acik);font-weight:800;font-size:.9em;margin-bottom:5px;}
+  .aile-kart .ak-satir{color:var(--krom);font-size:.82em;line-height:1.4;}
+  .aile-kart .ak-sure{color:var(--dim);font-size:.78em;margin-top:6px;display:block;}
+  @media(max-width:640px){.aile-kartlar{grid-template-columns:1fr;}}
   .koruma{color:var(--dim);font-size:.88em;font-style:italic;margin-top:34px;border-top:1px solid var(--cizgi);padding-top:20px;}
 
   /* soru sahnesi */
@@ -99,6 +109,24 @@
   </div>
   <p class="giris-sub" style="font-size:.9em;color:var(--dim);margin:14px 0 30px;">Her seçenek meşru bir çalışma biçimidir — doğru ya da yanlış cevap yok; sadece bilginin bugün izlediği yol var.</p>
   <button class="btn btn-altin" onclick="basla()">Haritalamaya Başla</button>
+
+  <div class="aile-ev">
+    <div class="aile-eyebrow">Ölçüm Ailesi</div>
+    <p class="aile-alt">Tek konuya odaklanmak isterseniz:</p>
+    <div class="aile-kartlar">
+      <a class="aile-kart" href="sermaye.html">
+        <div class="ak-baslik">💤 Uyuyan Sermaye</div>
+        <div class="ak-satir">Paranız dört durağın hangisinde uyuyor?</div>
+        <span class="ak-sure">≈ 2 dk</span>
+      </a>
+      <a class="aile-kart" href="yatirim.html">
+        <div class="ak-baslik">☀️ Yatırım Kararı</div>
+        <div class="ak-satir">En büyük kararınız, en az veriyle mi veriliyor?</div>
+        <span class="ak-sure">≈ 2 dk</span>
+      </a>
+    </div>
+  </div>
+
   <p class="koruma">Kör nokta bir yetkinlik eksiği değildir; bilginin izlediği yolun geometrisidir. En deneyimli yönetici bile ancak ışığın düştüğü yeri görür.</p>
 </div>
 
