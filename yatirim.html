@@ -80,6 +80,61 @@
   .aile-satir a{color:var(--altin);text-decoration:none;font-weight:700;}
   .gizli{display:none;}
   footer{border-top:1px solid var(--cizgi);padding:32px 24px;text-align:center;color:var(--dim);font-size:.8em;}
+
+  /* ── giriş önizleme animasyonu: yatırım kararı (reel sahne çekirdeği, kare, sadeleştirilmiş) ── */
+  .ka-etik{text-align:center;color:var(--dim);font-size:.78em;font-style:italic;margin:32px 0 10px;}
+  .ka-wrap{position:relative;max-width:360px;aspect-ratio:1;margin:0 auto;overflow:hidden;pointer-events:none;
+    border:1px solid var(--cizgi);border-radius:16px;background:var(--bg2);}
+  .ka-sahne{position:absolute;inset:0;color:var(--krom);--T:15s;}
+  .ka-don{position:absolute;inset:7%;}
+  .ka-cember{position:absolute;inset:11%;border:2px dashed var(--cizgi);border-radius:50%;}
+  .ka-yorunge{position:absolute;inset:11%;animation:ka-tur var(--T) linear infinite;}
+  .ka-yolcu{position:absolute;top:-7px;left:calc(50% - 7px);width:13px;height:13px;border-radius:50%;
+    background:var(--altin-acik);box-shadow:0 0 14px rgba(217,188,133,.9);}
+  @keyframes ka-tur{0%,8%{transform:rotate(0deg);}20%{transform:rotate(90deg);}32%{transform:rotate(180deg);}
+    44%{transform:rotate(270deg);}58%,66%{transform:rotate(360deg);}100%{transform:rotate(360deg);}}
+  .ka-evre{position:absolute;background:var(--panel);border:1px solid var(--cizgi);border-radius:12px;
+    padding:3% 4%;text-align:center;filter:brightness(.45);animation-duration:var(--T);animation-iteration-count:infinite;}
+  .ka-evre .no{color:var(--altin);font-weight:800;font-size:.52em;letter-spacing:.16em;}
+  .ka-evre .ad{color:var(--beyaz);font-weight:800;font-size:.64em;margin-top:2px;white-space:nowrap;}
+  .ka-evre .rozet2{position:relative;margin-top:6px;font-weight:800;font-size:.5em;letter-spacing:.04em;}
+  .rozet2 .kr{display:block;background:rgba(138,90,80,.16);color:#C98F82;border:1px solid rgba(138,90,80,.5);border-radius:16px;padding:.4em .9em;}
+  .rozet2 .ik{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:rgba(78,138,106,.16);color:#7FBF9C;border:1px solid rgba(78,138,106,.5);border-radius:16px;opacity:0;}
+  .ka-e1{top:0;left:50%;transform:translate(-50%,-8%);}
+  .ka-e2{top:50%;right:0;transform:translate(10%,-50%);}
+  .ka-e3{bottom:0;left:50%;transform:translate(-50%,8%);}
+  .ka-e4{top:50%;left:0;transform:translate(-10%,-50%);}
+  .ka-e1{animation-name:ka-ev1;} .ka-e2{animation-name:ka-ev2;} .ka-e3{animation-name:ka-ev3;} .ka-e4{animation-name:ka-ev4;}
+  @keyframes ka-ev1{0%,5%{filter:brightness(.45);}9%,93%{filter:brightness(1);}98%,100%{filter:brightness(.45);}}
+  @keyframes ka-ev2{0%,17%{filter:brightness(.45);}21%,93%{filter:brightness(1);}98%,100%{filter:brightness(.45);}}
+  @keyframes ka-ev3{0%,29%{filter:brightness(.45);}33%,93%{filter:brightness(1);}98%,100%{filter:brightness(.45);}}
+  @keyframes ka-ev4{0%,41%{filter:brightness(.45);}45%,93%{filter:brightness(1);}98%,100%{filter:brightness(.45);}}
+  .ka-e1 .ik{animation:ka-ro1 var(--T) infinite;} .ka-e2 .ik{animation:ka-ro2 var(--T) infinite;}
+  .ka-e3 .ik{animation:ka-ro3 var(--T) infinite;} .ka-e4 .ik{animation:ka-ro4 var(--T) infinite;}
+  @keyframes ka-ro1{0%,7%{opacity:0;}11%,93%{opacity:1;}98%,100%{opacity:0;}}
+  @keyframes ka-ro2{0%,19%{opacity:0;}23%,93%{opacity:1;}98%,100%{opacity:0;}}
+  @keyframes ka-ro3{0%,31%{opacity:0;}35%,93%{opacity:1;}98%,100%{opacity:0;}}
+  @keyframes ka-ro4{0%,43%{opacity:0;}47%,93%{opacity:1;}98%,100%{opacity:0;}}
+  .ka-yay{position:absolute;inset:11%;border-radius:50%;border:2.5px solid transparent;
+    border-top-color:var(--altin);border-left-color:var(--altin);transform:rotate(-45deg);opacity:0;animation:ka-yayA var(--T) infinite;}
+  @keyframes ka-yayA{0%,46%{opacity:0;}58%,93%{opacity:.9;}98%,100%{opacity:0;}}
+  .ka-merkez{position:absolute;inset:22%;display:flex;align-items:center;justify-content:center;text-align:center;
+    color:var(--krom);font-style:italic;font-size:.64em;line-height:1.4;opacity:0;animation:ka-merkA var(--T) infinite;padding:4%;}
+  .ka-merkez b{color:var(--altin-acik);font-style:normal;}
+  @keyframes ka-merkA{0%,56%{opacity:0;transform:scale(.94);}62%,93%{opacity:1;transform:scale(1);}98%,100%{opacity:0;}}
+  @media (prefers-reduced-motion:reduce){
+    .ka-yorunge,.ka-evre,.ka-yay,.ka-merkez,.rozet2 .ik{animation:none!important;}
+    .ka-evre{filter:brightness(1);}
+    .rozet2 .ik{opacity:1;}
+    .ka-yay{opacity:.9;}
+    .ka-merkez{opacity:1;transform:scale(1);}
+    .ka-yorunge{transform:rotate(0deg);}
+  }
+  @media (max-width:640px){
+    .ka-wrap{max-width:320px;}
+    .ka-evre .ad{font-size:.6em;}
+  }
 </style>
 </head>
 <body>
@@ -101,6 +156,27 @@
   </div>
   <p class="giris-sub" style="font-size:.9em;color:var(--dim);margin:14px 0 28px;">K3 Matrix hangi arsaya girileceğini söylemez — <i>kararınızı ölçülebilir kılar.</i> Karar her zaman sizindir.</p>
   <button class="btn btn-altin" onclick="basla()">Analize Başla</button>
+
+  <div class="ka-etik">Sonuç böyle görünür:</div>
+  <div class="ka-wrap" aria-hidden="true">
+    <div class="ka-sahne">
+      <div class="ka-don">
+        <div class="ka-cember"></div>
+        <div class="ka-yay"></div>
+        <div class="ka-yorunge"><div class="ka-yolcu"></div></div>
+        <div class="ka-evre ka-e1"><div class="no">01</div><div class="ad">Fırsat</div>
+          <div class="rozet2"><span class="kr">● KARANLIK</span><span class="ik">✓ IŞIKTA</span></div></div>
+        <div class="ka-evre ka-e2"><div class="no">02</div><div class="ad">Değerlendirme</div>
+          <div class="rozet2"><span class="kr">● KARANLIK</span><span class="ik">✓ IŞIKTA</span></div></div>
+        <div class="ka-evre ka-e3"><div class="no">03</div><div class="ad">Fizibilite</div>
+          <div class="rozet2"><span class="kr">● KARANLIK</span><span class="ik">✓ IŞIKTA</span></div></div>
+        <div class="ka-evre ka-e4"><div class="no">04</div><div class="ad">Yatırım Kararı</div>
+          <div class="rozet2"><span class="kr">● KARANLIK</span><span class="ik">✓ IŞIKTA</span></div></div>
+        <div class="ka-merkez"><span><b>Proje bittiğinde,</b><br>ilk günkü fizibiliteye<br>dönülür mü?</span></div>
+      </div>
+    </div>
+  </div>
+
   <p class="koruma">Sezgi, yılların damıtılmış verisidir — soru onu atmak değil, kayda geçirip çoğaltmaktır. Işıkta verilen karar, sezginin en güçlü halidir.</p>
 </div>
 

@@ -80,6 +80,62 @@
   .aile-satir a{color:var(--altin);text-decoration:none;font-weight:700;}
   .gizli{display:none;}
   footer{border-top:1px solid var(--cizgi);padding:32px 24px;text-align:center;color:var(--dim);font-size:.8em;}
+
+  /* ── giriş önizleme animasyonu: uyuyan sermaye (reel sahne çekirdeği, sadeleştirilmiş) ── */
+  .ka-etik{text-align:center;color:var(--dim);font-size:.78em;font-style:italic;margin:32px 0 10px;}
+  .ka-wrap{position:relative;max-width:460px;height:320px;margin:0 auto;overflow:hidden;pointer-events:none;
+    border:1px solid var(--cizgi);border-radius:16px;background:var(--bg2);}
+  .ka-sahne{position:absolute;inset:0;color:var(--krom);--T:14s;}
+  .ka-ray{position:absolute;left:12%;top:12%;bottom:12%;width:2px;background:var(--cizgi);}
+  .ka-damla{position:absolute;left:calc(12% - 4px);top:12%;width:9px;height:9px;border-radius:50%;
+    background:var(--altin-acik);box-shadow:0 0 10px rgba(217,188,133,.8);animation:ka-akis 4.5s linear infinite;}
+  .ka-damla.g2{animation-delay:1.5s;} .ka-damla.g3{animation-delay:3s;}
+  @keyframes ka-akis{0%{top:12%;opacity:0;}8%{opacity:1;}86%{opacity:1;}100%{top:86%;opacity:0;}}
+  .ka-nokta{position:absolute;left:calc(12% - 5px);width:11px;height:11px;border-radius:50%;background:var(--altin);}
+  .ka-n1{top:calc(17% - 5px);} .ka-n2{top:calc(39% - 5px);} .ka-n3{top:calc(61% - 5px);} .ka-n4{top:calc(83% - 5px);}
+  .ka-durak{position:absolute;left:18%;right:6%;height:18%;background:var(--panel);border:1px solid var(--cizgi);
+    border-radius:12px;display:flex;align-items:center;justify-content:space-between;padding:0 4.5%;}
+  .ka-d1{top:8%;} .ka-d2{top:30%;} .ka-d3{top:52%;} .ka-d4{top:74%;}
+  .ka-durak .ka-ad{color:var(--beyaz);font-weight:800;font-size:.82em;}
+  .ka-durak .ka-ad small{display:block;color:var(--dim);font-weight:600;font-size:.66em;margin-top:2px;letter-spacing:.03em;}
+  .ka-rozet{position:relative;font-weight:800;font-size:.66em;letter-spacing:.05em;white-space:nowrap;}
+  .ka-rozet i{display:block;font-style:normal;border-radius:18px;padding:.5em 1em;}
+  .ka-uyku i{background:rgba(138,90,80,.16);color:#C98F82;border:1px solid rgba(138,90,80,.5);}
+  .ka-uyanik i{background:rgba(78,138,106,.16);color:#7FBF9C;border:1px solid rgba(78,138,106,.5);
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+  .ka-uyku{animation:ka-uykuA var(--T) infinite;}
+  .ka-uyanik{opacity:0;animation:ka-uyanA var(--T) infinite;}
+  .ka-k1 .ka-uyku{animation-name:ka-uyku1;} .ka-k2 .ka-uyku{animation-name:ka-uyku2;}
+  .ka-k3 .ka-uyku{animation-name:ka-uyku3;} .ka-k4 .ka-uyku{animation-name:ka-uyku4;}
+  @keyframes ka-uyku1{0%,6%{opacity:0;}10%,58%{opacity:1;}62%,100%{opacity:0;}}
+  @keyframes ka-uyku2{0%,12%{opacity:0;}16%,60%{opacity:1;}64%,100%{opacity:0;}}
+  @keyframes ka-uyku3{0%,18%{opacity:0;}22%,62%{opacity:1;}66%,100%{opacity:0;}}
+  @keyframes ka-uyku4{0%,24%{opacity:0;}28%,64%{opacity:1;}68%,100%{opacity:0;}}
+  .ka-k1 .ka-uyanik{animation-name:ka-uyan1;} .ka-k2 .ka-uyanik{animation-name:ka-uyan2;}
+  .ka-k3 .ka-uyanik{animation-name:ka-uyan3;} .ka-k4 .ka-uyanik{animation-name:ka-uyan4;}
+  @keyframes ka-uyan1{0%,60%{opacity:0;}64%,92%{opacity:1;}97%,100%{opacity:0;}}
+  @keyframes ka-uyan2{0%,62%{opacity:0;}66%,92%{opacity:1;}97%,100%{opacity:0;}}
+  @keyframes ka-uyan3{0%,64%{opacity:0;}68%,92%{opacity:1;}97%,100%{opacity:0;}}
+  @keyframes ka-uyan4{0%,66%{opacity:0;}70%,92%{opacity:1;}97%,100%{opacity:0;}}
+  .ka-zz{position:absolute;color:#C98F82;font-weight:800;font-size:.8em;opacity:0;}
+  .ka-zz.z1{top:25%;left:52%;animation:ka-zz2 var(--T) infinite;}
+  .ka-zz.z2{top:69%;left:46%;animation:ka-zz4 var(--T) infinite;}
+  @keyframes ka-zz2{0%,22%{opacity:0;transform:translateY(4px);}26%,56%{opacity:.85;transform:translateY(-4px);}60%,100%{opacity:0;}}
+  @keyframes ka-zz4{0%,34%{opacity:0;transform:translateY(4px);}38%,60%{opacity:.85;transform:translateY(-4px);}64%,100%{opacity:0;}}
+  .ka-isik{position:absolute;left:0;right:0;height:16%;top:-16%;
+    background:linear-gradient(180deg,transparent,rgba(217,188,133,.14) 45%,rgba(217,188,133,.22) 50%,rgba(217,188,133,.14) 55%,transparent);
+    animation:ka-isikA var(--T) infinite;}
+  @keyframes ka-isikA{0%,56%{top:-16%;opacity:0;}58%{opacity:1;top:-12%;}74%{top:92%;opacity:1;}78%,100%{top:110%;opacity:0;}}
+  @media (prefers-reduced-motion:reduce){
+    .ka-uyku,.ka-uyanik,.ka-zz,.ka-isik,.ka-damla{animation:none!important;}
+    .ka-uyku{opacity:0;} .ka-uyanik{opacity:1;} .ka-zz{opacity:0;} .ka-isik{opacity:0;} .ka-damla{opacity:0;}
+  }
+  @media (max-width:640px){
+    .ka-wrap{max-width:100%;height:260px;}
+    .ka-durak{height:19%;}
+    .ka-durak .ka-ad{font-size:.74em;}
+    .ka-rozet{font-size:.6em;}
+  }
 </style>
 </head>
 <body>
@@ -101,6 +157,35 @@
   </div>
   <p class="giris-sub" style="font-size:.9em;color:var(--dim);margin:14px 0 28px;">Doğru ya da yanlış cevap yok — erken alım bazen en kârlı hamledir. Soru, kararın <i>nasıl</i> verildiğidir.</p>
   <button class="btn btn-altin" onclick="basla()">Analize Başla</button>
+
+  <div class="ka-etik">Sonuç böyle görünür:</div>
+  <div class="ka-wrap" aria-hidden="true">
+    <div class="ka-sahne">
+      <div class="ka-ray"></div>
+      <div class="ka-damla"></div><div class="ka-damla g2"></div><div class="ka-damla g3"></div>
+      <div class="ka-nokta ka-n1"></div><div class="ka-nokta ka-n2"></div><div class="ka-nokta ka-n3"></div><div class="ka-nokta ka-n4"></div>
+      <div class="ka-durak ka-d1 ka-k1">
+        <div class="ka-ad">🛒 Alım Anı<small>fazla bağlanır</small></div>
+        <div class="ka-rozet"><span class="ka-uyku"><i>● UYKUDA</i></span><span class="ka-uyanik"><i>✓ UYANIK</i></span></div>
+      </div>
+      <div class="ka-durak ka-d2 ka-k2">
+        <div class="ka-ad">📦 Depo<small>bekler</small></div>
+        <div class="ka-rozet"><span class="ka-uyku"><i>● UYKUDA</i></span><span class="ka-uyanik"><i>✓ UYANIK</i></span></div>
+      </div>
+      <div class="ka-durak ka-d3 ka-k3">
+        <div class="ka-ad">🏗️ Saha<small>birikir</small></div>
+        <div class="ka-rozet"><span class="ka-uyku"><i>● UYKUDA</i></span><span class="ka-uyanik"><i>✓ UYANIK</i></span></div>
+      </div>
+      <div class="ka-durak ka-d4 ka-k4">
+        <div class="ka-ad">🔚 Kapanış<small>kaderine bırakılır</small></div>
+        <div class="ka-rozet"><span class="ka-uyku"><i>● UYKUDA</i></span><span class="ka-uyanik"><i>✓ UYANIK</i></span></div>
+      </div>
+      <div class="ka-zz z1">z Z</div>
+      <div class="ka-zz z2">z Z</div>
+      <div class="ka-isik"></div>
+    </div>
+  </div>
+
   <p class="koruma">Uyuyan sermaye bir yönetim kusuru değildir; görünmeyen stokun doğal davranışıdır. Görünmeyen para uyur — görünen para çalıştırılabilir.</p>
 </div>
 

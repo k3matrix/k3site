@@ -88,6 +88,68 @@
   .sonuc-cta .c-baslik{color:var(--beyaz);font-weight:800;font-size:1.1em;margin-bottom:8px;}
   .sonuc-cta p{color:var(--krom);font-size:.92em;max-width:480px;margin:0 auto 20px;}
   .gizli{display:none;}
+
+  /* ── giriş önizleme animasyonu: görüş alanı (reel sahne çekirdeği, sadeleştirilmiş) ── */
+  .ka-etik{text-align:center;color:var(--dim);font-size:.78em;font-style:italic;margin:34px 0 10px;}
+  .ka-wrap{position:relative;max-width:460px;height:320px;margin:0 auto;overflow:hidden;pointer-events:none;
+    border:1px solid var(--cizgi);border-radius:16px;background:var(--bg2);}
+  .ka-sahne{position:absolute;inset:0;color:var(--krom);--T:14s;}
+  .ka-harita{position:absolute;inset:14px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:8px;}
+  .ka-hucre{position:relative;background:var(--panel);border:1px solid var(--cizgi);border-radius:12px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:4px;
+    filter:brightness(.42);animation-duration:var(--T);animation-iteration-count:infinite;}
+  .ka-ad{color:var(--beyaz);font-weight:800;font-size:.72em;text-align:center;line-height:1.25;}
+  .ka-rozet{position:relative;font-weight:800;font-size:.62em;letter-spacing:.04em;}
+  .ka-bilinmez{display:block;color:var(--dim);border:1px solid var(--cizgi);border-radius:16px;padding:.35em .9em;}
+  .ka-sonuc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:16px;opacity:0;white-space:nowrap;}
+  .ka-sonuc.g{background:rgba(78,138,106,.16);color:#7FBF9C;border:1px solid rgba(78,138,106,.5);}
+  .ka-sonuc.y{background:rgba(185,151,91,.14);color:var(--altin-acik);border:1px solid rgba(185,151,91,.5);}
+  .ka-sonuc.k{background:rgba(138,90,80,.16);color:#C98F82;border:1px solid rgba(138,90,80,.5);}
+  .ka-h1{animation-name:ka-ay1;} .ka-h2{animation-name:ka-ay2;} .ka-h3{animation-name:ka-ay3;}
+  .ka-h4{animation-name:ka-ay4;} .ka-h5{animation-name:ka-ay5;} .ka-h6{animation-name:ka-ay6;}
+  @keyframes ka-ay1{0%,8%{filter:brightness(.42);}12%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  @keyframes ka-ay2{0%,18%{filter:brightness(.42);}22%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  @keyframes ka-ay3{0%,29%{filter:brightness(.42);}33%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  @keyframes ka-ay4{0%,40%{filter:brightness(.42);}44%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  @keyframes ka-ay5{0%,51%{filter:brightness(.42);}55%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  /* h6 = kör nokta: ışık geçer ama tam aydınlanmaz */
+  @keyframes ka-ay6{0%,62%{filter:brightness(.42);}66%,86%{filter:brightness(.62);}94%,100%{filter:brightness(.42);}}
+  .ka-h1 .ka-sonuc{animation:ka-r1 var(--T) infinite;} .ka-h2 .ka-sonuc{animation:ka-r2 var(--T) infinite;}
+  .ka-h3 .ka-sonuc{animation:ka-r3 var(--T) infinite;} .ka-h4 .ka-sonuc{animation:ka-r4 var(--T) infinite;}
+  .ka-h5 .ka-sonuc{animation:ka-r5 var(--T) infinite;} .ka-h6 .ka-sonuc{animation:ka-r6 var(--T) infinite;}
+  @keyframes ka-r1{0%,11%{opacity:0;}15%,86%{opacity:1;}92%,100%{opacity:0;}}
+  @keyframes ka-r2{0%,21%{opacity:0;}25%,86%{opacity:1;}92%,100%{opacity:0;}}
+  @keyframes ka-r3{0%,32%{opacity:0;}36%,86%{opacity:1;}92%,100%{opacity:0;}}
+  @keyframes ka-r4{0%,43%{opacity:0;}47%,86%{opacity:1;}92%,100%{opacity:0;}}
+  @keyframes ka-r5{0%,54%{opacity:0;}58%,86%{opacity:1;}92%,100%{opacity:0;}}
+  @keyframes ka-r6{0%,65%{opacity:0;}69%,86%{opacity:1;}92%,100%{opacity:0;}}
+  .ka-fener{position:absolute;width:150px;height:150px;border-radius:50%;transform:translate(-50%,-50%);
+    background:radial-gradient(circle,rgba(217,188,133,.30) 0%,rgba(217,188,133,.12) 45%,transparent 70%);
+    animation:ka-gezinti var(--T) infinite;}
+  @keyframes ka-gezinti{
+    0%,6%{left:-15%;top:21%;opacity:0;}
+    10%{left:27%;top:21%;opacity:1;}
+    21%{left:73%;top:21%;}
+    32%{left:27%;top:50%;}
+    43%{left:73%;top:50%;}
+    54%{left:27%;top:79%;}
+    65%{left:73%;top:79%;}
+    73%{left:105%;top:70%;opacity:1;}
+    82%,100%{left:125%;top:60%;opacity:0;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ka-hucre,.ka-sonuc,.ka-fener{animation:none!important;}
+    .ka-hucre{filter:brightness(1);}
+    .ka-h6{filter:brightness(.62);}
+    .ka-sonuc{opacity:1;}
+    .ka-fener{opacity:0;}
+  }
+  @media (max-width:640px){
+    .ka-wrap{max-width:100%;height:260px;}
+    .ka-harita{inset:10px;gap:6px;}
+    .ka-ad{font-size:.66em;}
+    .ka-fener{width:120px;height:120px;}
+  }
 </style>
 </head>
 <body>
@@ -109,6 +171,27 @@
   </div>
   <p class="giris-sub" style="font-size:.9em;color:var(--dim);margin:14px 0 30px;">Her seçenek meşru bir çalışma biçimidir — doğru ya da yanlış cevap yok; sadece bilginin bugün izlediği yol var.</p>
   <button class="btn btn-altin" onclick="basla()">Haritalamaya Başla</button>
+
+  <div class="ka-etik">Sonuç böyle görünür:</div>
+  <div class="ka-wrap" aria-hidden="true">
+    <div class="ka-sahne">
+      <div class="ka-harita">
+        <div class="ka-hucre ka-h1"><div class="ka-ad">💰 Finansal<br>Görünürlük</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc g">✓ GÖRÜNÜR</span></div></div>
+        <div class="ka-hucre ka-h2"><div class="ka-ad">⏱️ Operasyon<br>Hızı</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc y">◐ YARI</span></div></div>
+        <div class="ka-hucre ka-h3"><div class="ka-ad">🛡️ Kontrol &amp;<br>Güvence</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc g">✓ GÖRÜNÜR</span></div></div>
+        <div class="ka-hucre ka-h4"><div class="ka-ad">⚠️ Erken<br>Uyarı</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc k">● KÖR NOKTA</span></div></div>
+        <div class="ka-hucre ka-h5"><div class="ka-ad">🔄 Bilgi<br>Akışı</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc y">◐ YARI</span></div></div>
+        <div class="ka-hucre ka-h6"><div class="ka-ad">🧠 Kurumsal<br>Hafıza</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc k">● KÖR NOKTA</span></div></div>
+      </div>
+      <div class="ka-fener"></div>
+    </div>
+  </div>
 
   <div class="aile-ev">
     <div class="aile-eyebrow">Ölçüm Ailesi</div>

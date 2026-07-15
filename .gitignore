@@ -3,5 +3,9 @@
 *Wireframe*.htm
 *Site Haritası*.html
 
+# Reel animasyon kaynak dosyaları — sahne çekirdekleri sayfalara gömülür, kaynak depoya girmez
+k3_reel_*.html
+k3_reel_*.htm
+
 # Gecici clone klasoru
 tmp-clone/
