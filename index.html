@@ -95,6 +95,8 @@
   .analiz-ic{text-align:center;}
   .kategoriler{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:38px 0 10px;}
   .kat{border:1px solid var(--cizgi);background:var(--panel);border-radius:24px;padding:10px 20px;font-size:.88em;font-weight:700;color:var(--krom-acik);}
+  .km-hat{max-width:640px;margin:6px auto 0;}
+  .km-hat svg{width:100%;height:22px;display:block;}
   .analiz .koruma{color:var(--dim);font-size:.88em;font-style:italic;max-width:620px;margin:26px auto 0;}
   .aile-grup{text-align:center;margin:22px auto 0;}
   .aile-etiket{color:var(--dim);font-size:.78em;margin-bottom:10px;}
@@ -352,10 +354,53 @@
 
     <p class="koruma">Kör nokta bir yetkinlik eksiği değildir; bilginin izlediği yolun geometrisidir. En deneyimli yönetici bile ancak ışığın düştüğü yeri görür.</p>
     <div class="aile-grup">
-      <div class="aile-etiket">Ölçüm Ailesi — tek konuya odaklanın:</div>
+      <div class="aile-etiket">Bu alanı derinleştirin:</div>
       <div class="aile-haplar">
-        <a class="aile-hap" href="sermaye.html">💤 Uyuyan Sermaye <span class="sure">· 2 dk</span></a>
-        <a class="aile-hap" href="yatirim.html">☀️ Yatırım Kararı <span class="sure">· 2 dk</span></a>
+        <a class="aile-hap" href="sermaye.html">💤 Uyuyan Sermaye Analizi <span class="sure">· 2 dk →</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5b · KAZANÇ MİMARİSİ ═══ -->
+<section class="sec analiz" id="kazanc-mimarisi">
+  <div class="ic analiz-ic">
+    <div class="eyebrow">Kazanç Mimarisi</div>
+    <h2>Kazancınız nerede sızıyor?</h2>
+    <p class="sec-sub" style="margin:0 auto;">Bütçe yapmak, kazancı korumaya yetmez. Bu analiz, kazancın yatırım kararından referansa kadar tüm döngü boyunca nerede sızdığını haritalar.</p>
+
+    <div class="kategoriler">
+      <span class="kat">🎯 Karar</span>
+      <span class="kat">📋 Planlama</span>
+      <span class="kat">📦 Tedarik</span>
+      <span class="kat">🏗️ Üretim</span>
+      <span class="kat">💳 Teslim</span>
+      <span class="kat">🔁 Referans</span>
+    </div>
+
+    <div class="km-hat" aria-hidden="true">
+      <svg viewBox="0 0 900 34" xmlns="http://www.w3.org/2000/svg" role="presentation">
+        <line x1="15" y1="17" x2="885" y2="17" stroke="#262B34" stroke-width="2" stroke-dasharray="3 9"></line>
+        <circle r="5" cy="17" fill="#B9975B">
+          <animate attributeName="cx" values="15;480;480;885;885;15" keyTimes="0;0.42;0.5;0.92;0.94;1" dur="7s" repeatCount="indefinite"></animate>
+          <animate attributeName="opacity" values="1;1;0.2;0.2;1;0;0" keyTimes="0;0.4;0.48;0.52;0.6;0.93;1" dur="7s" repeatCount="indefinite"></animate>
+        </circle>
+        <circle cx="480" cy="17" r="3" fill="#C98F82" opacity="0">
+          <animate attributeName="opacity" values="0;0;.9;.9;0" keyTimes="0;0.42;0.5;0.62;0.7" dur="7s" repeatCount="indefinite"></animate>
+          <animate attributeName="cy" values="17;17;17;28;28" keyTimes="0;0.42;0.5;0.62;0.7" dur="7s" repeatCount="indefinite"></animate>
+        </circle>
+      </svg>
+    </div>
+
+    <div class="hero-ctalar" style="margin-top:22px;">
+      <a class="btn btn-altin" href="kazanc-sizintisi.html">16 Soru · 3 Dakika — Haritalamaya Başlayın</a>
+    </div>
+
+    <p class="koruma">Sızıntı bir beceri eksikliği değildir; kazancın izlediği yolun geometrisidir. En kârlı firma bile ancak göründüğü kadarını korur.</p>
+    <div class="aile-grup">
+      <div class="aile-etiket">Karar durağını derinleştirin:</div>
+      <div class="aile-haplar">
+        <a class="aile-hap" href="yatirim.html">☀️ Yatırım Kararı Analizi <span class="sure">· 2 dk →</span></a>
       </div>
     </div>
   </div>

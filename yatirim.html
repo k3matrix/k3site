@@ -208,6 +208,10 @@
     <div id="harita-satirlar"></div>
   </div>
 
+  <div class="okuma" id="guclu-blok">
+    <div class="b-eti" id="guclu-eti"></div>
+    <p id="guclu-metin"></p>
+  </div>
   <div class="okuma">
     <div class="b-eti" id="okuma-eti">İlk aydınlatılacak evre</div>
     <p id="okuma-metin"></p>
@@ -278,7 +282,7 @@ const SORULAR = [
 
 const PROFIL = [
  {min:0,max:40,ad:"Sezgiyle Karar",cls:"sezgi",
-  m:"Kararlarınız yılların birikimiyle, sezgiyle veriliyor — ve bugüne kadar sizi buraya o sezgi getirdi. Ama sezgi tek nüshadır: kayda geçmediği sürece ne test edilebilir ne çoğaltılabilir. İyi haber: en güçlü ham madde sizde zaten var; eksik olan yalnızca ışık."},
+  m:"Kararlarınız yılların birikimiyle, sezgiyle veriliyor — ve bugüne kadar sizi buraya o sezgi getirdi. Ama sezgi tek nüshadır: kayda geçmediği sürece ne test edilebilir ne çoğaltılabilir. Sezgi değerlidir — ama kayıtsız sezgi, tekrar edemeyen bir yetenektir."},
  {min:41,max:75,ad:"Destekli Karar",cls:"destekli",
   m:"Sezginiz artık yalnız değil — bazı evrelerde veri ve kayıt ona eşlik ediyor. Ama zincirin bazı halkaları hâlâ alacakaranlıkta: varsayımlar gömülü, gerekçeler hafızada. Zincir tamamlandığında her karar, bir sonrakinin öğretmeni olur."},
  {min:76,max:100,ad:"Işıkta Karar",cls:"isikta",
@@ -305,6 +309,13 @@ const UYANDIR = {
  DG:"<b>Değerlendirme.</b> Ortak cetveli olmayan kıyas, günün ruh haline açıktır. Aynı kriter setinden geçen iki arsa ise kendi cevabını kendisi söyler — ve 'bölgeyi biliriz' cümlesi, taze veriyle buluştuğunda gerçek gücüne kavuşur.",
  FZ:"<b>Fizibilite.</b> Tek senaryo, tek gelecek varsayar; oysa gelecek aralıktır. Varsayımları yazılı üç senaryo, kararı umuttan çıkarır — kötümser senaryoda bile ayakta kalan proje, gerçek fırsattır.",
  KR:"<b>Yatırım Kararı.</b> Gerekçesi kayıtsız karar, ders veremeyen karardır. 'Öngörümüz tuttu mu?' sorusu her kapanışta sorulduğunda, her proje bir sonrakinin okulu olur — sezgi böyle çoğalır."
+};
+
+const GUCLU = {
+ FI:"Fırsatlar kayıtlı bir havuzdan, ortak kriterle karşılanıyor — hangi fırsatın neden elendiği bile hatırlanabiliyor.",
+ DG:"Kıyas her seferinde aynı cetvelle yapılıyor, pazar verisi taze — 'bölgeyi biliriz' sezgisi veriyle destekleniyor.",
+ FZ:"Fizibilite tek senaryo değil, yazılı varsayımlarla kurulmuş bir aralık — karar umuttan değil hesaptan geliyor.",
+ KR:"Kararın gerekçesi kayıtlı, kapanışta öngörüyle yüzleşiliyor — her proje bir sonrakinin okulu oluyor."
 };
 
 let idx=0, cevaplar=new Array(SORULAR.length).fill(null);
@@ -363,9 +374,22 @@ function sonuc(){
   });
 
   const kats=Object.keys(EVRELER);
+  const enG=kats.reduce((a,b)=> oranlar[b]>oranlar[a]?b:a );
   const enZ=kats.reduce((a,b)=> oranlar[b]<oranlar[a]?b:a );
   sonEvre=enZ;
   hepsiIsikta=kats.every(k=>oranlar[k]>=70);
+
+  const gEti=document.getElementById("guclu-eti");
+  const gMet=document.getElementById("guclu-metin");
+  const enGAd=EVRELER[enG].ad.replace(/^\d+ · /,"");
+  if(oranlar[enG]>=70){
+    gEti.textContent="En güçlü evreniz";
+    gMet.innerHTML="<b>"+enGAd+".</b> "+GUCLU[enG];
+  } else {
+    gEti.textContent="Göreli en aydınlık evreniz";
+    gMet.innerHTML="<b>"+enGAd+".</b> Burada kısmi ışık zaten var — tam değil ama var. Buradaki disiplin, ışığın diğer evrelere taşınmasında çekirdek olarak kullanılabilir: omurga en kolay, hâlihazırda alacakaranlıkta olan yerden kurulur.";
+  }
+
   const eti=document.getElementById("okuma-eti");
   const met=document.getElementById("okuma-metin");
   if(hepsiIsikta){

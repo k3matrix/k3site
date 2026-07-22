@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="Bütçe yapmak, kazancı korumaya yetmez. 16 soru, ≈3 dakika — kazancınız nerede sızıyor?">
+<title>Kazanç Sızıntısı Analizi · K3 Matrix</title>
+<style>
+  :root{
+    --bg:#0F1115; --bg2:#14181F; --panel:#171B22; --panel2:#1C212A;
+    --krom:#B8BCC4; --krom-acik:#D8DBE0; --beyaz:#F2F3F5;
+    --altin:#B9975B; --altin-acik:#D9BC85;
+    --cizgi:#262B34; --dim:#7E838D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--krom);line-height:1.65;font-size:16px;}
+  ::selection{background:var(--altin);color:var(--bg);}
+  nav{background:rgba(15,17,21,.92);border-bottom:1px solid var(--cizgi);}
+  .nav-ic{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
+  .logo{font-weight:800;letter-spacing:.18em;color:var(--beyaz);font-size:1em;text-decoration:none;display:flex;align-items:center;gap:11px;}
+  .logo img{border-radius:8px;display:block;}
+  .logo span{color:var(--altin);}
+  .nav-geri{color:var(--dim);text-decoration:none;font-size:.85em;font-weight:600;}
+  .nav-geri:hover{color:var(--krom);}
+
+  .sahne{max-width:760px;margin:0 auto;padding:56px 24px 90px;}
+  .eyebrow{color:var(--altin);font-size:.74em;font-weight:800;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px;}
+  h1{color:var(--beyaz);font-size:clamp(1.6em,4vw,2.4em);font-weight:800;letter-spacing:-.02em;line-height:1.16;margin-bottom:16px;}
+  .giris-sub{color:var(--krom);font-size:1.03em;max-width:620px;}
+  .giris-sub b{color:var(--beyaz);}
+  .meta{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 6px;}
+  .meta span{border:1px solid var(--cizgi);background:var(--panel);border-radius:22px;padding:7px 16px;font-size:.83em;font-weight:700;color:var(--krom-acik);}
+  .btn{display:inline-block;border:none;cursor:pointer;text-decoration:none;font-family:inherit;font-weight:700;font-size:.95em;border-radius:30px;padding:14px 32px;letter-spacing:.02em;transition:transform .15s;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-altin{background:var(--altin);color:var(--bg);}
+  .btn-cizgi{background:none;border:1.5px solid var(--krom);color:var(--krom-acik);}
+  .btn-altin-cizgi{background:none;border:1.5px solid var(--altin);color:var(--altin);}
+  .btn-altin-cizgi:disabled{cursor:default;opacity:.85;transform:none;}
+  .koruma{color:var(--dim);font-size:.88em;font-style:italic;margin-top:32px;border-top:1px solid var(--cizgi);padding-top:18px;}
+
+  .ilerleme{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .bar{flex:1;height:5px;background:var(--panel2);border-radius:3px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--altin);border-radius:3px;transition:width .3s;}
+  .adim-no{color:var(--dim);font-size:.82em;font-weight:700;letter-spacing:.08em;white-space:nowrap;}
+  .kat-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.26em;text-transform:uppercase;margin-bottom:14px;}
+  .soru{color:var(--beyaz);font-size:clamp(1.2em,2.7vw,1.5em);font-weight:800;letter-spacing:-.015em;line-height:1.35;margin-bottom:28px;}
+  .secenek{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--cizgi);border-radius:14px;padding:17px 21px;margin-bottom:13px;color:var(--krom-acik);font-family:inherit;font-size:.96em;line-height:1.5;cursor:pointer;transition:border-color .15s, background .15s, transform .1s;}
+  .secenek:hover{border-color:var(--altin);background:var(--panel2);transform:translateX(3px);}
+  .geri-btn{background:none;border:none;color:var(--dim);font-family:inherit;font-size:.85em;font-weight:600;cursor:pointer;margin-top:14px;padding:6px 0;}
+  .geri-btn:hover{color:var(--krom);}
+
+  .profil{background:linear-gradient(170deg,#1A1F29,#161B23);border:1px solid #3A3325;border-radius:18px;padding:32px 30px;margin:32px 0 24px;}
+  .profil .p-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.28em;text-transform:uppercase;margin-bottom:10px;}
+  .profil .p-ad{font-size:1.55em;font-weight:800;letter-spacing:-.015em;margin-bottom:12px;}
+  .profil .p-ad.kayip{color:#C98F82;} .profil .p-ad.risk{color:var(--altin-acik);} .profil .p-ad.kazanc{color:#7FBF9C;}
+  .profil p{font-size:.96em;color:var(--krom);}
+  .profil p b{color:var(--beyaz);}
+
+  .harita{margin:26px 0 6px;}
+  .h-baslik{color:var(--beyaz);font-weight:800;font-size:1.05em;margin-bottom:14px;}
+  .durak-satir{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--cizgi);border-radius:12px;padding:14px 18px;margin-bottom:10px;}
+  .durak-satir .d-ad{font-weight:700;font-size:.94em;color:var(--krom-acik);}
+  .durak-satir .d-yorum{color:var(--dim);font-size:.8em;margin-top:3px;line-height:1.45;}
+  .durum{font-size:.78em;font-weight:800;letter-spacing:.05em;border-radius:20px;padding:6px 14px;white-space:nowrap;}
+  .durum.kazanc{background:rgba(78,138,106,.15);color:#7FBF9C;border:1px solid rgba(78,138,106,.4);}
+  .durum.risk{background:rgba(185,151,91,.12);color:var(--altin-acik);border:1px solid rgba(185,151,91,.4);}
+  .durum.kayip{background:rgba(138,90,80,.15);color:#C98F82;border:1px solid rgba(138,90,80,.45);}
+
+  .okuma{margin:26px 0;}
+  .okuma .blok{border-left:3px solid var(--altin);padding:4px 0 4px 18px;margin-bottom:18px;}
+  .okuma .blok .b-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.24em;text-transform:uppercase;margin-bottom:5px;}
+  .okuma .blok p{color:var(--krom);font-size:.95em;}
+  .okuma .blok p b{color:var(--beyaz);}
+  .kopru{color:var(--dim);font-size:.9em;font-style:italic;margin:22px 0;}
+  .paylas-alan{text-align:center;margin:26px 0;}
+  .sonuc-cta{background:var(--panel);border:1px solid var(--cizgi);border-radius:16px;padding:28px;text-align:center;margin-top:30px;}
+  .sonuc-cta .c-baslik{color:var(--beyaz);font-weight:800;font-size:1.1em;margin-bottom:8px;}
+  .sonuc-cta p{color:var(--krom);font-size:.92em;max-width:480px;margin:0 auto 20px;}
+  .aile-satir{color:var(--dim);font-size:.85em;margin-top:16px;}
+  .aile-satir a{color:var(--altin);text-decoration:none;font-weight:700;}
+  .gizli{display:none;}
+  footer{border-top:1px solid var(--cizgi);padding:32px 24px;text-align:center;color:var(--dim);font-size:.8em;}
+
+  /* ── giriş önizleme animasyonu: kazanç sızıntısı (olcum.html çekirdeği, 6 durak) ── */
+  .ka-etik{text-align:center;color:var(--dim);font-size:.78em;font-style:italic;margin:32px 0 10px;}
+  .ka-wrap{position:relative;max-width:460px;height:320px;margin:0 auto;overflow:hidden;pointer-events:none;
+    border:1px solid var(--cizgi);border-radius:16px;background:var(--bg2);}
+  .ka-sahne{position:absolute;inset:0;color:var(--krom);--T:14s;}
+  .ka-harita{position:absolute;inset:14px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr 1fr;gap:8px;}
+  .ka-hucre{position:relative;background:var(--panel);border:1px solid var(--cizgi);border-radius:12px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:4px;
+    filter:brightness(.42);animation-duration:var(--T);animation-iteration-count:infinite;}
+  .ka-ad{color:var(--beyaz);font-weight:800;font-size:.72em;text-align:center;line-height:1.25;}
+  .ka-rozet{position:relative;font-weight:800;font-size:.62em;letter-spacing:.04em;}
+  .ka-bilinmez{display:block;color:var(--dim);border:1px solid var(--cizgi);border-radius:16px;padding:.35em .9em;}
+  .ka-sonuc{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:16px;opacity:0;white-space:nowrap;}
+  .ka-sonuc.g{background:rgba(78,138,106,.16);color:#7FBF9C;border:1px solid rgba(78,138,106,.5);}
+  .ka-sonuc.y{background:rgba(185,151,91,.14);color:var(--altin-acik);border:1px solid rgba(185,151,91,.5);}
+  .ka-sonuc.k{background:rgba(138,90,80,.16);color:#C98F82;border:1px solid rgba(138,90,80,.5);}
+  .ka-h1{animation-name:ka-ay1;} .ka-h2{animation-name:ka-ay2;} .ka-h3{animation-name:ka-ay3;}
+  .ka-h4{animation-name:ka-ay4;} .ka-h5{animation-name:ka-ay5;} .ka-h6{animation-name:ka-ay6;}
+  @keyframes ka-ay1{0%,8%{filter:brightness(.42);}12%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  @keyframes ka-ay2{0%,18%{filter:brightness(.42);}22%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  @keyframes ka-ay3{0%,29%{filter:brightness(.42);}33%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  @keyframes ka-ay4{0%,40%{filter:brightness(.42);}44%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  @keyframes ka-ay5{0%,51%{filter:brightness(.42);}55%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  @keyframes ka-ay6{0%,62%{filter:brightness(.42);}66%,86%{filter:brightness(1);}94%,100%{filter:brightness(.42);}}
+  .ka-h1 .ka-sonuc{animation:ka-r1 var(--T) infinite;} .ka-h2 .ka-sonuc{animation:ka-r2 var(--T) infinite;}
+  .ka-h3 .ka-sonuc{animation:ka-r3 var(--T) infinite;} .ka-h4 .ka-sonuc{animation:ka-r4 var(--T) infinite;}
+  .ka-h5 .ka-sonuc{animation:ka-r5 var(--T) infinite;} .ka-h6 .ka-sonuc{animation:ka-r6 var(--T) infinite;}
+  @keyframes ka-r1{0%,11%{opacity:0;}15%,86%{opacity:1;}92%,100%{opacity:0;}}
+  @keyframes ka-r2{0%,21%{opacity:0;}25%,86%{opacity:1;}92%,100%{opacity:0;}}
+  @keyframes ka-r3{0%,32%{opacity:0;}36%,86%{opacity:1;}92%,100%{opacity:0;}}
+  @keyframes ka-r4{0%,43%{opacity:0;}47%,86%{opacity:1;}92%,100%{opacity:0;}}
+  @keyframes ka-r5{0%,54%{opacity:0;}58%,86%{opacity:1;}92%,100%{opacity:0;}}
+  @keyframes ka-r6{0%,65%{opacity:0;}69%,86%{opacity:1;}92%,100%{opacity:0;}}
+  .ka-fener{position:absolute;width:150px;height:150px;border-radius:50%;transform:translate(-50%,-50%);
+    background:radial-gradient(circle,rgba(217,188,133,.30) 0%,rgba(217,188,133,.12) 45%,transparent 70%);
+    animation:ka-gezinti var(--T) infinite;}
+  @keyframes ka-gezinti{
+    0%,6%{left:-15%;top:21%;opacity:0;}
+    10%{left:27%;top:21%;opacity:1;}
+    21%{left:73%;top:21%;}
+    32%{left:27%;top:50%;}
+    43%{left:73%;top:50%;}
+    54%{left:27%;top:79%;}
+    65%{left:73%;top:79%;}
+    73%{left:105%;top:70%;opacity:1;}
+    82%,100%{left:125%;top:60%;opacity:0;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .ka-hucre,.ka-sonuc,.ka-fener{animation:none!important;}
+    .ka-hucre{filter:brightness(1);}
+    .ka-sonuc{opacity:1;}
+    .ka-fener{opacity:0;}
+  }
+  @media (max-width:640px){
+    .ka-wrap{max-width:100%;height:260px;}
+    .ka-harita{inset:10px;gap:6px;}
+    .ka-ad{font-size:.66em;}
+    .ka-fener{width:120px;height:120px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-ic">
+    <a class="logo" href="index.html"><img src="logo-rozet.png" alt="" width="34" height="34">K3 <span>MATRIX</span></a>
+    <a class="nav-geri" href="index.html">← Ana Sayfa</a>
+  </div>
+</nav>
+
+<!-- ═══ GİRİŞ ═══ -->
+<div class="sahne" id="sahne-giris">
+  <div class="eyebrow">Kazanç Sızıntısı Analizi</div>
+  <h1>Bütçe yapmak,<br>kazancı korumaya yetmez.</h1>
+  <p class="giris-sub">Birçok şirket yıl sonunda kâr ettiğini düşünür. Fakat çok azı şu sorunun cevabını bilir: <b>aslında ne kadar daha fazla kazanabilirdik?</b> Bu analiz, kazancın yatırım kararından referansa kadar tüm döngü boyunca nerede görünmez olmaya başladığını haritalar.</p>
+  <div class="meta">
+    <span>16 soru</span><span>≈ 3 dakika</span><span>6 durak</span><span>Kayıt istemez · veri saklanmaz</span>
+  </div>
+  <p class="giris-sub" style="font-size:.9em;color:var(--dim);margin:14px 0 28px;">Her seçenek meşru bir çalışma biçimidir — doğru ya da yanlış cevap yok; sadece kazancın bugün izlediği yol var.</p>
+  <button class="btn btn-altin" onclick="basla()">Haritalamaya Başla</button>
+
+  <div class="ka-etik">Sonuç böyle görünür:</div>
+  <div class="ka-wrap" aria-hidden="true">
+    <div class="ka-sahne">
+      <div class="ka-harita">
+        <div class="ka-hucre ka-h1"><div class="ka-ad">🎯 Karar</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc g">✓ KAZANÇ</span></div></div>
+        <div class="ka-hucre ka-h2"><div class="ka-ad">📋 Planlama</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc g">✓ KAZANÇ</span></div></div>
+        <div class="ka-hucre ka-h3"><div class="ka-ad">📦 Tedarik</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc y">◐ RİSK</span></div></div>
+        <div class="ka-hucre ka-h4"><div class="ka-ad">🏗️ Üretim</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc y">◐ RİSK</span></div></div>
+        <div class="ka-hucre ka-h5"><div class="ka-ad">💳 Teslim</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc k">● KAYIP</span></div></div>
+        <div class="ka-hucre ka-h6"><div class="ka-ad">🔁 Referans</div>
+          <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc k">● KAYIP</span></div></div>
+      </div>
+      <div class="ka-fener"></div>
+    </div>
+  </div>
+
+  <p class="koruma">Amaç suçlu bulmak değil. Kazanç kaybının ilk başladığı noktayı görünür hale getirmek — çünkü en pahalı kayıp, geç fark edilen kayıptır.</p>
+</div>
+
+<!-- ═══ SORU ═══ -->
+<div class="sahne gizli" id="sahne-soru">
+  <div class="ilerleme">
+    <div class="bar"><i id="bar-ic" style="width:0%;"></i></div>
+    <div class="adim-no" id="adim-no">SORU 1 / 16</div>
+  </div>
+  <div class="kat-eti" id="kat-eti"></div>
+  <div class="soru" id="soru-metin"></div>
+  <div id="secenekler"></div>
+  <button class="geri-btn gizli" id="geri" onclick="geri()">← Önceki soruya dön</button>
+</div>
+
+<!-- ═══ SONUÇ ═══ -->
+<div class="sahne gizli" id="sahne-sonuc">
+  <div class="eyebrow">Kazanç Sızıntısı Haritanız</div>
+  <h1>Haritanız hazır.</h1>
+
+  <div class="profil">
+    <div class="p-eti">Genel Profil</div>
+    <div class="p-ad" id="profil-ad"></div>
+    <p id="profil-metin"></p>
+  </div>
+
+  <div class="harita">
+    <div class="h-baslik">Altı durakta kazanç durumu</div>
+    <div id="durak-liste"></div>
+  </div>
+
+  <div class="okuma">
+    <div class="blok">
+      <div class="b-eti" id="guclu-eti"></div>
+      <p id="guclu-metin"></p>
+    </div>
+    <div class="blok">
+      <div class="b-eti" id="okuma-eti"></div>
+      <p id="okuma-metin"></p>
+    </div>
+  </div>
+
+  <p class="kopru">Bu yolculuğun yönetim bilimindeki adı: <b style="color:var(--krom-acik);">reaktiften proaktife geçiş.</b></p>
+  <p class="kopru" style="margin-top:-14px;">Sızıntı bir beceri eksikliği değildir; kazancın izlediği yolun geometrisidir.</p>
+
+  <div class="paylas-alan">
+    <button class="btn btn-altin-cizgi" id="paylas-btn" onclick="paylas()">Sonucu Paylaş</button>
+  </div>
+
+  <div class="sonuc-cta">
+    <div class="c-baslik">Haritayı birlikte okuyalım mı?</div>
+    <p>Detaylı değerlendirme ve size özel yol haritası için tanışalım — Kurucu Saha Programı kontenjanı sınırlıdır.</p>
+    <p style="color:var(--dim);font-size:.82em;margin:0 auto 16px;">Ölçüm Ailesi: <a href="olcum.html" style="color:var(--altin);text-decoration:none;font-weight:600;">Görüş Alanı (3 dk) →</a> · <a href="sermaye.html" style="color:var(--altin);text-decoration:none;font-weight:600;">Uyuyan Sermaye (2 dk) →</a> · <a href="yatirim.html" style="color:var(--altin);text-decoration:none;font-weight:600;">Yatırım Kararı (2 dk) →</a></p>
+    <a class="btn btn-altin" href="ortaklik.html">Tanışma Talebi Bırak</a>
+    <div style="margin-top:14px;"><button class="btn btn-cizgi" onclick="yeniden()" style="font-size:.85em;padding:11px 26px;">Analizi Yeniden Yap</button></div>
+  </div>
+</div>
+
+<footer>© 2026 K3 Matrix · k3matrix.com.tr — K3 Matrix hesaplar, bağlam sunar, ölçer. Karışmaz.</footer>
+
+<script>
+// Kazanç Sızıntısı Analizi · 6 durak × 16 soru · puanlar ekranda görünmez
+const KATEGORI = {
+  KR:{ad:"🎯 Karar"}, PL:{ad:"📋 Planlama"}, TD:{ad:"📦 Tedarik"},
+  UR:{ad:"🏗️ Üretim"}, TS:{ad:"💳 Teslim"}, RF:{ad:"🔁 Referans"}
+};
+
+const SORULAR = [
+ {k:"KR", s:"Önemli bir karar (fiyat, iptal, ek iş onayı) verilirken elinizdeki veri güncel mi?",
+  o:[["Genelde eski ya da tahmini veriyle karar veriyoruz.",0],
+     ["Bazen güncel, bazen değil.",5],
+     ["Her zaman güncel, gerçek zamanlı veriyle.",10]]},
+ {k:"KR", s:"Bir karar verildikten sonra, o kararın kazanca etkisi ölçülüyor mu?",
+  o:[["Hayır, karar verilir, sonucu izlenmez.",0],
+     ["Bazen, büyük kararlarda izlenir.",5],
+     ["Evet, her kararın etkisi izleniyor.",10]]},
+ {k:"KR", s:"Bir yatırım/proje kararı verilirken, iyimser/kötümser senaryolar karşılaştırılıyor mu?",
+  o:[["Hayır, tek bir senaryoyla karar veriliyor.",0],
+     ["Bazen, büyük kararlarda tek alternatif senaryo bakılıyor.",5],
+     ["Evet, en az 2-3 senaryo yazılı olarak karşılaştırılıyor.",10]]},
+ {k:"PL", s:"Proje başlamadan önce bütçe, iş kalemi bazında mı hazırlanıyor, yoksa tek toplam rakam mı?",
+  o:[["Tek toplam rakam olarak hazırlanıyor.",0],
+     ["Büyük kalemler ayrı, küçükler toplu.",5],
+     ["İş kalemi bazında, detaylı hazırlanıyor.",10]]},
+ {k:"PL", s:"Planlanan bütçe rakamları, uygulayan ekiple paylaşılıyor mu, yoksa sadece yönetimde mi kalıyor?",
+  o:[["Hayır, bütçe sadece yönetimde kalıyor.",0],
+     ["Bazı ekip liderleriyle paylaşılıyor.",5],
+     ["Evet, uygulayan ekip kendi kalemindeki bütçeyi biliyor.",10]]},
+ {k:"PL", s:"Bütçe/fizibilite varsayımları yazılı mı kayıtlı, yoksa sözlü/hafızada mı?",
+  o:[["Sözlü/hafızada; yazılı kaydı yok.",0],
+     ["Kısmen yazılı, çoğu sözlü aktarılıyor.",5],
+     ["Yazılı, gerekçesiyle kayıtlı.",10]]},
+ {k:"TD", s:"Bir satın alma kararında en az kaç teklif karşılaştırılıyor?",
+  o:[["Genelde tek teklifle onaylanıyor.",0],
+     ["Büyük tutarlarda birden fazla, küçüklerde tek teklif.",5],
+     ["En az 2-3 teklif, standart bir kural olarak.",10]]},
+ {k:"TD", s:"Satın alınan fiyat, bütçedeki öngörülen fiyatla karşılaştırılıyor mu?",
+  o:[["Hayır, karşılaştırma yapılmıyor.",0],
+     ["Büyük kalemlerde karşılaştırılıyor.",5],
+     ["Evet, her satın almada anlık karşılaştırılıyor.",10]]},
+ {k:"TD", s:"Bir bilgi (fiyat değişikliği, gecikme, revizyon) departmanlar arası nasıl iletiliyor?",
+  o:[["Telefon ya da mesajla, kişiden kişiye.",0],
+     ["E-posta ile, bazen kayboluyor.",5],
+     ["Sistem üzerinden, otomatik bildirimle.",10]]},
+ {k:"UR", s:"Bir projedeki kâr/zarar, iş kalemi (poz) bazında mı izleniyor, yoksa proje toplamında mı?",
+  o:[["Sadece proje toplamında.",0],
+     ["Bazı büyük kalemlerde ayrı izleniyor.",5],
+     ["Her kalem kendi kâr/zararıyla izleniyor.",10]]},
+ {k:"UR", s:"Hangi iş kaleminin kazancı en çok tükettiğini bugün, şu an söyleyebilir misiniz?",
+  o:[["Hayır, rapor hazırlamak gerekir.",0],
+     ["Tahmini olarak söyleyebiliriz.",5],
+     ["Evet, anlık olarak görebiliyoruz.",10]]},
+ {k:"UR", s:"Bir süreç adımı tamamlandığında bir sonraki adım bunu otomatik görüyor mu?",
+  o:[["Hayır, biri arayıp haber vermeli.",0],
+     ["Bazı adımlarda görülüyor.",5],
+     ["Evet, tüm zincir otomatik akıyor.",10]]},
+ {k:"TS", s:"Yeni bir taahhüt (sözleşme, ek iş) oluştuğunda, nakit akışı projeksiyonu aynı gün güncelleniyor mu?",
+  o:[["Hayır, ay sonu toplu güncellenir.",0],
+     ["Bazen, büyük taahhütlerde güncelleniyor.",5],
+     ["Evet, her taahhüt anında yansır.",10]]},
+ {k:"TS", s:"Gelir tahmini ile gerçekleşen tahsilat arasındaki fark ne zaman fark ediliyor?",
+  o:[["Yıl sonu kapanışta.",0],
+     ["Aylık raporda.",5],
+     ["Anlık, taahhüt-tahsilat eşleşmesiyle.",10]]},
+ {k:"RF", s:"Proje teslim sonrası müşteri memnuniyeti sistematik olarak toplanıyor mu?",
+  o:[["Hayır, teslim sonrası ilişki büyük ölçüde bitiyor.",0],
+     ["Bazen, büyük/sorunlu projelerde soruluyor.",5],
+     ["Evet, her projede standart bir süreçle.",10]]},
+ {k:"RF", s:"Öngörülen kârlılık ile gerçekleşen kârlılık karşılaştırılıp bir sonraki teklife ders taşınıyor mu?",
+  o:[["Hayır, proje kapanınca karşılaştırma yapılmıyor.",0],
+     ["Bazen, büyük sapmalarda geriye dönülüyor.",5],
+     ["Evet, her proje sonunda karşılaştırılıp kayıt altına alınıyor.",10]]}
+];
+
+const PROFIL = [
+ {min:0,max:39,ad:"Kayıp",cls:"kayip",
+  m:"Kazanç, operasyon boyunca görünmeden eriyor. Şirket zarar etmeyebilir — ama kazanabileceği parayı koruyamıyor. Sapmalar geç fark ediliyor, kararlar geriden geliyor."},
+ {min:40,max:75,ad:"Risk",cls:"risk",
+  m:"Kazanç tamamen kaybolmuyor. Fakat küçük sızıntılar büyümeye başlamış. Bugün görünmeyen kayıp, yarının finansman maliyetidir."},
+ {min:76,max:100,ad:"Kazanç",cls:"kazanc",
+  m:"Kazanç büyük ölçüde korunuyor. Sapmalar oluştuğu anda görülebiliyor, kararlar zamanında alınabiliyor. Sıradaki adım bu görünürlüğü kalıcı hale getirmek."}
+];
+
+const YORUM = {
+ KR:{u:"Kararlar güncel veriyle veriliyor ve senaryolarla sınanıyor; etkisi sonradan izleniyor.",
+     y:"Bazı kararlar güncel veriyle, bazıları eski/tahmini veriyle veriliyor; etki bazen izleniyor.",
+     k:"Kararlar çoğunlukla eski ya da eksik veriyle veriliyor; sonucu da izlenmiyor."},
+ PL:{u:"Bütçe iş kalemi bazında hazırlanıyor, varsayımlar yazılı ve uygulayan ekiple paylaşılıyor.",
+     y:"Bütçe kısmen kalem bazında; bazı varsayımlar yazılı, bazıları sözlü/hafızada kalıyor.",
+     k:"Bütçe tek toplam rakam; varsayımlar sözlü, uygulayan ekip planlamayı görmüyor."},
+ TD:{u:"Satın almalar birden fazla teklifle karşılaştırılıyor; fiyat bütçedeki öngörüyle eşleşiyor.",
+     y:"Bazı satın almalarda teklif karşılaştırması yapılıyor; bütçeyle eşleşme kısmen kontrol ediliyor.",
+     k:"Satın alma tek teklifle onaylanıyor; bütçedeki öngörüyle karşılaştırma yapılmıyor."},
+ UR:{u:"Kâr/zarar iş kalemi bazında anlık izleniyor; hangi kalemin kazancı tükettiği bilinir.",
+     y:"Bazı büyük kalemler ayrı izleniyor; genel dağılım tahminle kapatılıyor.",
+     k:"Kâr/zarar sadece proje toplamında görülüyor; hangi kalemin tükettiği bilinmiyor."},
+ TS:{u:"Taahhüt oluştuğu an nakit projeksiyonu güncelleniyor; tahmin-tahsilat farkı anlık görülüyor.",
+     y:"Nakit projeksiyonu büyük taahhütlerde güncelleniyor; fark aylık raporda fark ediliyor.",
+     k:"Nakit projeksiyonu ay sonu toplu güncelleniyor; fark yıl sonu kapanışta ortaya çıkıyor."},
+ RF:{u:"Müşteri memnuniyeti sistematik toplanıyor; öngörülen kârlılık gerçekleşenle karşılaştırılıp derse dönüşüyor.",
+     y:"Memnuniyet bazen soruluyor; kârlılık karşılaştırması nadiren yapılıyor.",
+     k:"Teslim sonrası ilişki sona eriyor; öngörü hiç gerçekleşenle karşılaştırılmıyor, ders çıkmıyor."}
+};
+
+const KAPAT = {
+ KR:"<b>Karar.</b> Güncel veri olmadan verilen bir karar, doğru çıksa bile şanstır — kontrol değil. Kararın sonrasında etkisini ölçmek, aynı hatayı tekrar etme ihtimalini kapatır.",
+ PL:"<b>Planlama.</b> Tek toplam rakamla kurulan bütçe, nereye gittiğini kendisi de bilmez. Kalem bazında ve yazılı bir plan, sızıntının doğmadan önce kapatıldığı yerdir.",
+ TD:"<b>Tedarik.</b> Karşılaştırmasız onaylanan her satın alma, bütçenin sessizce delinmesidir. Tek bir ek teklif bile, bu sızıntının çoğunu kapatır.",
+ UR:"<b>Üretim.</b> Toplam kâr, hangi kalemi düzeltmeniz gerektiğini söylemez. Kalem bazında görünürlük, sızıntının tam olarak nerede olduğunu gösterir.",
+ TS:"<b>Teslim.</b> Taahhüt ile tahsilat arasındaki boşluk, kazancın son ve en sinsi kaybolduğu yerdir. Bu boşluk anlık kapandığında, yıl sonu sürprizi diye bir şey kalmaz.",
+ RF:"<b>Referans.</b> Bir projenin dersini almadan kapatmak, aynı sızıntıyı bir sonraki projede tekrar açmaktır. Karşılaştırma, döngüyü öğrenen bir döngüye çevirir."
+};
+
+const GUCLU = {
+ KR:"Kararlarınız güncel veriyle ve senaryo karşılaştırmasıyla veriliyor — bu, çoğu firmanın henüz ulaşamadığı bir olgunluk.",
+ PL:"Bütçeniz kalem bazında ve yazılı kuruluyor, uygulayan ekip de bunu biliyor — planlama sizde zaten bir disiplin.",
+ TD:"Satın almalarınız karşılaştırmalı ve bütçeyle eşleşiyor — tedarik tarafında sızıntı riski düşük.",
+ UR:"Kâr/zararınız kalem bazında anlık görünüyor — hangi kalemin ne kazandırdığını biliyorsunuz.",
+ TS:"Taahhüt ile tahsilat arasındaki fark anlık görünüyor — nakit tarafında sürpriz yaşamıyorsunuz.",
+ RF:"Memnuniyet ve kârlılık karşılaştırması sistematik — her proje bir öncekinden ders çıkarıyor."
+};
+
+const HEPSI_KAYIP_OZEL = "Bugün altı durak da kazancı sessizce eritiyor görünüyor. Bu bir yetersizlik tablosu değil — henüz hiçbir durağın ölçülmediğinin doğal sonucu. İyi haber: omurga kurulduğunda, kazanılan her görünürlük doğrudan kâra döner.";
+
+let idx=0, cevaplar=new Array(SORULAR.length).fill(null);
+
+function goster(id){
+  ["sahne-giris","sahne-soru","sahne-sonuc"].forEach(s=>document.getElementById(s).classList.add("gizli"));
+  document.getElementById(id).classList.remove("gizli");
+  window.scrollTo({top:0});
+}
+function basla(){ idx=0; cevaplar.fill(null); soruCiz(); goster("sahne-soru"); }
+function soruCiz(){
+  const q=SORULAR[idx];
+  document.getElementById("adim-no").textContent="SORU "+(idx+1)+" / "+SORULAR.length;
+  document.getElementById("bar-ic").style.width=(idx/SORULAR.length*100)+"%";
+  document.getElementById("kat-eti").textContent=KATEGORI[q.k].ad;
+  document.getElementById("soru-metin").textContent=q.s;
+  const kutu=document.getElementById("secenekler"); kutu.innerHTML="";
+  q.o.forEach(op=>{
+    const b=document.createElement("button");
+    b.className="secenek"; b.textContent=op[0];
+    b.onclick=()=>{ cevaplar[idx]=op[1]; ileri(); };
+    kutu.appendChild(b);
+  });
+  document.getElementById("geri").classList.toggle("gizli", idx===0);
+}
+function ileri(){ if(idx<SORULAR.length-1){ idx++; soruCiz(); } else { sonuc(); } }
+function geri(){ if(idx>0){ idx--; soruCiz(); } }
+function yeniden(){ basla(); }
+
+let sonProfil=null, sonDurak=null, hepsiKazanc=false;
+function sonuc(){
+  const kats=Object.keys(KATEGORI);
+  const durakPuan={}, durakMax={};
+  kats.forEach(k=>{durakPuan[k]=0; durakMax[k]=0;});
+  SORULAR.forEach((q,i)=>{ durakPuan[q.k]+=cevaplar[i]; durakMax[q.k]+=10; });
+
+  const oranlar={};
+  kats.forEach(k=>{ oranlar[k]=Math.round((durakPuan[k]/durakMax[k])*100); });
+
+  const toplamPuan=cevaplar.reduce((a,b)=>a+b,0);
+  const toplamMax=SORULAR.length*10;
+  const yuzde=Math.round((toplamPuan/toplamMax)*100);
+  const prof=PROFIL.find(p=>yuzde>=p.min && yuzde<=p.max)||PROFIL[1];
+  sonProfil=prof;
+
+  const ad=document.getElementById("profil-ad");
+  ad.textContent=prof.ad; ad.className="p-ad "+prof.cls;
+  document.getElementById("profil-metin").textContent=prof.m;
+
+  const liste=document.getElementById("durak-liste"); liste.innerHTML="";
+  kats.forEach(k=>{
+    const o=oranlar[k];
+    const durum = o>=70?"kazanc":(o>=40?"risk":"kayip");
+    const durumTxt = o>=70?"✓ KAZANÇ":(o>=40?"◐ RİSK":"● KAYIP");
+    const yorumTxt = o>=70?YORUM[k].u:(o>=40?YORUM[k].y:YORUM[k].k);
+    const satir=document.createElement("div");
+    satir.className="durak-satir";
+    satir.innerHTML=`<div><div class="d-ad">${KATEGORI[k].ad}</div><div class="d-yorum">${yorumTxt}</div></div><span class="durum ${durum}">${durumTxt}</span>`;
+    liste.appendChild(satir);
+  });
+
+  hepsiKazanc = kats.every(k=>oranlar[k]>=70);
+  const hepsiKayip = kats.every(k=>oranlar[k]<40);
+  let enG=kats[0], enZ=kats[0];
+  kats.forEach(k=>{
+    if(oranlar[k]>oranlar[enG]) enG=k;
+    if(oranlar[k]<oranlar[enZ]) enZ=k;
+  });
+  sonDurak=enZ;
+
+  const gEti=document.getElementById("guclu-eti"), gMet=document.getElementById("guclu-metin");
+  if(hepsiKayip){
+    gEti.textContent="Haritanın dürüst okuması";
+    gMet.innerHTML=HEPSI_KAYIP_OZEL;
+  } else if(oranlar[enG]>=70){
+    gEti.textContent="En güçlü alanınız";
+    gMet.innerHTML=`<b>${KATEGORI[enG].ad}.</b> ${GUCLU[enG]}`;
+  } else {
+    gEti.textContent="Göreli en aydınlık alanınız";
+    gMet.innerHTML=`<b>${KATEGORI[enG].ad}.</b> Burada kısmi görünürlük zaten var — tam değil ama var. Buradaki disiplin, ışığın diğer alanlara taşınmasında çekirdek olarak kullanılabilir.`;
+  }
+
+  const eti=document.getElementById("okuma-eti"), met=document.getElementById("okuma-metin");
+  if(hepsiKazanc){
+    eti.textContent="Kazanç Koruma Potansiyeli";
+    met.innerHTML="Bu haritada belirgin bir sızıntı noktası görünmüyor. Sıradaki adım, bu görünürlüğü beyandan çıkarıp sistemde kalıcı hale getirmek.";
+  } else {
+    eti.textContent="İlk Kapatılacak Sızıntı Noktası";
+    met.innerHTML=KAPAT[enZ];
+  }
+
+  goster("sahne-sonuc");
+}
+
+function paylas(){
+  const url=location.origin+location.pathname;
+  const durakAd=KATEGORI[sonDurak].ad.replace(/^\S+\s+/,"");
+  const metin = hepsiKazanc
+    ? 'Kazanç Sızıntısı Analizimi yaptım: '+sonProfil.ad+' — haritamda sızıntı noktası çıkmadı. Sen de 3 dakikada haritala: '+url
+    : 'Kazanç Sızıntısı Analizimi yaptım: '+sonProfil.ad+'. İlk kapatılacak sızıntı noktası: '+durakAd+'. Sen de 3 dakikada haritala: '+url;
+  if(navigator.share){ navigator.share({text:metin}).catch(()=>{}); }
+  else{
+    const kopyala=t=>{ if(navigator.clipboard){ return navigator.clipboard.writeText(t); }
+      const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); document.body.removeChild(ta); return Promise.resolve(); };
+    kopyala(metin).then(()=>{
+      const b=document.getElementById('paylas-btn'); const eski=b.textContent;
+      b.textContent='Kopyalandı ✓'; setTimeout(()=>{ b.textContent=eski; },2200);
+    });
+  }
+}
+</script>
+
+
+</body></html>
