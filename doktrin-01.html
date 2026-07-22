@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="İyi sistem patron değildir; terazidir. Süreyi önerir, standardı önerir — kararı size bırakır.">
+<title>Doktrin 01 · Ölçüm Doktrini — K3 Matrix</title>
+<style>
+  :root{
+    --bg:#0F1115; --bg2:#14181F; --panel:#171B22; --panel2:#1C212A;
+    --krom:#B8BCC4; --krom-acik:#D8DBE0; --beyaz:#F2F3F5;
+    --altin:#B9975B; --altin-acik:#D9BC85;
+    --cizgi:#262B34; --dim:#7E838D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--krom);line-height:1.7;font-size:16px;}
+  ::selection{background:var(--altin);color:var(--bg);}
+  nav{position:sticky;top:0;z-index:50;background:rgba(15,17,21,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--cizgi);}
+  .nav-ic{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
+  .logo{font-weight:800;letter-spacing:.18em;color:var(--beyaz);font-size:1em;text-decoration:none;}
+  .logo span{color:var(--altin);}
+  .nav-links{display:flex;gap:26px;align-items:center;}
+  .nav-links a{color:var(--krom);text-decoration:none;font-size:.86em;font-weight:600;}
+  .nav-links a.aktif{color:var(--beyaz);border-bottom:2px solid var(--altin);padding-bottom:3px;}
+  .nav-cta{border:1px solid var(--altin);color:var(--altin)!important;border-radius:24px;padding:8px 18px;}
+  @media(max-width:820px){.nav-links a:not(.nav-cta){display:none;}}
+
+  .dar{max-width:680px;margin:0 auto;padding:64px 24px 100px;}
+  .eyebrow{color:var(--altin);font-size:.74em;font-weight:800;letter-spacing:.24em;text-transform:uppercase;margin-bottom:16px;}
+  h1{color:var(--beyaz);font-size:clamp(1.6em,4vw,2.3em);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:36px;}
+  .govde p{color:var(--krom-acik);font-size:1.05em;margin-bottom:22px;}
+  .govde p b{color:var(--beyaz);}
+  .kapanis{border-left:3px solid var(--altin);padding-left:20px;margin:36px 0;font-style:italic;color:var(--altin-acik);font-size:1.05em;}
+  .ilgili{background:var(--panel);border:1px solid var(--cizgi);border-radius:14px;padding:22px 26px;margin-top:48px;}
+  .ilgili .i-eti{color:var(--dim);font-size:.74em;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;}
+  .ilgili a{color:var(--altin-acik);text-decoration:none;font-weight:700;}
+  .kutuphane-link{display:inline-block;margin-top:44px;color:var(--dim);text-decoration:none;font-size:.9em;font-weight:600;}
+  .kutuphane-link:hover{color:var(--krom-acik);}
+  footer{border-top:1px solid var(--cizgi);padding:32px 24px;text-align:center;color:var(--dim);font-size:.8em;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-ic">
+    <a class="logo" href="index.html" style="display:flex;align-items:center;gap:11px;"><img src="logo-rozet.png" alt="" width="34" height="34" style="border-radius:8px;display:block;">K3 <span>MATRIX</span></a>
+    <div class="nav-links">
+      <a href="felsefe.html" class="aktif">Felsefe</a>
+      <a href="aop.html">AOP Nedir</a>
+      <a href="ortaklik.html">Saha Programı</a>
+      <a class="nav-cta" href="olcum.html">Görüş Alanı Analizi</a>
+    </div>
+  </div>
+</nav>
+
+<div class="dar">
+  <div class="eyebrow">Doktrin 01</div>
+  <h1>Ölçüm Doktrini: Sistem karışmaz, ölçer.</h1>
+
+  <div class="govde">
+    <p>İyi bir sistem patron değildir; teraziye benzer. Terazi kimseye "bu kadar ye" demez — sadece tartar, gösterir. Karar hep sizindir.</p>
+    <p>Ama çoğu firma yönetim sistemini bir devriye gibi kurar: kuralı hatırlatan, kontrol eden, izin isteyen bir mekanizma. Bu, zamanla iki sonuç doğurur — ya sistem yorulur ve devre dışı bırakılır, ya da yönetici sistemi bir engel gibi görüp etrafından dolaşmayı öğrenir.</p>
+    <p>Ölçüm Doktrini bunun tam tersini önerir: sistem hiçbir şeyi engellemez, sadece kaydeder ve gösterir. Bir süre önerir — ama siz daha hızlı karar verebilirsiniz, sistem sadece <b>bu kararın normalden ne kadar saptığını</b> not düşer. Bir standart önerir — ama sahanızın deneyimi standardın üstüne çıkabilir, sistem sadece bu sapmayı unutulmaz kılar.</p>
+    <p>Bunun pratik sonucu şudur: bir yıl sonra dönüp baktığınızda, hangi kararların doğru çıktığını, hangilerinin sapmayla sonuçlandığını görebilirsiniz — çünkü hiçbiri kaybolmamıştır. Yönetim bilimi buna <b>"teşhis edici kontrol"</b> der: sistem, hatayı önlemek için değil, hatanın nerede ve neden oluştuğunu görünür kılmak için vardır.</p>
+  </div>
+
+  <div class="kapanis">Ölçülemeyen şey yönetilemez; sadece umut edilir. Ölçüm Doktrini, umuttan karara geçişin adıdır.</div>
+
+  <div class="ilgili">
+    <div class="i-eti">İlgili Ölçüm</div>
+    <a href="olcum.html">Görüş Alanı Analizi — operasyonunuzda ışık nereye düşüyor? →</a>
+  </div>
+
+  <a class="kutuphane-link" href="felsefe.html#doktrinler">← Doktrin Kütüphanesi'ne dön</a>
+</div>
+
+<footer>© 2026 K3 Matrix · k3matrix.com.tr — K3 Matrix hesaplar, bağlam sunar, ölçer. Karışmaz.</footer>
+</body>
+</html>
