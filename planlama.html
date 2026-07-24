@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="Planınız tahmine mi, hesaba mı dayanıyor? Firma, proje ve teslim katmanlarında planlamanın nerede tahmine dayandığını 9 soruda haritalayın.">
+<title>Planlama Analizi · K3 Matrix</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Planlama Analizi · K3 Matrix">
+<meta property="og:description" content="Planınız tahmine mi, hesaba mı dayanıyor? Firma, proje ve teslim katmanlarında planlamanın nerede tahmine dayandığını 9 soruda haritalayın.">
+<meta property="og:image" content="https://k3matrix.com.tr/logo-rozet.png">
+<meta property="og:url" content="https://k3matrix.com.tr/planlama.html">
+<style>
+  :root{
+    --bg:#0F1115; --bg2:#14181F; --panel:#171B22; --panel2:#1C212A;
+    --krom:#B8BCC4; --krom-acik:#D8DBE0; --beyaz:#F2F3F5;
+    --altin:#B9975B; --altin-acik:#D9BC85;
+    --cizgi:#262B34; --dim:#7E838D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--krom);line-height:1.65;font-size:16px;}
+  ::selection{background:var(--altin);color:var(--bg);}
+  nav{background:rgba(15,17,21,.92);border-bottom:1px solid var(--cizgi);}
+  .nav-ic{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
+  .logo{font-weight:800;letter-spacing:.18em;color:var(--beyaz);font-size:1em;text-decoration:none;display:flex;align-items:center;gap:11px;}
+  .logo img{border-radius:8px;display:block;}
+  .logo span{color:var(--altin);}
+  .nav-geri{color:var(--dim);text-decoration:none;font-size:.85em;font-weight:600;}
+  .nav-geri:hover{color:var(--krom);}
+
+  .sahne{max-width:760px;margin:0 auto;padding:56px 24px 90px;}
+  .eyebrow{color:var(--altin);font-size:.74em;font-weight:800;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px;}
+  h1{color:var(--beyaz);font-size:clamp(1.6em,4vw,2.4em);font-weight:800;letter-spacing:-.02em;line-height:1.16;margin-bottom:16px;}
+  .giris-sub{color:var(--krom);font-size:1.03em;max-width:620px;}
+  .giris-sub b{color:var(--beyaz);}
+  .meta{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 6px;}
+  .meta span{border:1px solid var(--cizgi);background:var(--panel);border-radius:22px;padding:7px 16px;font-size:.83em;font-weight:700;color:var(--krom-acik);}
+  .btn{display:inline-block;border:none;cursor:pointer;text-decoration:none;font-family:inherit;font-weight:700;font-size:.95em;border-radius:30px;padding:14px 32px;letter-spacing:.02em;transition:transform .15s;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-altin{background:var(--altin);color:var(--bg);}
+  .btn-cizgi{background:none;border:1.5px solid var(--krom);color:var(--krom-acik);}
+  .btn-altin-cizgi{background:none;border:1.5px solid var(--altin);color:var(--altin);}
+  .btn-altin-cizgi:disabled{cursor:default;opacity:.85;transform:none;}
+  .koruma{color:var(--dim);font-size:.88em;font-style:italic;margin-top:32px;border-top:1px solid var(--cizgi);padding-top:18px;}
+
+  .ilerleme{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .bar{flex:1;height:5px;background:var(--panel2);border-radius:3px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--altin);border-radius:3px;transition:width .3s;}
+  .adim-no{color:var(--dim);font-size:.82em;font-weight:700;letter-spacing:.08em;white-space:nowrap;}
+  .kat-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.26em;text-transform:uppercase;margin-bottom:14px;}
+  .soru{color:var(--beyaz);font-size:clamp(1.2em,2.7vw,1.5em);font-weight:800;letter-spacing:-.015em;line-height:1.35;margin-bottom:28px;}
+  .secenek{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--cizgi);border-radius:14px;padding:17px 21px;margin-bottom:13px;color:var(--krom-acik);font-family:inherit;font-size:.96em;line-height:1.5;cursor:pointer;transition:border-color .15s, background .15s, transform .1s;}
+  .secenek:hover{border-color:var(--altin);background:var(--panel2);transform:translateX(3px);}
+  .geri-btn{background:none;border:none;color:var(--dim);font-family:inherit;font-size:.85em;font-weight:600;cursor:pointer;margin-top:14px;padding:6px 0;}
+  .geri-btn:hover{color:var(--krom);}
+
+  .profil{background:linear-gradient(170deg,#1A1F29,#161B23);border:1px solid #3A3325;border-radius:18px;padding:32px 30px;margin:32px 0 24px;}
+  .profil .p-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.28em;text-transform:uppercase;margin-bottom:10px;}
+  .profil .p-ad{font-size:1.55em;font-weight:800;letter-spacing:-.015em;margin-bottom:12px;}
+  .profil .p-ad.kayip{color:#C98F82;} .profil .p-ad.risk{color:var(--altin-acik);} .profil .p-ad.kazanc{color:#7FBF9C;}
+  .profil p{font-size:.96em;color:var(--krom);}
+  .profil p b{color:var(--beyaz);}
+
+  .harita{margin:26px 0 6px;}
+  .h-baslik{color:var(--beyaz);font-weight:800;font-size:1.05em;margin-bottom:14px;}
+  .durak-satir{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--panel);border:1px solid var(--cizgi);border-radius:12px;padding:14px 18px;margin-bottom:10px;}
+  .durak-satir .d-ad{font-weight:700;font-size:.94em;color:var(--krom-acik);}
+  .durak-satir .d-yorum{color:var(--dim);font-size:.8em;margin-top:3px;line-height:1.45;}
+  .durum{font-size:.78em;font-weight:800;letter-spacing:.05em;border-radius:20px;padding:6px 14px;white-space:nowrap;}
+  .durum.kazanc{background:rgba(78,138,106,.15);color:#7FBF9C;border:1px solid rgba(78,138,106,.4);}
+  .durum.risk{background:rgba(185,151,91,.12);color:var(--altin-acik);border:1px solid rgba(185,151,91,.4);}
+  .durum.kayip{background:rgba(138,90,80,.15);color:#C98F82;border:1px solid rgba(138,90,80,.45);}
+
+  .okuma{margin:26px 0;}
+  .okuma .blok{border-left:3px solid var(--altin);padding:4px 0 4px 18px;margin-bottom:18px;}
+  .okuma .blok .b-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.24em;text-transform:uppercase;margin-bottom:5px;}
+  .okuma .blok p{color:var(--krom);font-size:.95em;}
+  .okuma .blok p b{color:var(--beyaz);}
+  .kopru{color:var(--dim);font-size:.9em;font-style:italic;margin:22px 0;}
+  .paylas-alan{text-align:center;margin:26px 0;}
+  .sonuc-cta{background:var(--panel);border:1px solid var(--cizgi);border-radius:16px;padding:28px;text-align:center;margin-top:30px;}
+  .sonuc-cta .c-baslik{color:var(--beyaz);font-weight:800;font-size:1.1em;margin-bottom:8px;}
+  .sonuc-cta p{color:var(--krom);font-size:.92em;max-width:480px;margin:0 auto 20px;}
+  .gizli{display:none;}
+  footer{border-top:1px solid var(--cizgi);padding:32px 24px;text-align:center;color:var(--dim);font-size:.8em;}
+
+  /* ── giriş dekoratif grafiği: planlanan/gerçekleşen ayrışan S-eğrisi ── */
+  .plan-etik{text-align:center;color:var(--dim);font-size:.78em;font-style:italic;margin:32px 0 10px;}
+  .plan-panel{background:radial-gradient(ellipse at 50% 45%, #161A21 0%, #0F1115 75%);border:1px solid var(--cizgi);border-radius:16px;padding:22px 18px 14px;max-width:560px;margin:0 auto;}
+  .plan-panel svg{width:100%;height:auto;display:block;}
+  @media (prefers-reduced-motion: reduce){ .plan-panel svg *{animation:none!important;} }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Planlama Analizi",
+  "description": "Planınız tahmine mi, hesaba mı dayanıyor? Firma, proje ve teslim katmanlarında planlamanın nerede tahmine dayandığını 9 soruda haritalayın.",
+  "url": "https://k3matrix.com.tr/planlama.html",
+  "inLanguage": "tr",
+  "applicationCategory": "BusinessApplication"
+}
+</script>
+</head>
+<body>
+
+<nav>
+  <div class="nav-ic">
+    <a class="logo" href="index.html"><img src="logo-rozet.png" alt="" width="34" height="34">K3 <span>MATRIX</span></a>
+    <a class="nav-geri" href="index.html">← Ana Sayfa</a>
+  </div>
+</nav>
+
+<!-- ═══ GİRİŞ ═══ -->
+<div class="sahne" id="sahne-giris">
+  <div class="eyebrow">Planlama Analizi</div>
+  <h1>Planınız tahmine mi,<br>hesaba mı dayanıyor?</h1>
+  <p class="giris-sub">Planlama tek bir katmanda kalmaz — <b>firma, proje ve teslim</b> arasında sızar. Bu analiz, planınızın nerede tahmine, nerede hesaba dayandığını üç katmanda haritalar.</p>
+  <div class="meta">
+    <span>9 soru</span><span>≈ 2 dakika</span><span>3 katman</span><span>Kayıt istemez · veri saklanmaz</span>
+  </div>
+  <p class="giris-sub" style="font-size:.9em;color:var(--dim);margin:14px 0 28px;">Her seçenek meşru bir çalışma biçimidir — doğru ya da yanlış cevap yok; sadece planın bugün izlediği yol var.</p>
+  <button class="btn btn-altin" onclick="basla()">Haritalamaya Başla</button>
+
+  <div class="plan-etik">Planlanan ile gerçekleşen, nerede ayrışıyor?</div>
+  <div class="plan-panel" aria-hidden="true">
+    <svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Planlanan ve gerçekleşen iki çizgi, bir noktada ayrışıyor — ayrışma noktası işaretli">
+      <line x1="20" y1="168" x2="620" y2="168" stroke="#262B34" stroke-width="1.5" stroke-dasharray="3 8"></line>
+      <path d="M30,150 C200,55 400,42 610,32" fill="none" stroke="#7E838D" stroke-width="2" stroke-dasharray="5 6"></path>
+      <path d="M30,150 C150,85 250,64 300,58 C400,90 520,128 610,120" fill="none" stroke="#B9975B" stroke-width="2.5"></path>
+      <line x1="300" y1="58" x2="300" y2="168" stroke="#B9975B" stroke-width="1.2" stroke-dasharray="2 6" opacity="0.6"></line>
+      <circle cx="300" cy="58" r="10" fill="none" stroke="#B9975B" stroke-width="1.6">
+        <animate attributeName="r" values="8;14;8" dur="3s" repeatCount="indefinite"></animate>
+        <animate attributeName="opacity" values="0.8;0.15;0.8" dur="3s" repeatCount="indefinite"></animate>
+      </circle>
+      <circle cx="300" cy="58" r="4.5" fill="#B9975B"></circle>
+      <text x="300" y="42" fill="#B9975B" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="0.5">AYRIŞMA NOKTASI</text>
+      <text x="614" y="26" fill="#B8BCC4" font-size="12" font-weight="700" text-anchor="end" letter-spacing="0.5">PLANLANAN</text>
+      <text x="614" y="112" fill="#B9975B" font-size="12" font-weight="800" text-anchor="end" letter-spacing="0.5">GERÇEKLEŞEN</text>
+    </svg>
+  </div>
+
+  <p class="koruma">Makas bir yetersizlik göstergesi değildir; planın henüz hesaba değil tahmine dayandığının doğal sonucudur.</p>
+</div>
+
+<!-- ═══ SORU ═══ -->
+<div class="sahne gizli" id="sahne-soru">
+  <div class="ilerleme">
+    <div class="bar"><i id="bar-ic" style="width:0%;"></i></div>
+    <div class="adim-no" id="adim-no">SORU 1 / 9</div>
+  </div>
+  <div class="kat-eti" id="kat-eti"></div>
+  <div class="soru" id="soru-metin"></div>
+  <div id="secenekler"></div>
+  <button class="geri-btn gizli" id="geri" onclick="geri()">← Önceki soruya dön</button>
+</div>
+
+<!-- ═══ SONUÇ ═══ -->
+<div class="sahne gizli" id="sahne-sonuc">
+  <div class="eyebrow">Planlama Haritanız</div>
+  <h1>Haritanız hazır.</h1>
+
+  <div class="profil">
+    <div class="p-eti">Genel Profil</div>
+    <div class="p-ad" id="profil-ad"></div>
+    <p id="profil-metin"></p>
+  </div>
+
+  <div class="harita">
+    <div class="h-baslik">Üç katmanda planlama durumu</div>
+    <div id="durak-liste"></div>
+  </div>
+
+  <div class="okuma">
+    <div class="blok">
+      <div class="b-eti" id="guclu-eti"></div>
+      <p id="guclu-metin"></p>
+    </div>
+    <div class="blok">
+      <div class="b-eti" id="okuma-eti"></div>
+      <p id="okuma-metin"></p>
+    </div>
+  </div>
+
+  <p class="kopru">Bu yolculuğun yönetim bilimindeki adı: <b style="color:var(--krom-acik);">reaktiften proaktife geçiş.</b></p>
+  <p class="kopru" style="margin-top:-14px;">Planlamak ≠ tahmin etmek.</p>
+
+  <div class="paylas-alan">
+    <button class="btn btn-altin-cizgi" id="paylas-btn" onclick="paylas()">Sonucu Paylaş</button>
+  </div>
+
+  <p style="text-align:center;color:var(--dim);font-size:.82em;margin:0 auto 16px;">Diğer analizlerimiz: <a href="analizler.html" style="color:var(--altin);text-decoration:none;font-weight:600;">Tümünü görün →</a> · <a href="kazanc-sizintisi.html" style="color:var(--altin);text-decoration:none;font-weight:600;">Kazanç Sızıntısı (3 dk) →</a> · <a href="yatirim.html" style="color:var(--altin);text-decoration:none;font-weight:600;">Yatırım Kararı (2 dk) →</a> · <a href="tedarik-gucu.html" style="color:var(--altin);text-decoration:none;font-weight:600;">Tedarik Gücü (2 dk) →</a></p>
+
+  <div class="sonuc-cta">
+    <div class="c-baslik">Haritayı birlikte okuyalım mı?</div>
+    <p>Detaylı değerlendirme ve size özel yol haritası için tanışalım — Kurucu Saha Programı kontenjanı sınırlıdır.</p>
+    <a class="btn btn-altin" href="ortaklik.html">Tanışma Talebi Bırak</a>
+    <div style="margin-top:14px;"><button class="btn btn-cizgi" onclick="yeniden()" style="font-size:.85em;padding:11px 26px;">Analizi Yeniden Yap</button></div>
+  </div>
+</div>
+
+<footer>© 2026 K3 Matrix · k3matrix.com.tr — K3 Matrix hesaplar, bağlam sunar, ölçer. Karışmaz. <div class="foot-sosyal" style="display:inline-flex;gap:14px;align-items:center;margin-left:12px;vertical-align:middle;"><a href="https://instagram.com/k3matrix" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="color:var(--dim);display:inline-flex;align-items:center;transition:color .15s;" onmouseover="this.style.color='var(--altin)'" onmouseout="this.style.color='var(--dim)'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none"></circle></svg></a><a href="https://linkedin.com/company/k3matrix" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="color:var(--dim);display:inline-flex;align-items:center;transition:color .15s;" onmouseover="this.style.color='var(--altin)'" onmouseout="this.style.color='var(--dim)'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"></rect><line x1="7.5" y1="10" x2="7.5" y2="17"></line><circle cx="7.5" cy="6.7" r="0.6" fill="currentColor" stroke="none"></circle><path d="M11.5 17v-4.5c0-1.5 1-2.5 2.3-2.5 1.3 0 2.2 1 2.2 2.5V17"></path><line x1="11.5" y1="10" x2="11.5" y2="17"></line></svg></a></div></footer>
+
+<script>
+// Planlama Analizi · 3 katman × 9 soru · puanlar ekranda görünmez
+const KATEGORI = {
+  FR:{ad:"🏢 Firma"}, PJ:{ad:"📁 Proje"}, TL:{ad:"🚚 Teslim"}
+};
+
+const SORULAR = [
+ {k:"FR", s:"Birden fazla proje aynı anda yürütülürken, kaynaklar tek bir yerden mi planlanıyor, yoksa her proje kendi başına mı?",
+  o:[["Tek bir yerden, kapasiteye göre",10],["Kısmen, büyük projelerde",5],["Her proje kendi başına",0]]},
+ {k:"FR", s:"Yıllık/dönemsel bir kapasite planı var mı, yoksa projeler geldikçe mi kaynak ayarlanıyor?",
+  o:[["Evet, dönemsel kapasite planı var",10],["Kabaca var, sık güncellenmiyor",5],["Yok, projeler geldikçe ayarlanıyor",0]]},
+ {k:"FR", s:"Bir projedeki gecikme, diğer projelerin planını etkilediğinde bu önceden görülebiliyor mu?",
+  o:[["Evet, anında görülüyor",10],["Bazen, büyük gecikmelerde",5],["Hayır, etkisi sonradan ortaya çıkıyor",0]]},
+ {k:"PJ", s:"Proje başlamadan önce yazılı bir zaman/bütçe/tedarik planı hazırlanıyor mu?",
+  o:[["Evet, detaylı ve yazılı",10],["Kabaca, kısmen yazılı",5],["Hayır, deneyimle yürütülüyor",0]]},
+ {k:"PJ", s:"Plan ile gerçekleşen arasındaki fark hangi aşamada ilk fark ediliyor?",
+  o:[["Oluştuğu an",10],["Ara kontrollerde",5],["Proje sonunda/kapanışta",0]]},
+ {k:"PJ", s:"Plan, proje ilerledikçe güncellenen canlı bir şey mi, yoksa başta yapılıp bir daha bakılmayan bir belge mi?",
+  o:[["Canlı, sürekli güncelleniyor",10],["Bazen güncelleniyor",5],["Başta yapılıyor, bir daha bakılmıyor",0]]},
+ {k:"TL", s:"Teslim tarihi, planlama sürecindeki verilerle mi oluşturuluyor, yoksa ayrı bir süreçte mi belirleniyor?",
+  o:[["Planlama verisinden doğuyor",10],["Kısmen ilişkili",5],["Tamamen ayrı belirleniyor",0]]},
+ {k:"TL", s:"Saha ilerlemesi ile teslim tarihi arasındaki bağlantı ne sıklıkla gözden geçiriliyor?",
+  o:[["Düzenli, sık aralıklarla",10],["Ara sıra",5],["Nadiren/hiç",0]]},
+ {k:"TL", s:"Bir projeden çıkan zamanlama dersi, bir sonraki plana nasıl aktarılıyor?",
+  o:[["Sistemli olarak kayda geçiyor",10],["Bazen hatırlanıyor",5],["Aktarılmıyor, her proje sıfırdan",0]]}
+];
+
+const PROFIL = [
+ {min:0,max:39,ad:"Geniş Makas",cls:"kayip",
+  m:"Planlanan ile gerçekleşen arasındaki makas geniş açık — plan bir tahmin olmaktan öteye geçmiyor. Bu bir beceri eksikliği değil; henüz hiçbir katmanın birbirine bağlanmadığının doğal sonucu."},
+ {min:40,max:75,ad:"Daralan Makas",cls:"risk",
+  m:"Bazı katmanlarda plan hesaba, bazılarında hâlâ tahmine dayanıyor. Makas kapanmaya başlamış ama tam kapanmamış — sıradaki adım, kalan katmanları da hesaba bağlamak."},
+ {min:76,max:100,ad:"Kapalı Makas",cls:"kazanc",
+  m:"Planlanan ile gerçekleşen birbirine yakın seyrediyor; sapma oluştuğu an görülüyor, ders bir sonraki plana taşınıyor. Plan burada bir tahmin değil, bir yönetim aracı."}
+];
+
+const YORUM = {
+ FR:{u:"Kaynaklar tek bir yerden, kapasite planına göre dağıtılıyor — bir projedeki gecikme diğerini etkilemeden önce görülüyor.",
+     y:"Kaynak planlaması kısmen merkezi — bazı projeler arası etkileşim geç fark ediliyor.",
+     k:"Her proje kendi başına kaynak buluyor; bir projedeki gecikmenin diğerini nasıl etkilediği önceden görülmüyor."},
+ PJ:{u:"Yazılı bir plan var ve proje ilerledikçe güncelleniyor; sapma erken fark ediliyor.",
+     y:"Plan var ama canlı değil; sapma genelde ilerleyen aşamalarda fark ediliyor.",
+     k:"Yazılı bir plan yok ya da başta yapılıp bir daha bakılmıyor; sapma geç fark ediliyor."},
+ TL:{u:"Teslim tarihi planlama verisinden doğuyor, düzenli gözden geçiriliyor, dersler bir sonraki plana aktarılıyor.",
+     y:"Bağlantı kısmen var; bazen gözden geçiriliyor, dersler bazen aktarılıyor.",
+     k:"Teslim tarihi ayrı bir süreçte belirleniyor; bağlantı nadiren gözden geçiriliyor, dersler aktarılmıyor."}
+};
+
+const KAPAT = {
+ FR:"<b>Firma.</b> Kaynakların merkezi planlanması, bir projedeki gecikmenin diğerine sıçramasını önler.",
+ PJ:"<b>Proje.</b> Planın canlı tutulması, sapmayı oluştuğu an yakalamanın tek yolu.",
+ TL:"<b>Teslim.</b> Teslim tarihini planlama verisine bağlamak, sözün şansa değil hesaba dayanmasını sağlar."
+};
+
+const GUCLU = {
+ FR:"Kaynaklarınız tek merkezden yönetiliyor — bir projedeki sapma diğerini şaşırtmıyor.",
+ PJ:"Planınız canlı bir araç — sapma oluştuğu an görülüyor.",
+ TL:"Teslim tarihiniz gerçek veriye dayanıyor, dersler bir sonraki projeye taşınıyor."
+};
+
+const HEPSI_GENIS_MAKAS_OZEL = "Bugün plan bir tahminden ibaret, bir yönetim aracı değil. Bu bir beceri eksikliği değil — henüz hiçbir katmanın birbirine bağlanmadığının doğal sonucu.";
+const HEPSI_KAPALI_MAKAS_OZEL = "Sıradaki adım artık 'planı nasıl kurarız' değil, 'bu disiplini yeni katmanlara nasıl yayarız.'";
+
+let idx=0, cevaplar=new Array(SORULAR.length).fill(null);
+
+function goster(id){
+  ["sahne-giris","sahne-soru","sahne-sonuc"].forEach(s=>document.getElementById(s).classList.add("gizli"));
+  document.getElementById(id).classList.remove("gizli");
+  window.scrollTo({top:0});
+}
+function basla(){ idx=0; cevaplar.fill(null); soruCiz(); goster("sahne-soru"); }
+function soruCiz(){
+  const q=SORULAR[idx];
+  document.getElementById("adim-no").textContent="SORU "+(idx+1)+" / "+SORULAR.length;
+  document.getElementById("bar-ic").style.width=(idx/SORULAR.length*100)+"%";
+  document.getElementById("kat-eti").textContent=KATEGORI[q.k].ad;
+  document.getElementById("soru-metin").textContent=q.s;
+  const kutu=document.getElementById("secenekler"); kutu.innerHTML="";
+  q.o.forEach(op=>{
+    const b=document.createElement("button");
+    b.className="secenek"; b.textContent=op[0];
+    b.onclick=()=>{ cevaplar[idx]=op[1]; ileri(); };
+    kutu.appendChild(b);
+  });
+  document.getElementById("geri").classList.toggle("gizli", idx===0);
+}
+function ileri(){ if(idx<SORULAR.length-1){ idx++; soruCiz(); } else { sonuc(); } }
+function geri(){ if(idx>0){ idx--; soruCiz(); } }
+function yeniden(){ basla(); }
+
+let sonProfil=null, sonKatman=null, hepsiKapaliMakas=false;
+function sonuc(){
+  const kats=Object.keys(KATEGORI);
+  const durakPuan={}, durakMax={};
+  kats.forEach(k=>{durakPuan[k]=0; durakMax[k]=0;});
+  SORULAR.forEach((q,i)=>{ durakPuan[q.k]+=cevaplar[i]; durakMax[q.k]+=10; });
+
+  const oranlar={};
+  kats.forEach(k=>{ oranlar[k]=Math.round((durakPuan[k]/durakMax[k])*100); });
+
+  const toplamPuan=cevaplar.reduce((a,b)=>a+b,0);
+  const toplamMax=SORULAR.length*10;
+  const yuzde=Math.round((toplamPuan/toplamMax)*100);
+  const prof=PROFIL.find(p=>yuzde>=p.min && yuzde<=p.max)||PROFIL[1];
+  sonProfil=prof;
+
+  const ad=document.getElementById("profil-ad");
+  ad.textContent=prof.ad; ad.className="p-ad "+prof.cls;
+  document.getElementById("profil-metin").textContent=prof.m;
+
+  const liste=document.getElementById("durak-liste"); liste.innerHTML="";
+  kats.forEach(k=>{
+    const o=oranlar[k];
+    const durum = o>=70?"kazanc":(o>=40?"risk":"kayip");
+    const durumTxt = o>=70?"✓ HESAP":(o>=40?"◐ YARI HESAP":"● TAHMİN");
+    const yorumTxt = o>=70?YORUM[k].u:(o>=40?YORUM[k].y:YORUM[k].k);
+    const satir=document.createElement("div");
+    satir.className="durak-satir";
+    satir.innerHTML=`<div><div class="d-ad">${KATEGORI[k].ad}</div><div class="d-yorum">${yorumTxt}</div></div><span class="durum ${durum}">${durumTxt}</span>`;
+    liste.appendChild(satir);
+  });
+
+  hepsiKapaliMakas = kats.every(k=>oranlar[k]>=70);
+  const hepsiGenisMakas = kats.every(k=>oranlar[k]<40);
+  let enG=kats[0], enZ=kats[0];
+  kats.forEach(k=>{
+    if(oranlar[k]>oranlar[enG]) enG=k;
+    if(oranlar[k]<oranlar[enZ]) enZ=k;
+  });
+  sonKatman=enZ;
+
+  const gEti=document.getElementById("guclu-eti"), gMet=document.getElementById("guclu-metin");
+  if(hepsiGenisMakas){
+    gEti.textContent="Haritanın dürüst okuması";
+    gMet.innerHTML=HEPSI_GENIS_MAKAS_OZEL;
+  } else if(oranlar[enG]>=70){
+    gEti.textContent="En güçlü katmanınız";
+    gMet.innerHTML=`<b>${KATEGORI[enG].ad}.</b> ${GUCLU[enG]}`;
+  } else {
+    gEti.textContent="Göreli en aydınlık katmanınız";
+    gMet.innerHTML=`<b>${KATEGORI[enG].ad}.</b> Burada kısmi disiplin zaten var — tam değil ama var. Buradaki alışkanlık, planlamanın diğer katmanlara taşınmasında çekirdek olarak kullanılabilir.`;
+  }
+
+  const eti=document.getElementById("okuma-eti"), met=document.getElementById("okuma-metin");
+  if(hepsiKapaliMakas){
+    eti.textContent="Yayılma Potansiyeli";
+    met.innerHTML=HEPSI_KAPALI_MAKAS_OZEL;
+  } else {
+    eti.textContent="İlk Kapatılacak Nokta";
+    met.innerHTML=KAPAT[enZ];
+  }
+
+  goster("sahne-sonuc");
+}
+
+function paylas(){
+  const url=location.origin+location.pathname;
+  const katmanAd=KATEGORI[sonKatman].ad.replace(/^\S+\s+/,"");
+  const metin = hepsiKapaliMakas
+    ? 'Planlama Analizimi yaptım: '+sonProfil.ad+' — haritamda açık nokta çıkmadı. Sen de 2 dakikada haritala: '+url
+    : 'Planlama Analizimi yaptım: '+sonProfil.ad+'. İlk kapatılacak nokta: '+katmanAd+'. Sen de 2 dakikada haritala: '+url;
+  if(navigator.share){ navigator.share({text:metin}).catch(()=>{}); }
+  else{
+    const kopyala=t=>{ if(navigator.clipboard){ return navigator.clipboard.writeText(t); }
+      const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); document.body.removeChild(ta); return Promise.resolve(); };
+    kopyala(metin).then(()=>{
+      const b=document.getElementById('paylas-btn'); const eski=b.textContent;
+      b.textContent='Kopyalandı ✓'; setTimeout(()=>{ b.textContent=eski; },2200);
+    });
+  }
+}
+</script>
+
+
+</body></html>
