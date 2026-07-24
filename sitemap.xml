@@ -46,6 +46,16 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://k3matrix.com.tr/zaman.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://k3matrix.com.tr/erken-gorus.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://k3matrix.com.tr/kazanc-sizintisi.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

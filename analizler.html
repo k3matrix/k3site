@@ -5,11 +5,11 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="description" content="İnşaat operasyonunuzu altı farklı açıdan ölçen kısa analizler: görüş alanı, uyuyan sermaye, süreklilik, kazanç sızıntısı, yatırım kararı, tedarik gücü. Kayıt istemez.">
+<meta name="description" content="İnşaat operasyonunuzu sekiz farklı açıdan ölçen kısa analizler: görüş alanı, uyuyan sermaye, süreklilik, zaman, erken görüş, kazanç sızıntısı, yatırım kararı, tedarik gücü. Kayıt istemez.">
 <title>Analizler · K3 Matrix</title>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Analizler · K3 Matrix">
-<meta property="og:description" content="İnşaat operasyonunuzu altı farklı açıdan ölçen kısa analizler: görüş alanı, uyuyan sermaye, süreklilik, kazanç sızıntısı, yatırım kararı, tedarik gücü. Kayıt istemez.">
+<meta property="og:description" content="İnşaat operasyonunuzu sekiz farklı açıdan ölçen kısa analizler: görüş alanı, uyuyan sermaye, süreklilik, zaman, erken görüş, kazanç sızıntısı, yatırım kararı, tedarik gücü. Kayıt istemez.">
 <meta property="og:image" content="https://k3matrix.com.tr/logo-rozet.png">
 <meta property="og:url" content="https://k3matrix.com.tr/analizler.html">
 <style>
@@ -50,6 +50,8 @@
   .olcum-grup:first-child{margin-top:0;}
   .olcum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:34px;}
   @media(max-width:900px){.olcum-grid{grid-template-columns:1fr;}}
+  .olcum-grid.grid-5{display:flex;flex-wrap:wrap;justify-content:center;}
+  .olcum-grid.grid-5 .olcum-kart{flex:1 1 260px;max-width:320px;}
   .olcum-kart{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--cizgi);border-radius:16px;padding:28px 26px;text-decoration:none;transition:border-color .15s, background .15s, transform .15s;}
   .olcum-kart:hover{border-color:var(--altin);background:var(--panel2);transform:translateY(-3px);}
   .olcum-kart .ok-ikon{font-size:1.3em;margin-bottom:14px;}
@@ -71,6 +73,8 @@
     {"@type":"WebApplication","name":"Operasyonel Görüş Alanı Analizi","url":"https://k3matrix.com.tr/olcum.html"},
     {"@type":"WebApplication","name":"Uyuyan Sermaye Analizi","url":"https://k3matrix.com.tr/sermaye.html"},
     {"@type":"WebApplication","name":"Süreklilik Analizi","url":"https://k3matrix.com.tr/sureklilik.html"},
+    {"@type":"WebApplication","name":"Zaman Analizi","url":"https://k3matrix.com.tr/zaman.html"},
+    {"@type":"WebApplication","name":"Erken Görüş Analizi","url":"https://k3matrix.com.tr/erken-gorus.html"},
     {"@type":"WebApplication","name":"Kazanç Sızıntısı Analizi","url":"https://k3matrix.com.tr/kazanc-sizintisi.html"},
     {"@type":"WebApplication","name":"Yatırım Kararı Analizi","url":"https://k3matrix.com.tr/yatirim.html"},
     {"@type":"WebApplication","name":"Tedarik Gücü Analizi","url":"https://k3matrix.com.tr/tedarik-gucu.html"}
@@ -97,7 +101,7 @@
   <div class="dar">
     <div class="eyebrow">Analizler</div>
     <h1>Tüm ölçüm araçlarımız,<br>tek yerde.</h1>
-    <p class="buyuk-p">Operasyonunuzun farklı katmanlarını, farklı açılardan haritalayan altı kısa analiz. Hepsi kayıt istemez, hepsi birkaç dakikada biter — hangisinden başlayacağınız size kalmış.</p>
+    <p class="buyuk-p">Operasyonunuzun farklı katmanlarını, farklı açılardan haritalayan sekiz kısa analiz. Hepsi kayıt istemez, hepsi birkaç dakikada biter — hangisinden başlayacağınız size kalmış.</p>
   </div>
 </header>
 
@@ -106,10 +110,10 @@
   <div class="genis">
     <div class="olcum-grup">
       <div class="eyebrow">Ölçüm Ailesi</div>
-      <h2>Işığın bugün nerede olduğunu haritalayan üç analiz.</h2>
-      <p class="sec-sub">Görünürlük, sermaye ve süreklilik açısından operasyonunuzun bugünkü durumu.</p>
+      <h2>Işığın bugün nerede olduğunu haritalayan beş analiz.</h2>
+      <p class="sec-sub">Görünürlük, sermaye, süreklilik, zaman ve erken görüş açısından operasyonunuzun bugünkü durumu.</p>
 
-      <div class="olcum-grid">
+      <div class="olcum-grid grid-5">
         <a class="olcum-kart" href="olcum.html">
           <div class="ok-ikon">🔦</div>
           <div class="ok-ad">Görüş Alanı Analizi</div>
@@ -127,6 +131,18 @@
           <div class="ok-ad">Süreklilik Analizi</div>
           <div class="ok-soru">Kişi değişince, süreç de mi duruyor?</div>
           <div class="ok-meta"><span>9 soru · 2 dk</span><span class="ok-git">Başla →</span></div>
+        </a>
+        <a class="olcum-kart" href="zaman.html">
+          <div class="ok-ikon">⏱️</div>
+          <div class="ok-ad">Zaman Analizi</div>
+          <div class="ok-soru">Hızlı ulaşan bilgi, kalıcı bir kayda dönüşüyor mu?</div>
+          <div class="ok-meta"><span>3 soru · 1 dk</span><span class="ok-git">Başla →</span></div>
+        </a>
+        <a class="olcum-kart" href="erken-gorus.html">
+          <div class="ok-ikon">⚠️</div>
+          <div class="ok-ad">Erken Görüş Analizi</div>
+          <div class="ok-soru">Geç fark etmenin gerçek maliyeti nedir?</div>
+          <div class="ok-meta"><span>3 soru · 1 dk</span><span class="ok-git">Başla →</span></div>
         </a>
       </div>
     </div>

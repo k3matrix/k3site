@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="tr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="description" content="Geç fark etmenin gerçek maliyeti nedir? 3 soruluk bu mini analiz, sapmaların ne zaman fark edildiğini ve bunun bedelini haritalar.">
+<title>Erken Görüş Analizi · K3 Matrix</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Erken Görüş Analizi · K3 Matrix">
+<meta property="og:description" content="Geç fark etmenin gerçek maliyeti nedir? 3 soruluk bu mini analiz, sapmaların ne zaman fark edildiğini ve bunun bedelini haritalar.">
+<meta property="og:image" content="https://k3matrix.com.tr/logo-rozet.png">
+<meta property="og:url" content="https://k3matrix.com.tr/erken-gorus.html">
+<style>
+  :root{
+    --bg:#0F1115; --bg2:#14181F; --panel:#171B22; --panel2:#1C212A;
+    --krom:#B8BCC4; --krom-acik:#D8DBE0; --beyaz:#F2F3F5;
+    --altin:#B9975B; --altin-acik:#D9BC85;
+    --cizgi:#262B34; --dim:#7E838D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--krom);line-height:1.65;font-size:16px;}
+  ::selection{background:var(--altin);color:var(--bg);}
+  nav{background:rgba(15,17,21,.92);border-bottom:1px solid var(--cizgi);}
+  .nav-ic{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 24px;}
+  .logo{font-weight:800;letter-spacing:.18em;color:var(--beyaz);font-size:1em;text-decoration:none;display:flex;align-items:center;gap:11px;}
+  .logo img{border-radius:8px;display:block;}
+  .logo span{color:var(--altin);}
+  .nav-geri{color:var(--dim);text-decoration:none;font-size:.85em;font-weight:600;}
+  .nav-geri:hover{color:var(--krom);}
+
+  .sahne{max-width:680px;margin:0 auto;padding:56px 24px 90px;}
+  .eyebrow{color:var(--altin);font-size:.74em;font-weight:800;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px;}
+  h1{color:var(--beyaz);font-size:clamp(1.6em,4vw,2.3em);font-weight:800;letter-spacing:-.02em;line-height:1.16;margin-bottom:16px;}
+  .giris-sub{color:var(--krom);font-size:1.03em;max-width:600px;}
+  .giris-sub b{color:var(--beyaz);}
+  .meta{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 6px;}
+  .meta span{border:1px solid var(--cizgi);background:var(--panel);border-radius:22px;padding:7px 16px;font-size:.83em;font-weight:700;color:var(--krom-acik);}
+  .btn{display:inline-block;border:none;cursor:pointer;text-decoration:none;font-family:inherit;font-weight:700;font-size:.95em;border-radius:30px;padding:14px 32px;letter-spacing:.02em;transition:transform .15s;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn-altin{background:var(--altin);color:var(--bg);}
+  .btn-cizgi{background:none;border:1.5px solid var(--krom);color:var(--krom-acik);}
+  .btn-altin-cizgi{background:none;border:1.5px solid var(--altin);color:var(--altin);}
+  .koruma{color:var(--dim);font-size:.88em;font-style:italic;margin-top:32px;border-top:1px solid var(--cizgi);padding-top:18px;}
+
+  .ilerleme{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+  .bar{flex:1;height:5px;background:var(--panel2);border-radius:3px;overflow:hidden;}
+  .bar i{display:block;height:100%;background:var(--altin);border-radius:3px;transition:width .3s;}
+  .adim-no{color:var(--dim);font-size:.82em;font-weight:700;letter-spacing:.08em;white-space:nowrap;}
+  .soru{color:var(--beyaz);font-size:clamp(1.2em,2.7vw,1.55em);font-weight:800;letter-spacing:-.015em;line-height:1.35;margin-bottom:28px;}
+  .secenek{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--cizgi);border-radius:14px;padding:17px 21px;margin-bottom:13px;color:var(--krom-acik);font-family:inherit;font-size:.96em;line-height:1.5;cursor:pointer;transition:border-color .15s, background .15s, transform .1s;}
+  .secenek:hover{border-color:var(--altin);background:var(--panel2);transform:translateX(3px);}
+  .geri-btn{background:none;border:none;color:var(--dim);font-family:inherit;font-size:.85em;font-weight:600;cursor:pointer;margin-top:14px;padding:6px 0;}
+  .geri-btn:hover{color:var(--krom);}
+
+  .profil{background:linear-gradient(170deg,#1A1F29,#161B23);border:1px solid #3A3325;border-radius:18px;padding:32px 30px;margin:32px 0 24px;}
+  .profil .p-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.28em;text-transform:uppercase;margin-bottom:10px;}
+  .profil .p-ad{font-size:1.55em;font-weight:800;letter-spacing:-.015em;margin-bottom:12px;}
+  .profil .p-ad.kesintili{color:#C98F82;} .profil .p-ad.yari{color:var(--altin-acik);} .profil .p-ad.surekli{color:#7FBF9C;}
+  .profil p{font-size:.96em;color:var(--krom);}
+  .profil p b{color:var(--beyaz);}
+
+  .kopru{color:var(--dim);font-size:.95em;font-style:italic;margin:24px 0;}
+  .paylas-sar{text-align:center;margin:32px 0 4px;}
+  .sonuc-cta{background:var(--panel);border:1px solid var(--cizgi);border-radius:16px;padding:28px;text-align:center;margin-top:22px;}
+  .sonuc-cta .c-baslik{color:var(--beyaz);font-weight:800;font-size:1.1em;margin-bottom:8px;}
+  .sonuc-cta p{color:var(--krom);font-size:.92em;max-width:480px;margin:0 auto 20px;}
+  .gizli{display:none;}
+  footer{border-top:1px solid var(--cizgi);padding:32px 24px;text-align:center;color:var(--dim);font-size:.8em;}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Erken Görüş Analizi",
+  "description": "Geç fark etmenin gerçek maliyeti nedir? 3 soruluk bu mini analiz, sapmaların ne zaman fark edildiğini ve bunun bedelini haritalar.",
+  "url": "https://k3matrix.com.tr/erken-gorus.html",
+  "inLanguage": "tr",
+  "applicationCategory": "BusinessApplication"
+}
+</script>
+</head>
+<body>
+
+<nav>
+  <div class="nav-ic">
+    <a class="logo" href="index.html"><img src="logo-rozet.png" alt="" width="34" height="34">K3 <span>MATRIX</span></a>
+    <a class="nav-geri" href="index.html">← Ana Sayfa</a>
+  </div>
+</nav>
+
+<!-- ═══ GİRİŞ ═══ -->
+<div class="sahne" id="sahne-giris">
+  <div class="eyebrow">Erken Görüş Analizi</div>
+  <h1>Geç fark etmenin<br>gerçek maliyeti nedir?</h1>
+  <p class="giris-sub">Bir sapma ne kadar geç fark edilirse, düzeltme o kadar pahalıya gelir. Bu mini analiz, sapmaların bugün <b>ne zaman</b> fark edildiğini ve bunun bedelini üç soruda haritalar.</p>
+  <div class="meta">
+    <span>3 soru</span><span>≈ 1 dakika</span><span>Kayıt istemez · veri saklanmaz</span>
+  </div>
+  <p class="giris-sub" style="font-size:.9em;color:var(--dim);margin:14px 0 28px;">Doğru ya da yanlış cevap yok; sadece sapmanın bugün ne zaman görüldüğü var.</p>
+  <button class="btn btn-altin" onclick="basla()">Haritalamaya Başla</button>
+
+  <p class="koruma">Geç görmek bir dikkatsizlik değildir; sinyalin henüz kayda bağlanmadığının doğal sonucudur.</p>
+</div>
+
+<!-- ═══ SORU ═══ -->
+<div class="sahne gizli" id="sahne-soru">
+  <div class="ilerleme">
+    <div class="bar"><i id="bar-ic" style="width:0%;"></i></div>
+    <div class="adim-no" id="adim-no">SORU 1 / 3</div>
+  </div>
+  <div class="soru" id="soru-metin"></div>
+  <div id="secenekler"></div>
+  <button class="geri-btn gizli" id="geri" onclick="geri()">← Önceki soruya dön</button>
+</div>
+
+<!-- ═══ SONUÇ ═══ -->
+<div class="sahne gizli" id="sahne-sonuc">
+  <div class="eyebrow">Erken Görüş Haritanız</div>
+  <h1>Haritanız hazır.</h1>
+
+  <div class="profil">
+    <div class="p-eti">Genel Profil</div>
+    <div class="p-ad" id="profil-ad"></div>
+    <p id="profil-metin"></p>
+  </div>
+
+  <p class="kopru">Erken görmek üç şeyi birden korur: verimliliği, riski, kazancı.</p>
+
+  <div class="paylas-sar">
+    <button class="btn btn-altin-cizgi" id="paylas-btn" onclick="paylas()">Sonucu Paylaş</button>
+  </div>
+
+  <p style="text-align:center;color:var(--dim);font-size:.82em;margin:0 auto 16px;">Diğer analizlerimiz: <a href="analizler.html" style="color:var(--altin);text-decoration:none;font-weight:600;">Tümünü görün →</a> · <a href="zaman.html" style="color:var(--altin);text-decoration:none;font-weight:600;">Zaman (1 dk) →</a> · <a href="olcum.html" style="color:var(--altin);text-decoration:none;font-weight:600;">Görüş Alanı (3 dk) →</a></p>
+
+  <div class="sonuc-cta">
+    <div class="c-baslik">Haritayı birlikte okuyalım mı?</div>
+    <p>Detaylı değerlendirme ve size özel yol haritası için tanışalım — Kurucu Saha Programı kontenjanı sınırlıdır.</p>
+    <a class="btn btn-altin" href="ortaklik.html">Tanışma Talebi Bırak</a>
+    <div style="margin-top:14px;"><button class="btn btn-cizgi" onclick="yeniden()" style="font-size:.85em;padding:11px 26px;">Analizi Yeniden Yap</button></div>
+  </div>
+</div>
+
+<footer>© 2026 K3 Matrix · k3matrix.com.tr — K3 Matrix hesaplar, bağlam sunar, ölçer. Karışmaz. <div class="foot-sosyal" style="display:inline-flex;gap:14px;align-items:center;margin-left:12px;vertical-align:middle;"><a href="https://instagram.com/k3matrix" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style="color:var(--dim);display:inline-flex;align-items:center;transition:color .15s;" onmouseover="this.style.color='var(--altin)'" onmouseout="this.style.color='var(--dim)'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.3" cy="6.7" r="0.6" fill="currentColor" stroke="none"></circle></svg></a><a href="https://linkedin.com/company/k3matrix" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="color:var(--dim);display:inline-flex;align-items:center;transition:color .15s;" onmouseover="this.style.color='var(--altin)'" onmouseout="this.style.color='var(--dim)'"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"></rect><line x1="7.5" y1="10" x2="7.5" y2="17"></line><circle cx="7.5" cy="6.7" r="0.6" fill="currentColor" stroke="none"></circle><path d="M11.5 17v-4.5c0-1.5 1-2.5 2.3-2.5 1.3 0 2.2 1 2.2 2.5V17"></path><line x1="11.5" y1="10" x2="11.5" y2="17"></line></svg></a></div></footer>
+
+<script>
+// Erken Görüş Analizi · 3 soru · tek boyut · puanlar ekranda görünmez
+const SORULAR = [
+ {s:"Geç fark edilen bir sorun ne kadar ek işe/tekrara yol açıyor?",
+  o:[["Baştan sona tekrar",0],["Kısmi tekrar",5],["Tekrar işi yok",10]]},
+ {s:"Geç fark etmek daha büyük bir riske dönüştüğü oldu mu?",
+  o:[["Evet, birden fazla kez",0],["Nadiren",5],["Hiç",10]]},
+ {s:"Geç fark edilen bir sapmanın bütçe/kâr üzerinde somut bir maliyeti oldu mu?",
+  o:[["Evet, düzenli",0],["Bazen, küçük ölçekte",5],["Hayır",10]]}
+];
+
+const PROFIL = [
+ {min:0,max:6,ad:"Dikiz Aynası",cls:"kesintili",
+  m:"Sapmalar genellikle geç fark ediliyor — çoğu zaman iş bittikten, maliyet oluştuktan sonra. Bu bir dikkat eksikliği değil; erken sinyalin henüz kayda bağlanmadığının doğal sonucu."},
+ {min:7,max:11,ad:"Yarı Görüş",cls:"yari",
+  m:"Bazı sapmalar erken yakalanıyor, bazıları hâlâ iş büyüdükten sonra fark ediliyor. Erken görüş kısmen var — sistemli hale geldiğinde tekrarın ve riskin büyük kısmı ortadan kalkar."},
+ {min:12,max:15,ad:"Ön Cam",cls:"surekli",
+  m:"Sapmalar büyümeden, küçükken fark ediliyor. Ekip dikiz aynasıyla değil ön camla çalışıyor — düzeltme maliyeti oluşmadan devreye giriyor."}
+];
+
+let idx=0, cevaplar=new Array(SORULAR.length).fill(null), sonProfil=null;
+
+function goster(id){
+  ["sahne-giris","sahne-soru","sahne-sonuc"].forEach(s=>document.getElementById(s).classList.add("gizli"));
+  document.getElementById(id).classList.remove("gizli");
+  window.scrollTo({top:0});
+}
+function basla(){ idx=0; cevaplar.fill(null); soruCiz(); goster("sahne-soru"); }
+function soruCiz(){
+  const q=SORULAR[idx];
+  document.getElementById("adim-no").textContent="SORU "+(idx+1)+" / "+SORULAR.length;
+  document.getElementById("bar-ic").style.width=(idx/SORULAR.length*100)+"%";
+  document.getElementById("soru-metin").textContent=q.s;
+  const kutu=document.getElementById("secenekler"); kutu.innerHTML="";
+  q.o.forEach(op=>{
+    const b=document.createElement("button");
+    b.className="secenek"; b.textContent=op[0];
+    b.onclick=()=>{ cevaplar[idx]=op[1]; ileri(); };
+    kutu.appendChild(b);
+  });
+  document.getElementById("geri").classList.toggle("gizli", idx===0);
+}
+function ileri(){ if(idx<SORULAR.length-1){ idx++; soruCiz(); } else { sonuc(); } }
+function geri(){ if(idx>0){ idx--; soruCiz(); } }
+function yeniden(){ basla(); }
+
+function sonuc(){
+  const toplam=cevaplar.reduce((a,b)=>a+b,0);
+  const puan=Math.round(toplam/2);
+  const prof=PROFIL.find(p=>puan>=p.min&&puan<=p.max)||PROFIL[1];
+  sonProfil=prof;
+  const ad=document.getElementById("profil-ad");
+  ad.textContent=prof.ad; ad.className="p-ad "+prof.cls;
+  document.getElementById("profil-metin").textContent=prof.m;
+  goster("sahne-sonuc");
+}
+
+function paylas(){
+  const url=location.origin+location.pathname;
+  const metin='Erken Görüş Analizimi yaptım: '+sonProfil.ad+'. Sen de 1 dakikada ölç: '+url;
+  if(navigator.share){ navigator.share({text:metin}).catch(()=>{}); }
+  else{
+    const kopyala=t=>{ if(navigator.clipboard){ return navigator.clipboard.writeText(t); }
+      const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy'); document.body.removeChild(ta); return Promise.resolve(); };
+    kopyala(metin).then(()=>{
+      const b=document.getElementById('paylas-btn'); const eski=b.textContent;
+      b.textContent='Kopyalandı ✓'; setTimeout(()=>{ b.textContent=eski; },2200);
+    });
+  }
+}
+
+goster("sahne-giris");
+</script>
+
+
+</body></html>
