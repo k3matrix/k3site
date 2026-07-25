@@ -5,13 +5,13 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="description" content="K3 Matrix modülleri — bu katman hâlâ inşa halinde.">
-<title>Modüller · K3 Matrix</title>
+<meta name="description" content="Kazanç Mimarisi — Kazanç Sızıntısı Haritası'nın açığa çıkardığı her durağı kendi derinliğinde ele alan, birbirini besleyen bir analiz ailesi.">
+<title>Mimariler · K3 Matrix</title>
 <meta property="og:type" content="website">
-<meta property="og:title" content="Modüller · K3 Matrix">
-<meta property="og:description" content="Çözüm burada uygulanıyor. Bu katman hâlâ inşa halinde — yakında.">
+<meta property="og:title" content="Mimariler · K3 Matrix">
+<meta property="og:description" content="Haritayı görmek yetmez — ondan bir yapı kurmak gerekir.">
 <meta property="og:image" content="https://k3matrix.com.tr/logo-rozet.png">
-<meta property="og:url" content="https://k3matrix.com.tr/moduller.html">
+<meta property="og:url" content="https://k3matrix.com.tr/mimariler.html">
 <style>
   :root{
     --bg:#0F1115; --bg2:#14181F; --panel:#171B22; --panel2:#1C212A;
@@ -29,16 +29,25 @@
   .nav-geri{color:var(--dim);text-decoration:none;font-size:.85em;font-weight:600;}
   .nav-geri:hover{color:var(--krom);}
 
-  .sec{padding:120px 24px;}
-  .dar{max-width:640px;margin:0 auto;text-align:center;}
+  .sec{padding:88px 24px;}
+  .dar{max-width:800px;margin:0 auto;}
   .eyebrow{color:var(--altin);font-size:.74em;font-weight:800;letter-spacing:.3em;text-transform:uppercase;margin-bottom:16px;}
-  h1{color:var(--beyaz);font-size:clamp(1.9em,4.6vw,3em);font-weight:800;letter-spacing:-.02em;line-height:1.14;margin-bottom:40px;}
+  h1{color:var(--beyaz);font-size:clamp(1.7em,4.2vw,2.7em);font-weight:800;letter-spacing:-.02em;line-height:1.22;margin-bottom:20px;}
+  .buyuk-p{font-size:1.08em;color:var(--krom);}
+  .buyuk-p b{color:var(--beyaz);}
+  p+p{margin-top:14px;}
 
   .hero{background:radial-gradient(ellipse 90% 60% at 50% -10%, #1B212B 0%, var(--bg) 60%);padding-top:100px;}
 
-  .kilit-kart{background:var(--panel);border:1.5px dashed var(--cizgi);border-radius:16px;padding:44px 36px;opacity:.75;}
-  .kilit-ikon{color:var(--dim);margin-bottom:18px;}
-  .kilit-kart p{color:var(--dim);font-size:1.05em;line-height:1.6;max-width:440px;margin:0 auto;}
+  .madde{border-left:3px solid var(--altin);padding:6px 0 6px 22px;margin:30px 0;}
+  .madde .m-eti{color:var(--altin);font-size:.72em;font-weight:800;letter-spacing:.26em;text-transform:uppercase;margin-bottom:8px;}
+  .madde p{color:var(--krom);font-size:1em;}
+  .madde p b{color:var(--beyaz);}
+
+  .fisilti{padding:100px 24px;text-align:center;}
+  .fisilti p{color:var(--dim);font-size:1.02em;letter-spacing:.02em;margin-bottom:28px;}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;font-size:.95em;border-radius:30px;padding:14px 32px;}
+  .btn-altin{background:var(--altin);color:var(--bg);}
 
   footer{border-top:1px solid var(--cizgi);padding:36px 24px;text-align:center;color:var(--dim);font-size:.8em;}
 </style>
@@ -52,22 +61,27 @@
   </div>
 </nav>
 
-<!-- ═══ KİLİTLİ İÇERİK ═══ -->
+<!-- ═══ HERO ═══ -->
 <header class="sec hero">
   <div class="dar">
-    <div class="eyebrow">Yakında</div>
-    <h1>Modüller</h1>
-    <div class="kilit-kart">
-      <div class="kilit-ikon">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="4.5" y="10.5" width="15" height="10" rx="2.2"></rect>
-          <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"></path>
-        </svg>
-      </div>
-      <p>Çözüm burada uygulanıyor. Bu katman hâlâ inşa halinde — yakında.</p>
+    <div class="eyebrow">Mimariler</div>
+    <h1>Haritayı görmek yetmez — ondan bir yapı kurmak gerekir.</h1>
+    <p class="buyuk-p">Bir harita size nerede olduğunuzu gösterir. Bir mimari, oradan nasıl ilerleyeceğinizi kurar.</p>
+
+    <div class="madde">
+      <div class="m-eti">Örnek · Kazanç Mimarisi</div>
+      <p><b>Kazanç Mimarisi</b>, Kazanç Sızıntısı Haritası'nın açığa çıkardığı her durağı — <b>Karar, Tedarik, Planlama</b> — kendi derinliğinde ele alan bir yapı olarak doğdu. Tek bir test değil, birbirini besleyen bir aile.</p>
     </div>
+
+    <p class="buyuk-p">Bu, K3'ün çözüm kurma biçimidir: önce ölçer, sonra haritalar, sonra o haritanın üzerine bir mimari inşa eder — rastgele araçlar değil, birbirine bağlı bir sistem.</p>
   </div>
 </header>
+
+<!-- ═══ KAPANIŞ ═══ -->
+<section class="fisilti">
+  <p><b style="color:var(--krom);">Bir mimari, tek bir soruna değil</b> — o sorunun ailesine cevap verir.</p>
+  <a class="btn btn-altin" href="analizler.html#kazanc-mimarisi">Kazanç Mimarisini İnceleyin</a>
+</section>
 
 <footer>
   © 2026 K3 Matrix · k3matrix.com.tr — K3 Matrix hesaplar, bağlam sunar, ölçer. Karışmaz.
