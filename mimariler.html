@@ -48,8 +48,10 @@
 
   .fisilti{padding:100px 24px;text-align:center;}
   .fisilti p{color:var(--dim);font-size:1.02em;letter-spacing:.02em;margin-bottom:28px;}
-  .btn{display:inline-block;text-decoration:none;font-weight:700;font-size:.95em;border-radius:30px;padding:14px 32px;}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;font-size:.95em;border-radius:30px;padding:14px 32px;transition:transform .15s;}
+  .btn:hover{transform:translateY(-2px);}
   .btn-altin{background:var(--altin);color:var(--bg);}
+  .btn-cizgi{background:none;border:1.5px solid var(--krom);color:var(--krom-acik);}
 
   footer{border-top:1px solid var(--cizgi);padding:36px 24px;text-align:center;color:var(--dim);font-size:.8em;}
 </style>
@@ -68,31 +70,37 @@
   <div class="dar">
     <div class="eyebrow">Mimariler</div>
     <h1>Haritayı görmek yetmez — ondan bir yapı kurmak gerekir.</h1>
-    <p class="buyuk-p">Bir harita nereye gittiğinizi göstermez — bir mimari, gidilebilir bir yol kurar. K3'ün mimarileri, doktrinlerin somut karşılıklarıdır: her inanç, bir yapı kuralına dönüşür.</p>
 
     <div class="madde">
-      <div class="m-eti">Doktrin · Onay</div>
-      <p>"<a href="doktrin-02.html">Onay göreve bağlanır, kişiye değil</a>" — bir mimaride bu, sorumluluğun bir isimde değil bir rolde yaşaması demektir; kişi değişse de yapı ayakta kalır.</p>
+      <div class="m-eti">Mimari Nedir</div>
+      <p>Bir mimari, tek bir kuralın tekrarı değildir. Bileşenlerin birbirine nasıl bağlandığının hikâyesidir — biri diğerini nasıl besler, biri eksik olsa ne kırılır.</p>
     </div>
 
     <div class="madde">
-      <div class="m-eti">Doktrin · Tek Hakikat</div>
-      <p>"<a href="doktrin-03.html">Bir veri bir kez doğar</a>" — bir mimaride bu, aynı bilginin iki yerde yaşamaması, her sorunun tek bir kaynağa bakarak cevaplanması demektir.</p>
+      <div class="m-eti">Gerçek Bir Akış — Doktrinler Birlikte</div>
+      <p>Bir bilgi doğar — tek kaynaktan, kopyasız (<a href="doktrin-03.html">Tek Hakikat</a>). Bu bilginin onayı bir role bağlanır, kişiye değil (<a href="doktrin-02.html">Onay Göreve Bağlanır</a>). İlerlerken beklenen ile gerçekleşen sürekli karşılaştırılır; sapma raporu beklemeden görünür olur (<a href="doktrin-04.html">Erken Uyarı</a>). Hepsi tek bir omurgada akar — hiçbiri ayrı bir kopya yaratmaz. İşte bir mimari budur: dört ayrı inancın, birlikte çalışan tek bir yapıya dönüşmesi.</p>
     </div>
 
     <div class="madde">
-      <div class="m-eti">Doktrin · Erken Uyarı</div>
-      <p>"<a href="doktrin-04.html">Sinyal rapordan hızlıdır</a>" — bir mimaride bu, bir sapmanın ay sonu beklemeden, oluştuğu an görünür olması demektir.</p>
+      <div class="m-eti">Sektörün İki Yolu, Bizim Üçüncüsü</div>
+      <p>İnşaat sektöründe bugün iki yol var: dağınık araçlarla (Excel, WhatsApp, kağıt) devam etmek, ya da büyük bir sisteme göç edip tüm operasyonu ona teslim etmek. K3 üçüncü bir yol kurar: mevcut araçlarınıza dokunmadan, onların üzerine bir görünürlük katmanı inşa eder. Göç yok, kurulum yükü yok — sadece görünürlük.</p>
     </div>
 
-    <p class="buyuk-p">Bir mimari, bir doktrini havada bırakmaz — onu gündelik bir işleyişe dönüştürür. İnanç ile uygulama arasındaki köprü budur.</p>
+    <div class="madde">
+      <div class="m-eti">Köprü — Somut Hali</div>
+      <p>Bir harita sizi nerede olduğunuzu gösterir. Bir mimari, oradan nasıl ilerleyeceğinizi kurar. <a href="derin-degerlendirme.html">Derin Değerlendirme</a>, bu üç adımı sizin için işletir: önce ölçer, sonra haritalar, sonra size özel bir yapı tasarlar.</p>
+    </div>
   </div>
 </header>
 
 <!-- ═══ KAPANIŞ ═══ -->
 <section class="fisilti">
   <p><b style="color:var(--krom);">Bir mimari, tek bir soruna değil</b> — o inancın her tekrarına cevap verir.</p>
-  <a class="btn btn-altin" href="analizler.html">Bu mimarinin çalıştığını görmek ister misiniz?</a>
+  <p style="color:var(--dim);font-size:.85em;margin-bottom:26px;">Önce hafif mi başlamak istersiniz, yoksa doğrudan derinleşmek mi — karar sizin.</p>
+  <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+    <a class="btn btn-altin" href="analizler.html">Analizlere Gidin</a>
+    <a class="btn btn-cizgi" href="derin-degerlendirme.html">Derin Değerlendirmeyi Başlatın</a>
+  </div>
 </section>
 
 <footer>
