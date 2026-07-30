@@ -181,19 +181,19 @@
       <div class="ka-damla"></div><div class="ka-damla g2"></div><div class="ka-damla g3"></div>
       <div class="ka-nokta ka-n1"></div><div class="ka-nokta ka-n2"></div><div class="ka-nokta ka-n3"></div><div class="ka-nokta ka-n4"></div>
       <div class="ka-durak ka-d1 ka-k1">
-        <div class="ka-ad">🛒 Alım Anı<small>fazla bağlanır</small></div>
+        <div class="ka-ad"><svg viewBox="0 0 100 100" width="14" height="14" style="vertical-align:-2px;margin-right:3px;"><path d="M50,15 L50,55" stroke="var(--krom)" stroke-width="4"/><path d="M35,42 L50,58 L65,42" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="25" y="58" width="50" height="25" rx="3" stroke="var(--krom)" stroke-width="4" fill="none"/><circle cx="50" cy="58" r="4" fill="var(--altin)"/></svg>Alım Anı<small>fazla bağlanır</small></div>
         <div class="ka-rozet"><span class="ka-uyku"><i>● UYKUDA</i></span><span class="ka-uyanik"><i>✓ UYANIK</i></span></div>
       </div>
       <div class="ka-durak ka-d2 ka-k2">
-        <div class="ka-ad">📦 Depo<small>bekler</small></div>
+        <div class="ka-ad"><svg viewBox="0 0 100 100" width="14" height="14" style="vertical-align:-2px;margin-right:3px;"><path d="M20,45 L50,25 L80,45" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linejoin="round"/><rect x="25" y="45" width="50" height="40" stroke="var(--krom)" stroke-width="4" fill="none"/><line x1="25" y1="62" x2="75" y2="62" stroke="var(--krom)" stroke-width="3"/><circle cx="40" cy="73" r="4" fill="var(--altin)"/></svg>Depo<small>bekler</small></div>
         <div class="ka-rozet"><span class="ka-uyku"><i>● UYKUDA</i></span><span class="ka-uyanik"><i>✓ UYANIK</i></span></div>
       </div>
       <div class="ka-durak ka-d3 ka-k3">
-        <div class="ka-ad">🏗️ Saha<small>birikir</small></div>
+        <div class="ka-ad"><svg viewBox="0 0 100 100" width="14" height="14" style="vertical-align:-2px;margin-right:3px;"><path d="M50,20 C34,20 24,32 24,46 C24,64 50,88 50,88 C50,88 76,64 76,46 C76,32 66,20 50,20 Z" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linejoin="round"/><circle cx="50" cy="46" r="9" fill="none" stroke="var(--krom)" stroke-width="3"/><circle cx="50" cy="46" r="3" fill="var(--altin)"/></svg>Saha<small>birikir</small></div>
         <div class="ka-rozet"><span class="ka-uyku"><i>● UYKUDA</i></span><span class="ka-uyanik"><i>✓ UYANIK</i></span></div>
       </div>
       <div class="ka-durak ka-d4 ka-k4">
-        <div class="ka-ad">🔚 Kapanış<small>kaderine bırakılır</small></div>
+        <div class="ka-ad"><svg viewBox="0 0 100 100" width="14" height="14" style="vertical-align:-2px;margin-right:3px;"><line x1="30" y1="20" x2="30" y2="85" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/><path d="M30,25 L65,32 L30,42 Z" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linejoin="round"/><circle cx="63" cy="32" r="3.5" fill="var(--altin)"/></svg>Kapanış<small>kaderine bırakılır</small></div>
         <div class="ka-rozet"><span class="ka-uyku"><i>● UYKUDA</i></span><span class="ka-uyanik"><i>✓ UYANIK</i></span></div>
       </div>
       <div class="ka-zz z1">z Z</div>
@@ -263,10 +263,10 @@
 <script>
 // Uyuyan Sermaye Analizi v2 · 4 durak × 2 soru · puanlar ekranda görünmez
 const DURAKLAR = {
-  AL:{ad:"🛒 Alım Anı"},
-  DE:{ad:"📦 Depo"},
-  SA:{ad:"🏗️ Saha"},
-  KA:{ad:"🔚 Kapanış"}
+  AL:{ikon:'<svg viewBox="0 0 100 100" width="16" height="16" style="vertical-align:-3px;margin-right:4px;"><path d="M50,15 L50,55" stroke="var(--krom)" stroke-width="4"/><path d="M35,42 L50,58 L65,42" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><rect x="25" y="58" width="50" height="25" rx="3" stroke="var(--krom)" stroke-width="4" fill="none"/><circle cx="50" cy="58" r="4" fill="var(--altin)"/></svg>', ad:"Alım Anı"},
+  DE:{ikon:'<svg viewBox="0 0 100 100" width="16" height="16" style="vertical-align:-3px;margin-right:4px;"><path d="M20,45 L50,25 L80,45" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linejoin="round"/><rect x="25" y="45" width="50" height="40" stroke="var(--krom)" stroke-width="4" fill="none"/><line x1="25" y1="62" x2="75" y2="62" stroke="var(--krom)" stroke-width="3"/><circle cx="40" cy="73" r="4" fill="var(--altin)"/></svg>', ad:"Depo"},
+  SA:{ikon:'<svg viewBox="0 0 100 100" width="16" height="16" style="vertical-align:-3px;margin-right:4px;"><path d="M50,20 C34,20 24,32 24,46 C24,64 50,88 50,88 C50,88 76,64 76,46 C76,32 66,20 50,20 Z" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linejoin="round"/><circle cx="50" cy="46" r="9" fill="none" stroke="var(--krom)" stroke-width="3"/><circle cx="50" cy="46" r="3" fill="var(--altin)"/></svg>', ad:"Saha"},
+  KA:{ikon:'<svg viewBox="0 0 100 100" width="16" height="16" style="vertical-align:-3px;margin-right:4px;"><line x1="30" y1="20" x2="30" y2="85" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/><path d="M30,25 L65,32 L30,42 Z" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linejoin="round"/><circle cx="63" cy="32" r="3.5" fill="var(--altin)"/></svg>', ad:"Kapanış"}
 };
 
 const SORULAR = [
@@ -349,7 +349,7 @@ function soruCiz(){
   const q=SORULAR[idx];
   document.getElementById("adim-no").textContent="SORU "+(idx+1)+" / "+SORULAR.length;
   document.getElementById("bar-ic").style.width=(idx/SORULAR.length*100)+"%";
-  document.getElementById("kat-eti").textContent=DURAKLAR[q.k].ad;
+  document.getElementById("kat-eti").innerHTML=DURAKLAR[q.k].ikon+DURAKLAR[q.k].ad;
   document.getElementById("soru-metin").textContent=q.s;
   const kutu=document.getElementById("secenekler"); kutu.innerHTML="";
   q.o.forEach(op=>{
@@ -389,7 +389,7 @@ function sonuc(){
     else {cls="uykuda";eti="● UYKUDA";ykey="k";}
     const div=document.createElement("div");
     div.className="durak-satir";
-    div.innerHTML='<div><div class="d-ad">'+DURAKLAR[k].ad+'</div><div class="d-yorum">'+YORUM[k][ykey]+'</div></div><span class="durum '+cls+'">'+eti+'</span>';
+    div.innerHTML='<div><div class="d-ad">'+DURAKLAR[k].ikon+DURAKLAR[k].ad+'</div><div class="d-yorum">'+YORUM[k][ykey]+'</div></div><span class="durum '+cls+'">'+eti+'</span>';
     satirlar.appendChild(div);
   });
 
@@ -412,7 +412,7 @@ function sonuc(){
 
 function paylas(){
   const url=location.origin+location.pathname;
-  const durakAd=DURAKLAR[sonDurak].ad.replace(/^[^ ]+ /,"");
+  const durakAd=DURAKLAR[sonDurak].ad;
   const hepsiUyanik=sonProfil.ad==="Uyanık Sermaye" && document.getElementById("okuma-eti").textContent==="Sıradaki ufuk";
   const metin = hepsiUyanik
     ? 'Uyuyan Sermaye Analizimi yaptım: '+sonProfil.ad+' — haritamda uyuyan durak çıkmadı. Sen de 2 dakikada ölç: '+url
