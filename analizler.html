@@ -54,7 +54,8 @@
   .olcum-grid.grid-flex .olcum-kart{flex:1 1 260px;max-width:320px;}
   .olcum-kart{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--cizgi);border-radius:16px;padding:28px 26px;text-decoration:none;transition:border-color .15s, background .15s, transform .15s;}
   .olcum-kart:hover{border-color:var(--altin);background:var(--panel2);transform:translateY(-3px);}
-  .olcum-kart .ok-ikon{font-size:1.3em;margin-bottom:14px;}
+  .olcum-kart .ok-ikon{margin-bottom:14px;}
+  .olcum-kart .ok-ikon svg{display:block;}
   .olcum-kart .ok-ad{color:var(--beyaz);font-weight:800;font-size:1.05em;letter-spacing:-.01em;margin-bottom:12px;}
   .olcum-kart .ok-soru{color:var(--krom-acik);font-size:.94em;line-height:1.5;flex:1;}
   .olcum-kart .ok-soru::before{content:'“';color:var(--altin);font-size:1.3em;line-height:0;margin-right:2px;}
@@ -117,31 +118,55 @@
 
       <div class="olcum-grid grid-flex">
         <a class="olcum-kart" href="olcum.html">
-          <div class="ok-ikon">🔦</div>
+          <div class="ok-ikon"><svg viewBox="0 0 100 100" width="48" height="48">
+  <path d="M15,50 Q50,20 85,50" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M15,50 Q50,80 85,50" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <circle cx="50" cy="50" r="7" fill="var(--altin)"/>
+</svg></div>
           <div class="ok-ad">Görüş Alanı Analizi</div>
           <div class="ok-soru">Operasyonunuzda ışık nereye düşüyor?</div>
           <div class="ok-meta"><span>16 soru · 3 dk</span><span class="ok-git">Başla →</span></div>
         </a>
         <a class="olcum-kart" href="sermaye.html">
-          <div class="ok-ikon">💤</div>
+          <div class="ok-ikon"><svg viewBox="0 0 100 100" width="48" height="48">
+  <rect x="20" y="45" width="40" height="32" rx="2" stroke="var(--krom)" stroke-width="4" fill="none"/>
+  <line x1="20" y1="61" x2="60" y2="61" stroke="var(--krom)" stroke-width="3"/>
+  <circle cx="72" cy="28" r="12" fill="var(--krom)"/>
+  <circle cx="77" cy="24" r="10" fill="var(--panel)"/>
+  <circle cx="86" cy="16" r="3" fill="var(--altin)"/>
+</svg></div>
           <div class="ok-ad">Uyuyan Sermaye Analizi</div>
           <div class="ok-soru">Depoda uyuyan sermayeniz ne kadar?</div>
           <div class="ok-meta"><span>8 soru · 2 dk</span><span class="ok-git">Başla →</span></div>
         </a>
         <a class="olcum-kart" href="sureklilik.html">
-          <div class="ok-ikon">🔄</div>
+          <div class="ok-ikon"><svg viewBox="0 0 100 100" width="48" height="48">
+  <circle cx="35" cy="50" r="16" stroke="var(--krom)" stroke-width="4" fill="none"/>
+  <circle cx="61" cy="50" r="16" stroke="var(--krom)" stroke-width="4" fill="none"/>
+  <circle cx="48" cy="50" r="4" fill="var(--altin)"/>
+</svg></div>
           <div class="ok-ad">Süreklilik Analizi</div>
           <div class="ok-soru">Kişi değişince, süreç de mi duruyor?</div>
           <div class="ok-meta"><span>9 soru · 2 dk</span><span class="ok-git">Başla →</span></div>
         </a>
         <a class="olcum-kart" href="zaman.html">
-          <div class="ok-ikon">⏱️</div>
+          <div class="ok-ikon"><svg viewBox="0 0 100 100" width="48" height="48">
+  <path d="M30,20 L70,20 L50,50 Z" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linejoin="round"/>
+  <path d="M30,80 L70,80 L50,50 Z" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linejoin="round"/>
+  <line x1="38" y1="35" x2="62" y2="35" stroke="var(--krom)" stroke-width="3"/>
+  <circle cx="50" cy="50" r="4" fill="var(--altin)"/>
+</svg></div>
           <div class="ok-ad">Zaman Analizi</div>
           <div class="ok-soru">Hızlı ulaşan bilgi, kalıcı bir kayda dönüşüyor mu?</div>
           <div class="ok-meta"><span>3 soru · 1 dk</span><span class="ok-git">Başla →</span></div>
         </a>
         <a class="olcum-kart" href="erken-gorus.html">
-          <div class="ok-ikon">⚠️</div>
+          <div class="ok-ikon"><svg viewBox="0 0 100 100" width="48" height="48">
+  <line x1="15" y1="70" x2="85" y2="70" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/>
+  <line x1="70" y1="25" x2="70" y2="70" stroke="var(--krom)" stroke-width="3" stroke-dasharray="5,5"/>
+  <path d="M25,58 Q35,45 45,58" stroke="var(--krom)" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="35" cy="70" r="4.5" fill="var(--altin)"/>
+</svg></div>
           <div class="ok-ad">Erken Görüş Analizi</div>
           <div class="ok-soru">Geç fark etmenin gerçek maliyeti nedir?</div>
           <div class="ok-meta"><span>3 soru · 1 dk</span><span class="ok-git">Başla →</span></div>
@@ -156,25 +181,47 @@
 
       <div class="olcum-grid grid-flex">
         <a class="olcum-kart" href="kazanc-sizintisi.html">
-          <div class="ok-ikon">💸</div>
+          <div class="ok-ikon"><svg viewBox="0 0 100 100" width="48" height="48">
+  <path d="M25,25 L75,25 L55,60 L45,60 Z" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linejoin="round"/>
+  <rect x="45" y="60" width="10" height="15" stroke="var(--krom)" stroke-width="4" fill="none"/>
+  <path d="M50,80 C46,86 46,92 50,94 C54,92 54,86 50,80 Z" fill="var(--altin)"/>
+</svg></div>
           <div class="ok-ad">Kazanç Sızıntısı Analizi</div>
           <div class="ok-soru">Kazancınız nerede sızıyor?</div>
           <div class="ok-meta"><span>16 soru · 3 dk</span><span class="ok-git">Başla →</span></div>
         </a>
         <a class="olcum-kart" href="planlama.html">
-          <div class="ok-ikon">📐</div>
+          <div class="ok-ikon"><svg viewBox="0 0 100 100" width="48" height="48">
+  <line x1="15" y1="75" x2="85" y2="25" stroke="var(--krom)" stroke-width="3" stroke-dasharray="6,5" stroke-linecap="round"/>
+  <path d="M15,75 L45,55 L60,60 L75,45" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="45" cy="55" r="4.5" fill="var(--altin)"/>
+</svg></div>
           <div class="ok-ad">Planlama Analizi</div>
           <div class="ok-soru">Planınız tahmine mi, hesaba mı dayanıyor?</div>
           <div class="ok-meta"><span>9 soru · 2 dk</span><span class="ok-git">Başla →</span></div>
         </a>
         <a class="olcum-kart" href="yatirim.html">
-          <div class="ok-ikon">☀️</div>
+          <div class="ok-ikon"><svg viewBox="0 0 100 100" width="48" height="48">
+  <line x1="50" y1="85" x2="50" y2="55" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/>
+  <line x1="50" y1="55" x2="25" y2="20" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/>
+  <line x1="50" y1="55" x2="75" y2="20" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="50" cy="55" r="4.5" fill="var(--altin)"/>
+</svg></div>
           <div class="ok-ad">Yatırım Kararı Analizi</div>
           <div class="ok-soru">En büyük kararınız, en az veriyle mi veriliyor?</div>
           <div class="ok-meta"><span>8 soru · 2 dk</span><span class="ok-git">Başla →</span></div>
         </a>
         <a class="olcum-kart" href="tedarik-gucu.html">
-          <div class="ok-ikon">📦</div>
+          <div class="ok-ikon"><svg viewBox="0 0 100 100" width="48" height="48">
+  <line x1="50" y1="20" x2="50" y2="75" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/>
+  <line x1="25" y1="30" x2="75" y2="30" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/>
+  <line x1="25" y1="30" x2="25" y2="45" stroke="var(--krom)" stroke-width="3"/>
+  <path d="M15,45 Q25,55 35,45" stroke="var(--krom)" stroke-width="3" fill="none"/>
+  <line x1="75" y1="30" x2="75" y2="45" stroke="var(--krom)" stroke-width="3"/>
+  <path d="M65,45 Q75,55 85,45" stroke="var(--krom)" stroke-width="3" fill="none"/>
+  <line x1="35" y1="78" x2="65" y2="78" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="50" cy="30" r="4.5" fill="var(--altin)"/>
+</svg></div>
           <div class="ok-ad">Tedarik Gücü Analizi</div>
           <div class="ok-soru">Tedarik gücünüz bugün nerede?</div>
           <div class="ok-meta"><span>9 soru · 2 dk</span><span class="ok-git">Başla →</span></div>
