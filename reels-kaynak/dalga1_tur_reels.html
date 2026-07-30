@@ -18,7 +18,7 @@
     background:linear-gradient(90deg, transparent 0%, rgba(185,151,91,.16) 35%, rgba(217,188,133,.22) 50%, rgba(185,151,91,.16) 65%, transparent 100%);
     transform:rotate(-5deg);
     opacity:0;
-    animation:fade-once 26s linear 1 forwards;
+    animation:fade-once 24.5s linear 1 forwards;
     pointer-events:none;
   }
 
@@ -27,13 +27,13 @@
     position:absolute;top:72px;left:0;width:1080px;text-align:center;
     font-weight:800;letter-spacing:.22em;font-size:34px;color:var(--beyaz);
     opacity:0;
-    animation:fade-once 26s linear 1 forwards;
+    animation:fade-once 24.5s linear 1 forwards;
   }
   .wordmark span{color:var(--altin);}
 
   @keyframes fade-once{
     0%{opacity:0;}
-    1.1538%{opacity:1;}
+    1.2245%{opacity:1;}
     100%{opacity:1;}
   }
 
@@ -42,49 +42,45 @@
     position:absolute;left:0;width:1080px;text-align:center;color:var(--beyaz);
     padding:0 100px;opacity:0;
   }
-  .hook{top:820px;font-size:46px;font-weight:800;line-height:1.4;letter-spacing:-.01em;
-    animation:cap-hook 26s linear 1 forwards;}
+  .hook{top:820px;font-size:50px;font-weight:800;line-height:1.4;letter-spacing:-.01em;
+    animation:cap-hook 24.5s linear 1 forwards;}
   .round-cap{top:1560px;font-size:40px;font-weight:700;line-height:1.42;letter-spacing:-.005em;}
-  .varis{top:880px;font-size:52px;font-weight:800;letter-spacing:-.01em;
-    animation:cap-varis 26s linear 1 forwards;}
   .close{top:840px;font-size:44px;font-weight:800;line-height:1.4;letter-spacing:-.01em;
-    animation:cap-close 26s linear 1 forwards;}
+    animation:cap-close 24.5s linear 1 forwards;}
   .close .sub{display:block;margin-top:22px;font-size:26px;font-weight:600;color:var(--krom);letter-spacing:.02em;}
   .esit-yok{color:var(--altin);}
 
+  /* hook: 1.5sn'de belirir, 1. dal metni belirene kadar (4sn) tam görünür kalır,
+     dal metniyle aynı anda çapraz geçiş yapar — boş kare olmaz */
   @keyframes cap-hook{
-    0%{opacity:0;} 5.7692%{opacity:0;} 6.9231%{opacity:1;}
-    12.3077%{opacity:1;} 13.4615%{opacity:0;} 100%{opacity:0;}
-  }
-  @keyframes cap-varis{
-    0%{opacity:0;} 82.6923%{opacity:0;} 83.8462%{opacity:1;}
-    91.1538%{opacity:1;} 92.3077%{opacity:0;} 100%{opacity:0;}
+    0%{opacity:0;} 6.1224%{opacity:0;} 7.3469%{opacity:1;}
+    16.3265%{opacity:1;} 17.551%{opacity:0;} 100%{opacity:0;}
   }
   @keyframes cap-close{
-    0%{opacity:0;} 92.3077%{opacity:0;} 93.4615%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:0;} 89.7959%{opacity:0;} 91.0204%{opacity:1;} 100%{opacity:1;}
   }
 
-  .cap-gorus{animation:c-gorus 26s linear 1 forwards;}
-  @keyframes c-gorus{0%{opacity:0;}13.4615%{opacity:0;}14.6154%{opacity:1;}20%{opacity:1;}21.1538%{opacity:0;}100%{opacity:0;}}
-  .cap-sermaye{animation:c-sermaye 26s linear 1 forwards;}
-  @keyframes c-sermaye{0%{opacity:0;}21.1538%{opacity:0;}22.3077%{opacity:1;}27.6923%{opacity:1;}28.8462%{opacity:0;}100%{opacity:0;}}
-  .cap-sureklilik{animation:c-sureklilik 26s linear 1 forwards;}
-  @keyframes c-sureklilik{0%{opacity:0;}28.8462%{opacity:0;}30%{opacity:1;}35.3846%{opacity:1;}36.5385%{opacity:0;}100%{opacity:0;}}
-  .cap-zaman{animation:c-zaman 26s linear 1 forwards;}
-  @keyframes c-zaman{0%{opacity:0;}36.5385%{opacity:0;}37.6923%{opacity:1;}43.0769%{opacity:1;}44.2308%{opacity:0;}100%{opacity:0;}}
-  .cap-erkengorus{animation:c-erkengorus 26s linear 1 forwards;}
-  @keyframes c-erkengorus{0%{opacity:0;}44.2308%{opacity:0;}45.3846%{opacity:1;}50.7692%{opacity:1;}51.9231%{opacity:0;}100%{opacity:0;}}
-  .cap-sizinti{animation:c-sizinti 26s linear 1 forwards;}
-  @keyframes c-sizinti{0%{opacity:0;}51.9231%{opacity:0;}53.0769%{opacity:1;}58.4615%{opacity:1;}59.6154%{opacity:0;}100%{opacity:0;}}
-  .cap-yatirim{animation:c-yatirim 26s linear 1 forwards;}
-  @keyframes c-yatirim{0%{opacity:0;}59.6154%{opacity:0;}60.7692%{opacity:1;}66.1538%{opacity:1;}67.3077%{opacity:0;}100%{opacity:0;}}
-  .cap-tedarik{animation:c-tedarik 26s linear 1 forwards;}
-  @keyframes c-tedarik{0%{opacity:0;}67.3077%{opacity:0;}68.4615%{opacity:1;}73.8462%{opacity:1;}75%{opacity:0;}100%{opacity:0;}}
-  .cap-planlama{animation:c-planlama 26s linear 1 forwards;}
-  @keyframes c-planlama{0%{opacity:0;}75%{opacity:0;}76.1538%{opacity:1;}81.5385%{opacity:1;}82.6923%{opacity:0;}100%{opacity:0;}}
+  .cap-gorus{animation:c-gorus 24.5s linear 1 forwards;}
+  @keyframes c-gorus{0%{opacity:0;}15.102%{opacity:0;}16.3265%{opacity:1;}23.2653%{opacity:1;}24.4898%{opacity:0;}100%{opacity:0;}}
+  .cap-sermaye{animation:c-sermaye 24.5s linear 1 forwards;}
+  @keyframes c-sermaye{0%{opacity:0;}23.2653%{opacity:0;}24.4898%{opacity:1;}31.4286%{opacity:1;}32.6531%{opacity:0;}100%{opacity:0;}}
+  .cap-sureklilik{animation:c-sureklilik 24.5s linear 1 forwards;}
+  @keyframes c-sureklilik{0%{opacity:0;}31.4286%{opacity:0;}32.6531%{opacity:1;}39.5918%{opacity:1;}40.8163%{opacity:0;}100%{opacity:0;}}
+  .cap-zaman{animation:c-zaman 24.5s linear 1 forwards;}
+  @keyframes c-zaman{0%{opacity:0;}39.5918%{opacity:0;}40.8163%{opacity:1;}47.7551%{opacity:1;}48.9796%{opacity:0;}100%{opacity:0;}}
+  .cap-erkengorus{animation:c-erkengorus 24.5s linear 1 forwards;}
+  @keyframes c-erkengorus{0%{opacity:0;}47.7551%{opacity:0;}48.9796%{opacity:1;}55.9184%{opacity:1;}57.1429%{opacity:0;}100%{opacity:0;}}
+  .cap-sizinti{animation:c-sizinti 24.5s linear 1 forwards;}
+  @keyframes c-sizinti{0%{opacity:0;}55.9184%{opacity:0;}57.1429%{opacity:1;}64.0816%{opacity:1;}65.3061%{opacity:0;}100%{opacity:0;}}
+  .cap-yatirim{animation:c-yatirim 24.5s linear 1 forwards;}
+  @keyframes c-yatirim{0%{opacity:0;}64.0816%{opacity:0;}65.3061%{opacity:1;}72.2449%{opacity:1;}73.4694%{opacity:0;}100%{opacity:0;}}
+  .cap-tedarik{animation:c-tedarik 24.5s linear 1 forwards;}
+  @keyframes c-tedarik{0%{opacity:0;}72.2449%{opacity:0;}73.4694%{opacity:1;}80.4082%{opacity:1;}81.6327%{opacity:0;}100%{opacity:0;}}
+  .cap-planlama{animation:c-planlama 24.5s linear 1 forwards;}
+  @keyframes c-planlama{0%{opacity:0;}80.4082%{opacity:0;}81.6327%{opacity:1;}88.5714%{opacity:1;}89.7959%{opacity:0;}100%{opacity:0;}}
 
   /* ═══ 9 dal/ikon grubu — opacity vurgu ═══ */
-  .node{animation-duration:26s;animation-timing-function:linear;animation-iteration-count:1;animation-fill-mode:forwards;}
+  .node{animation-duration:24.5s;animation-timing-function:linear;animation-iteration-count:1;animation-fill-mode:forwards;}
   .node-gorus{animation-name:reveal-gorus;}
   .node-sermaye{animation-name:reveal-sermaye;}
   .node-sureklilik{animation-name:reveal-sureklilik;}
@@ -96,62 +92,62 @@
   .node-planlama{animation-name:reveal-planlama;}
 
   @keyframes reveal-gorus{
-    0%{opacity:1;} 5.7692%{opacity:1;} 12.3077%{opacity:.35;} 13.4615%{opacity:1;}
-    21.1538%{opacity:1;} 22.3077%{opacity:.35;} 82.6923%{opacity:.35;} 83.8462%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:1;} 6.1224%{opacity:1;} 15.102%{opacity:.35;} 16.3265%{opacity:1;}
+    24.4898%{opacity:1;} 25.7143%{opacity:.35;} 89.7959%{opacity:.35;} 91.0204%{opacity:1;} 100%{opacity:1;}
   }
   @keyframes reveal-sermaye{
-    0%{opacity:1;} 5.7692%{opacity:1;} 13.4615%{opacity:.35;} 20%{opacity:.35;} 21.1538%{opacity:1;}
-    28.8462%{opacity:1;} 30%{opacity:.35;} 82.6923%{opacity:.35;} 83.8462%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:1;} 6.1224%{opacity:1;} 16.3265%{opacity:.35;} 23.2653%{opacity:.35;} 24.4898%{opacity:1;}
+    32.6531%{opacity:1;} 33.8776%{opacity:.35;} 89.7959%{opacity:.35;} 91.0204%{opacity:1;} 100%{opacity:1;}
   }
   @keyframes reveal-sureklilik{
-    0%{opacity:1;} 5.7692%{opacity:1;} 13.4615%{opacity:.35;} 27.6923%{opacity:.35;} 28.8462%{opacity:1;}
-    36.5385%{opacity:1;} 37.6923%{opacity:.35;} 82.6923%{opacity:.35;} 83.8462%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:1;} 6.1224%{opacity:1;} 16.3265%{opacity:.35;} 31.4286%{opacity:.35;} 32.6531%{opacity:1;}
+    40.8163%{opacity:1;} 42.0408%{opacity:.35;} 89.7959%{opacity:.35;} 91.0204%{opacity:1;} 100%{opacity:1;}
   }
   @keyframes reveal-zaman{
-    0%{opacity:1;} 5.7692%{opacity:1;} 13.4615%{opacity:.35;} 35.3846%{opacity:.35;} 36.5385%{opacity:1;}
-    44.2308%{opacity:1;} 45.3846%{opacity:.35;} 82.6923%{opacity:.35;} 83.8462%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:1;} 6.1224%{opacity:1;} 16.3265%{opacity:.35;} 39.5918%{opacity:.35;} 40.8163%{opacity:1;}
+    48.9796%{opacity:1;} 50.2041%{opacity:.35;} 89.7959%{opacity:.35;} 91.0204%{opacity:1;} 100%{opacity:1;}
   }
   @keyframes reveal-erkengorus{
-    0%{opacity:1;} 5.7692%{opacity:1;} 13.4615%{opacity:.35;} 43.0769%{opacity:.35;} 44.2308%{opacity:1;}
-    51.9231%{opacity:1;} 53.0769%{opacity:.35;} 82.6923%{opacity:.35;} 83.8462%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:1;} 6.1224%{opacity:1;} 16.3265%{opacity:.35;} 47.7551%{opacity:.35;} 48.9796%{opacity:1;}
+    57.1429%{opacity:1;} 58.3673%{opacity:.35;} 89.7959%{opacity:.35;} 91.0204%{opacity:1;} 100%{opacity:1;}
   }
   @keyframes reveal-sizinti{
-    0%{opacity:1;} 5.7692%{opacity:1;} 13.4615%{opacity:.35;} 50.7692%{opacity:.35;} 51.9231%{opacity:1;}
-    59.6154%{opacity:1;} 60.7692%{opacity:.35;} 82.6923%{opacity:.35;} 83.8462%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:1;} 6.1224%{opacity:1;} 16.3265%{opacity:.35;} 55.9184%{opacity:.35;} 57.1429%{opacity:1;}
+    65.3061%{opacity:1;} 66.5306%{opacity:.35;} 89.7959%{opacity:.35;} 91.0204%{opacity:1;} 100%{opacity:1;}
   }
   @keyframes reveal-yatirim{
-    0%{opacity:1;} 5.7692%{opacity:1;} 13.4615%{opacity:.35;} 58.4615%{opacity:.35;} 59.6154%{opacity:1;}
-    67.3077%{opacity:1;} 68.4615%{opacity:.35;} 82.6923%{opacity:.35;} 83.8462%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:1;} 6.1224%{opacity:1;} 16.3265%{opacity:.35;} 64.0816%{opacity:.35;} 65.3061%{opacity:1;}
+    73.4694%{opacity:1;} 74.6939%{opacity:.35;} 89.7959%{opacity:.35;} 91.0204%{opacity:1;} 100%{opacity:1;}
   }
   @keyframes reveal-tedarik{
-    0%{opacity:1;} 5.7692%{opacity:1;} 13.4615%{opacity:.35;} 66.1538%{opacity:.35;} 67.3077%{opacity:1;}
-    75%{opacity:1;} 76.1538%{opacity:.35;} 82.6923%{opacity:.35;} 83.8462%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:1;} 6.1224%{opacity:1;} 16.3265%{opacity:.35;} 72.2449%{opacity:.35;} 73.4694%{opacity:1;}
+    81.6327%{opacity:1;} 82.8571%{opacity:.35;} 89.7959%{opacity:.35;} 91.0204%{opacity:1;} 100%{opacity:1;}
   }
   @keyframes reveal-planlama{
-    0%{opacity:1;} 5.7692%{opacity:1;} 13.4615%{opacity:.35;} 73.8462%{opacity:.35;} 75%{opacity:1;}
-    82.6923%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:1;} 6.1224%{opacity:1;} 16.3265%{opacity:.35;} 80.4082%{opacity:.35;} 81.6327%{opacity:1;}
+    89.7959%{opacity:1;} 100%{opacity:1;}
   }
 
-  /* ═══ kök nokta — sürekli nabız + varışta sabit parlaklık ═══ */
+  /* ═══ kök nokta — sürekli nabız + kapanışta sabit parlaklık ═══ */
   .root-dot{
     transform-box:fill-box;transform-origin:center;
-    animation:root-pulse 26s linear 1 forwards;
+    animation:root-pulse 24.5s linear 1 forwards;
   }
   @keyframes root-pulse{
-    0%{opacity:1;} 5.7692%{opacity:1;}
-    5.7692%{opacity:.25;} 10.3846%{opacity:.65;} 15%{opacity:.25;} 19.6154%{opacity:.65;}
-    24.2308%{opacity:.25;} 28.8462%{opacity:.65;} 33.4615%{opacity:.25;} 38.0769%{opacity:.65;}
-    42.6923%{opacity:.25;} 47.3077%{opacity:.65;} 51.9231%{opacity:.25;} 56.5385%{opacity:.65;}
-    61.1538%{opacity:.25;} 65.7692%{opacity:.65;} 70.3846%{opacity:.25;} 75%{opacity:.65;}
-    79.6154%{opacity:.25;} 82.6923%{opacity:.25;} 83.8462%{opacity:1;} 100%{opacity:1;}
+    0%{opacity:1;} 6.1224%{opacity:1;}
+    6.1224%{opacity:.25;} 11.0204%{opacity:.65;} 15.9184%{opacity:.25;} 20.8163%{opacity:.65;}
+    25.7143%{opacity:.25;} 30.6122%{opacity:.65;} 35.5102%{opacity:.25;} 40.4082%{opacity:.65;}
+    45.3061%{opacity:.25;} 50.2041%{opacity:.65;} 55.102%{opacity:.25;} 60%{opacity:.65;}
+    64.898%{opacity:.25;} 69.7959%{opacity:.65;} 74.6939%{opacity:.25;} 79.5918%{opacity:.65;}
+    84.4898%{opacity:.25;} 89.7959%{opacity:.65;} 91.0204%{opacity:1;} 100%{opacity:1;}
   }
   .root-scale{
     transform-box:fill-box;transform-origin:center;
-    animation:root-scale-pulse 26s linear 1 forwards;
+    animation:root-scale-pulse 24.5s linear 1 forwards;
   }
   @keyframes root-scale-pulse{
-    0%{transform:scale(1);} 82.6923%{transform:scale(1);}
-    83.4615%{transform:scale(1.18);} 84.6154%{transform:scale(1);} 100%{transform:scale(1);}
+    0%{transform:scale(1);} 89.7959%{transform:scale(1);}
+    90.4082%{transform:scale(1.18);} 91.4286%{transform:scale(1);} 100%{transform:scale(1);}
   }
 </style>
 </head>
@@ -296,8 +292,6 @@
   <div class="caption round-cap cap-yatirim">Son arsa kararınızı, o günkü öngörüyle karşılaştırdınız mı?</div>
   <div class="caption round-cap cap-tedarik">Aynı malzemeyi son üç projede kaça aldığınızı karşılaştırabiliyor musunuz?</div>
   <div class="caption round-cap cap-planlama">İş programı ile sahadaki gerçek ilerleme ne zaman ayrışıyor?</div>
-
-  <div class="caption varis">Tek omurga.</div>
 
   <div class="caption close">9 analiz. 3 dakika. Tek yer: Analizler.<span class="sub">k3matrix.com.tr/analizler</span></div>
 
