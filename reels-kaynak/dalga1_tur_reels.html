@@ -6,9 +6,9 @@
     --bg:#0F1115; --krom:#B8BCC4; --altin:#B9975B; --panel:#171B22; --cizgi:#3A3E48; --beyaz:#F2F3F5;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{width:1080px;height:1920px;background:var(--bg);overflow:hidden;}
+  html,body{width:100%;height:100%;background:var(--bg);overflow:hidden;}
   body{font-family:'Inter','Segoe UI',system-ui,sans-serif;}
-  .stage{position:relative;width:1080px;height:1920px;background:var(--bg);}
+  .stage{position:absolute;top:0;left:0;width:1080px;height:1920px;background:var(--bg);transform-origin:top left;}
 
   svg.dalga{position:absolute;top:0;left:0;width:1080px;height:1920px;}
 
@@ -296,5 +296,17 @@
   <div class="caption close">9 analiz. 3 dakika. Tek yer: Analizler.<span class="sub">k3matrix.com.tr/analizler</span></div>
 
 </div>
+
+<script>
+  // Tasarım sabit 1080x1920 — pencere bundan kısa/darsa (tarayıcı çerçevesi/ekran
+  // yüksekliği yüzünden), kanvası orantılı küçültüp TAMAMINI görünür kılar.
+  // Böylece 9 tur metni (alt üçte birde) her koşulda ekranda kalır.
+  function fitStage(){
+    var s = Math.min(window.innerWidth/1080, window.innerHeight/1920, 1);
+    document.querySelector('.stage').style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', fitStage);
+  fitStage();
+</script>
 
 </body></html>
