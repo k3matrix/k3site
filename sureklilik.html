@@ -197,7 +197,7 @@
   <div class="ka-wrap" aria-hidden="true">
     <div class="ka-sahne">
       <div class="ka-harita">
-        <div class="ka-hucre ka-h1"><div class="ka-ad">☀️ Yatırım Kararı</div>
+        <div class="ka-hucre ka-h1"><div class="ka-ad"><svg viewBox="0 0 100 100" width="14" height="14" style="vertical-align:-2px;margin-right:3px;"><line x1="50" y1="85" x2="50" y2="55" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/><line x1="50" y1="55" x2="25" y2="20" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/><line x1="50" y1="55" x2="75" y2="20" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="55" r="4.5" fill="var(--altin)"/></svg>Yatırım Kararı</div>
           <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc g">✓ SÜREKLİ</span></div></div>
         <div class="ka-hucre ka-h2"><div class="ka-ad">⚡ Eşik/Büyük İşlem</div>
           <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc g">✓ SÜREKLİ</span></div></div>
@@ -209,7 +209,7 @@
           <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc g">✓ SÜREKLİ</span></div></div>
         <div class="ka-hucre ka-h6"><div class="ka-ad">✂️ Düzeltme/İptal</div>
           <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc g">✓ SÜREKLİ</span></div></div>
-        <div class="ka-hucre ka-h7"><div class="ka-ad">🔗 Omurga Bağlantısı</div>
+        <div class="ka-hucre ka-h7"><div class="ka-ad"><svg viewBox="0 0 100 100" width="14" height="14" style="vertical-align:-2px;margin-right:3px;"><circle cx="35" cy="50" r="16" stroke="var(--krom)" stroke-width="4" fill="none"/><circle cx="61" cy="50" r="16" stroke="var(--krom)" stroke-width="4" fill="none"/><circle cx="48" cy="50" r="4" fill="var(--altin)"/></svg>Omurga Bağlantısı</div>
           <div class="ka-rozet"><span class="ka-bilinmez">?</span><span class="ka-sonuc k">● KESİNTİLİ</span></div></div>
       </div>
       <div class="ka-fener"></div>
@@ -221,12 +221,12 @@
     <p class="aile-alt">Tek konuya odaklanmak isterseniz:</p>
     <div class="aile-kartlar">
       <a class="aile-kart" href="olcum.html">
-        <div class="ak-baslik">🔦 Görüş Alanı</div>
+        <div class="ak-baslik"><svg viewBox="0 0 100 100" width="16" height="16" style="vertical-align:-3px;margin-right:4px;"><path d="M15,50 Q50,20 85,50" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M15,50 Q50,80 85,50" stroke="var(--krom)" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="50" cy="50" r="7" fill="var(--altin)"/></svg>Görüş Alanı</div>
         <div class="ak-satir">Operasyonunuzda ışık nereye düşüyor?</div>
         <span class="ak-sure">≈ 3 dk</span>
       </a>
       <a class="aile-kart" href="sermaye.html">
-        <div class="ak-baslik">💤 Uyuyan Sermaye</div>
+        <div class="ak-baslik"><svg viewBox="0 0 100 100" width="16" height="16" style="vertical-align:-3px;margin-right:4px;"><rect x="20" y="45" width="40" height="32" rx="2" stroke="var(--krom)" stroke-width="4" fill="none"/><line x1="20" y1="61" x2="60" y2="61" stroke="var(--krom)" stroke-width="3"/><circle cx="72" cy="28" r="12" fill="var(--krom)"/><circle cx="77" cy="24" r="10" fill="var(--panel)"/><circle cx="86" cy="16" r="3" fill="var(--altin)"/></svg>Uyuyan Sermaye</div>
         <div class="ak-satir">Paranız dört durağın hangisinde uyuyor?</div>
         <span class="ak-sure">≈ 2 dk</span>
       </a>
@@ -299,13 +299,13 @@
 <script>
 // Süreklilik Analizi · 7 durak × 9 soru (OM durağı 3 soru) · puanlar ekranda görünmez
 const KATEGORI = {
-  YK:{ad:"☀️ Yatırım Kararı"},
-  EB:{ad:"⚡ Eşik/Büyük İşlem"},
-  SA:{ad:"🛒 Satınalma"},
-  YT:{ad:"🏗️ Saha Teslim"},
-  HK:{ad:"🧾 Hakediş"},
-  DZ:{ad:"✂️ Düzeltme/İptal"},
-  OM:{ad:"🔗 Omurga Bağlantısı"}
+  YK:{ikon:'<svg viewBox="0 0 100 100" width="16" height="16" style="vertical-align:-3px;margin-right:4px;"><line x1="50" y1="85" x2="50" y2="55" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/><line x1="50" y1="55" x2="25" y2="20" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/><line x1="50" y1="55" x2="75" y2="20" stroke="var(--krom)" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="55" r="4.5" fill="var(--altin)"/></svg>', ad:"Yatırım Kararı"},
+  EB:{ikon:"⚡", ad:"Eşik/Büyük İşlem"},
+  SA:{ikon:"🛒", ad:"Satınalma"},
+  YT:{ikon:"🏗️", ad:"Saha Teslim"},
+  HK:{ikon:"🧾", ad:"Hakediş"},
+  DZ:{ikon:"✂️", ad:"Düzeltme/İptal"},
+  OM:{ikon:'<svg viewBox="0 0 100 100" width="16" height="16" style="vertical-align:-3px;margin-right:4px;"><circle cx="35" cy="50" r="16" stroke="var(--krom)" stroke-width="4" fill="none"/><circle cx="61" cy="50" r="16" stroke="var(--krom)" stroke-width="4" fill="none"/><circle cx="48" cy="50" r="4" fill="var(--altin)"/></svg>', ad:"Omurga Bağlantısı"}
 };
 
 const SORULAR = [
@@ -398,7 +398,7 @@ function soruCiz(){
   const q=SORULAR[idx];
   document.getElementById("adim-no").textContent="SORU "+(idx+1)+" / "+SORULAR.length;
   document.getElementById("bar-ic").style.width=(idx/SORULAR.length*100)+"%";
-  document.getElementById("kat-eti").textContent=KATEGORI[q.k].ad;
+  document.getElementById("kat-eti").innerHTML=KATEGORI[q.k].ikon+' '+KATEGORI[q.k].ad;
   document.getElementById("soru-metin").textContent=q.s;
   const kutu=document.getElementById("secenekler"); kutu.innerHTML="";
   q.o.forEach(op=>{
@@ -440,7 +440,7 @@ function sonuc(){
     const yorumTxt = o>=70?YORUM[k].u:(o>=40?YORUM[k].y:YORUM[k].k);
     const satir=document.createElement("div");
     satir.className="durak-satir";
-    satir.innerHTML=`<div><div class="d-ad">${KATEGORI[k].ad}</div><div class="d-yorum">${yorumTxt}</div></div><span class="durum ${durum}">${durumTxt}</span>`;
+    satir.innerHTML=`<div><div class="d-ad">${KATEGORI[k].ikon} ${KATEGORI[k].ad}</div><div class="d-yorum">${yorumTxt}</div></div><span class="durum ${durum}">${durumTxt}</span>`;
     liste.appendChild(satir);
   });
 
@@ -466,10 +466,10 @@ function sonuc(){
     gMet.innerHTML=KOPUK_OMURGA_OZEL;
   } else if(oranlar[enG]>=70){
     gEti.textContent="En güçlü durağınız";
-    gMet.innerHTML=`<b>${KATEGORI[enG].ad}.</b> ${GUCLU[enG]}`;
+    gMet.innerHTML=`<b>${KATEGORI[enG].ikon} ${KATEGORI[enG].ad}.</b> ${GUCLU[enG]}`;
   } else {
     gEti.textContent="Göreli en aydınlık durağınız";
-    gMet.innerHTML=`<b>${KATEGORI[enG].ad}.</b> Burada kısmi süreklilik zaten var — tam değil ama var. Buradaki disiplin, sürekliliğin diğer duraklara taşınmasında çekirdek olarak kullanılabilir.`;
+    gMet.innerHTML=`<b>${KATEGORI[enG].ikon} ${KATEGORI[enG].ad}.</b> Burada kısmi süreklilik zaten var — tam değil ama var. Buradaki disiplin, sürekliliğin diğer duraklara taşınmasında çekirdek olarak kullanılabilir.`;
   }
 
   const eti=document.getElementById("okuma-eti"), met=document.getElementById("okuma-metin");
@@ -486,7 +486,7 @@ function sonuc(){
 
 function paylas(){
   const url=location.origin+location.pathname;
-  const durakAd=KATEGORI[sonDurak].ad.replace(/^\S+\s+/,"");
+  const durakAd=KATEGORI[sonDurak].ad;
   const metin = hepsiSurekli
     ? 'Süreklilik Analizimi yaptım: '+sonProfil.ad+' — haritamda kesinti noktası çıkmadı. Sen de 2 dakikada haritala: '+url
     : 'Süreklilik Analizimi yaptım: '+sonProfil.ad+'. İlk kapatılacak kesinti noktası: '+durakAd+'. Sen de 2 dakikada haritala: '+url;
